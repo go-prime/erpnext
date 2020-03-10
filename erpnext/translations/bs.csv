@@ -4135,7 +4135,7 @@ DocType: Sales Partner,A third party distributor / dealer / commission agent / a
 apps/erpnext/erpnext/accounts/doctype/journal_entry/journal_entry.py,{0} against Purchase Order {1},{0} protiv narudzbine dobavljacu {1}
 DocType: Patient,Patient Demographics,Demografija pacijenta
 DocType: Task,Actual Start Date (via Time Sheet),Stvarni Ozljede Datum (preko Time Sheet)
-apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,This is an example website auto-generated from ERPNext,Ovo je primjer web stranica automatski generira iz ERPNext
+apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,GoPrime Explore,Ovo je primjer web stranica automatski generira iz ERPNext
 apps/erpnext/erpnext/accounts/report/accounts_payable/accounts_payable.js,Ageing Range 1,Starenje Range 1
 DocType: Shopify Settings,Enable Shopify,Omogući Shopify
 apps/erpnext/erpnext/hr/doctype/expense_claim/expense_claim.py,Total advance amount cannot be greater than total claimed amount,Ukupan iznos uplate ne može biti veći od ukupne tražene iznose

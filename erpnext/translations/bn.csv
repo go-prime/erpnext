@@ -4069,7 +4069,7 @@ DocType: Sales Partner,A third party distributor / dealer / commission agent / a
 apps/erpnext/erpnext/accounts/doctype/journal_entry/journal_entry.py,{0} against Purchase Order {1},{0} ক্রয় আদেশের বিপরীতে {1}
 DocType: Patient,Patient Demographics,রোগী ডেমোগ্রাফিক্স
 DocType: Task,Actual Start Date (via Time Sheet),প্রকৃত স্টার্ট তারিখ (টাইম শিট মাধ্যমে)
-apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,This is an example website auto-generated from ERPNext,এই একটি উদাহরণ ওয়েবসাইট ERPNext থেকে স্বয়ংক্রিয় উত্পন্ন হয়
+apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,GoPrime Explore,এই একটি উদাহরণ ওয়েবসাইট ERPNext থেকে স্বয়ংক্রিয় উত্পন্ন হয়
 apps/erpnext/erpnext/accounts/report/accounts_payable/accounts_payable.js,Ageing Range 1,বুড়ো বিন্যাস 1
 DocType: Shopify Settings,Enable Shopify,Shopify সক্ষম করুন
 apps/erpnext/erpnext/hr/doctype/expense_claim/expense_claim.py,Total advance amount cannot be greater than total claimed amount,মোট অগ্রিম পরিমাণ মোট দাবি পরিমাণ বেশী হতে পারে না
