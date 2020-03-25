@@ -1584,7 +1584,7 @@ DocType: Fertilizer,Fertilizer Contents,Kunsmis Inhoud
 apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py,Research & Development,navorsing en ontwikkeling
 apps/erpnext/erpnext/accounts/report/purchase_order_items_to_be_billed/purchase_order_items_to_be_billed.py,Amount to Bill,Bedrag aan rekening
 apps/erpnext/erpnext/accounts/report/accounts_receivable/accounts_receivable.js,Based On Payment Terms,Gebaseer op betalingsvoorwaardes
-apps/erpnext/erpnext/config/settings.py,ERPNext Settings,ERPVolgende instellings
+apps/erpnext/erpnext/config/settings.py,ERP Settings,ERPVolgende instellings
 DocType: Company,Registration Details,Registrasie Besonderhede
 apps/erpnext/erpnext/support/doctype/issue/issue.py,Couldn't Set Service Level Agreement {0}.,Kon nie diensvlakooreenkoms instel nie {0}.
 DocType: Timesheet,Total Billed Amount,Totale gefactureerde bedrag

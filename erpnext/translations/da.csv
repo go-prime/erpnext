@@ -1584,7 +1584,7 @@ DocType: Fertilizer,Fertilizer Contents,Indhold af gødning
 apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py,Research & Development,Forskning &amp; Udvikling
 apps/erpnext/erpnext/accounts/report/purchase_order_items_to_be_billed/purchase_order_items_to_be_billed.py,Amount to Bill,Antal til fakturering
 apps/erpnext/erpnext/accounts/report/accounts_receivable/accounts_receivable.js,Based On Payment Terms,Baseret på betalingsbetingelser
-apps/erpnext/erpnext/config/settings.py,ERPNext Settings,ERPNæste indstillinger
+apps/erpnext/erpnext/config/settings.py,ERP Settings,ERPNæste indstillinger
 DocType: Company,Registration Details,Registrering Detaljer
 apps/erpnext/erpnext/support/doctype/issue/issue.py,Couldn't Set Service Level Agreement {0}.,Kunne ikke indstille serviceniveauaftale {0}.
 DocType: Timesheet,Total Billed Amount,Samlet Faktureret beløb
