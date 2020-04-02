@@ -1603,7 +1603,7 @@ DocType: Fertilizer,Fertilizer Contents,Sadržaj đubriva
 apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py,Research & Development,Istraživanje i razvoj
 apps/erpnext/erpnext/accounts/report/purchase_order_items_to_be_billed/purchase_order_items_to_be_billed.py,Amount to Bill,Iznos za naplatu
 apps/erpnext/erpnext/accounts/report/accounts_receivable/accounts_receivable.js,Based On Payment Terms,Na osnovu uslova plaćanja
-apps/erpnext/erpnext/config/settings.py,ERPNext Settings,Postavke ERPNext
+apps/erpnext/erpnext/config/settings.py,ERP Settings,Postavke ERP
 DocType: Company,Registration Details,Registracija Brodu
 apps/erpnext/erpnext/support/doctype/issue/issue.py,Couldn't Set Service Level Agreement {0}.,Nije moguće podesiti ugovor o nivou usluge {0}.
 DocType: Timesheet,Total Billed Amount,Ukupno Fakturisana iznos
@@ -4135,7 +4135,7 @@ DocType: Sales Partner,A third party distributor / dealer / commission agent / a
 apps/erpnext/erpnext/accounts/doctype/journal_entry/journal_entry.py,{0} against Purchase Order {1},{0} protiv narudzbine dobavljacu {1}
 DocType: Patient,Patient Demographics,Demografija pacijenta
 DocType: Task,Actual Start Date (via Time Sheet),Stvarni Ozljede Datum (preko Time Sheet)
-apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,This is an example website auto-generated from ERPNext,Ovo je primjer web stranica automatski generira iz ERPNext
+apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,GoPrime Explore,Ovo je primjer web stranica automatski generira iz ERPNext
 apps/erpnext/erpnext/accounts/report/accounts_payable/accounts_payable.js,Ageing Range 1,Starenje Range 1
 DocType: Shopify Settings,Enable Shopify,Omogući Shopify
 apps/erpnext/erpnext/hr/doctype/expense_claim/expense_claim.py,Total advance amount cannot be greater than total claimed amount,Ukupan iznos uplate ne može biti veći od ukupne tražene iznose
