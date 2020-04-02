@@ -1582,7 +1582,7 @@ DocType: Fertilizer,Fertilizer Contents,የማዳበሪያ ይዘት
 apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py,Research & Development,የጥናት ምርምር እና ልማት
 apps/erpnext/erpnext/accounts/report/purchase_order_items_to_be_billed/purchase_order_items_to_be_billed.py,Amount to Bill,ቢል የገንዘብ መጠን
 apps/erpnext/erpnext/accounts/report/accounts_receivable/accounts_receivable.js,Based On Payment Terms,በክፍያ ውሎች ላይ የተመሠረተ።
-apps/erpnext/erpnext/config/settings.py,ERP Settings,ERP ቅንብሮች።
+apps/erpnext/erpnext/config/settings.py,ERPNext Settings,ERPNext ቅንብሮች።
 DocType: Company,Registration Details,ምዝገባ ዝርዝሮች
 apps/erpnext/erpnext/support/doctype/issue/issue.py,Couldn't Set Service Level Agreement {0}.,የአገልግሎት ደረጃ ስምምነትን ማዋቀር አልተቻለም {0}።
 DocType: Timesheet,Total Billed Amount,ጠቅላላ የሚከፈል መጠን
@@ -4111,7 +4111,7 @@ DocType: Sales Partner,A third party distributor / dealer / commission agent / a
 apps/erpnext/erpnext/accounts/doctype/journal_entry/journal_entry.py,{0} against Purchase Order {1},{0} የግዥ ትዕዛዝ ላይ {1}
 DocType: Patient,Patient Demographics,የታካሚዎች ብዛት
 DocType: Task,Actual Start Date (via Time Sheet),ትክክለኛው የማስጀመሪያ ቀን (ሰዓት ሉህ በኩል)
-apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,GoPrime Explore,ይህ አንድ ምሳሌ ድር ጣቢያ ERPNext ከ በራስ-የመነጨ ነው
+apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,This is an example website auto-generated from ERPNext,ይህ አንድ ምሳሌ ድር ጣቢያ ERPNext ከ በራስ-የመነጨ ነው
 apps/erpnext/erpnext/accounts/report/accounts_payable/accounts_payable.js,Ageing Range 1,ጥበቃና ክልል 1
 DocType: Shopify Settings,Enable Shopify,Shopify ን አንቃ
 apps/erpnext/erpnext/hr/doctype/expense_claim/expense_claim.py,Total advance amount cannot be greater than total claimed amount,የጠቅላላ የቅድመ ክፍያ መጠን ከተጠየቀው ጠቅላላ መጠን በላይ ሊሆን አይችልም

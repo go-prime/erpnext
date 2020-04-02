@@ -1584,7 +1584,7 @@ DocType: Fertilizer,Fertilizer Contents,Kunsmis Inhoud
 apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py,Research & Development,navorsing en ontwikkeling
 apps/erpnext/erpnext/accounts/report/purchase_order_items_to_be_billed/purchase_order_items_to_be_billed.py,Amount to Bill,Bedrag aan rekening
 apps/erpnext/erpnext/accounts/report/accounts_receivable/accounts_receivable.js,Based On Payment Terms,Gebaseer op betalingsvoorwaardes
-apps/erpnext/erpnext/config/settings.py,ERP Settings,ERPVolgende instellings
+apps/erpnext/erpnext/config/settings.py,ERPNext Settings,ERPVolgende instellings
 DocType: Company,Registration Details,Registrasie Besonderhede
 apps/erpnext/erpnext/support/doctype/issue/issue.py,Couldn't Set Service Level Agreement {0}.,Kon nie diensvlakooreenkoms instel nie {0}.
 DocType: Timesheet,Total Billed Amount,Totale gefactureerde bedrag
@@ -4115,7 +4115,7 @@ DocType: Sales Partner,A third party distributor / dealer / commission agent / a
 apps/erpnext/erpnext/accounts/doctype/journal_entry/journal_entry.py,{0} against Purchase Order {1},{0} teen aankooporder {1}
 DocType: Patient,Patient Demographics,Patient Demographics
 DocType: Task,Actual Start Date (via Time Sheet),Werklike Aanvangsdatum (via Tydblad)
-apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,GoPrime Explore,Dit is &#39;n voorbeeld webwerf wat outomaties deur ERPNext gegenereer word
+apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,This is an example website auto-generated from ERPNext,Dit is &#39;n voorbeeld webwerf wat outomaties deur ERPNext gegenereer word
 apps/erpnext/erpnext/accounts/report/accounts_payable/accounts_payable.js,Ageing Range 1,Veroudering Reeks 1
 DocType: Shopify Settings,Enable Shopify,Aktiveer Shopify
 apps/erpnext/erpnext/hr/doctype/expense_claim/expense_claim.py,Total advance amount cannot be greater than total claimed amount,Totale voorskotbedrag kan nie groter wees as die totale geëisde bedrag nie
