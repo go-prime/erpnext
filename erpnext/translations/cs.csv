@@ -1602,7 +1602,7 @@ DocType: Fertilizer,Fertilizer Contents,Obsah hnojiv
 apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py,Research & Development,Výzkum a vývoj
 apps/erpnext/erpnext/accounts/report/purchase_order_items_to_be_billed/purchase_order_items_to_be_billed.py,Amount to Bill,Částka k Fakturaci
 apps/erpnext/erpnext/accounts/report/accounts_receivable/accounts_receivable.js,Based On Payment Terms,Na základě platebních podmínek
-apps/erpnext/erpnext/config/settings.py,ERP Settings,ERPDalší nastavení
+apps/erpnext/erpnext/config/settings.py,ERPNext Settings,ERPDalší nastavení
 DocType: Company,Registration Details,Registrace Podrobnosti
 apps/erpnext/erpnext/support/doctype/issue/issue.py,Couldn't Set Service Level Agreement {0}.,Smlouvu o úrovni služeb nelze nastavit {0}.
 DocType: Timesheet,Total Billed Amount,Celková částka Fakturovaný

@@ -80,8 +80,7 @@ website_generators = ["Item Group", "Item", "BOM", "Sales Partner",
 
 website_context = {
 	"favicon": 	"/assets/erpnext/images/favicon.png",
-"splash_image": "/assets/erpnext/images/loading.gif"
-	#"splash_image": "/assets/erpnext/images/erp-icon.svg"
+	"splash_image": "/assets/erpnext/images/erp-icon.svg"
 }
 
 website_route_rules = [
@@ -325,7 +324,7 @@ default_mail_footer = """
 	<span>
 		Sent via
 		<a class="text-muted" href="https://erpnext.com?source=via_email_footer" target="_blank">
-			GoPrime
+			ERPNext
 		</a>
 	</span>
 """

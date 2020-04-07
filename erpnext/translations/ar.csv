@@ -1603,7 +1603,7 @@ DocType: Fertilizer,Fertilizer Contents,محتوى الأسمدة
 apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py,Research & Development,البحث و التطوير
 apps/erpnext/erpnext/accounts/report/purchase_order_items_to_be_billed/purchase_order_items_to_be_billed.py,Amount to Bill,قيمة الفاتورة
 apps/erpnext/erpnext/accounts/report/accounts_receivable/accounts_receivable.js,Based On Payment Terms,بناء على شروط الدفع
-apps/erpnext/erpnext/config/settings.py,ERP Settings,إعدادات ERP
+apps/erpnext/erpnext/config/settings.py,ERPNext Settings,إعدادات ERPNext
 DocType: Company,Registration Details,تفاصيل التسجيل
 apps/erpnext/erpnext/support/doctype/issue/issue.py,Couldn't Set Service Level Agreement {0}.,لا يمكن تعيين اتفاقية مستوى الخدمة {0}.
 DocType: Timesheet,Total Billed Amount,المبلغ الكلي وصفت
@@ -4137,7 +4137,7 @@ DocType: Sales Partner,A third party distributor / dealer / commission agent / a
 apps/erpnext/erpnext/accounts/doctype/journal_entry/journal_entry.py,{0} against Purchase Order {1},{0} مقابل أمر الشراء {1}
 DocType: Patient,Patient Demographics,الخصائص الديمغرافية للمرضى
 DocType: Task,Actual Start Date (via Time Sheet),تاريخ البدء الفعلي (عبر ورقة الوقت)
-apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,GoPrime Explore,هذا مثال موقع ولدت لصناعة السيارات من ERPNext
+apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,This is an example website auto-generated from ERPNext,هذا مثال موقع ولدت لصناعة السيارات من ERPNext
 apps/erpnext/erpnext/accounts/report/accounts_payable/accounts_payable.js,Ageing Range 1,مدى العمر 1
 DocType: Shopify Settings,Enable Shopify,تمكين Shopify
 apps/erpnext/erpnext/hr/doctype/expense_claim/expense_claim.py,Total advance amount cannot be greater than total claimed amount,لا يمكن أن يكون إجمالي المبلغ المدفوع أكبر من المبلغ الإجمالي المطالب به

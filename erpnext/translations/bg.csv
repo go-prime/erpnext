@@ -1584,7 +1584,7 @@ DocType: Fertilizer,Fertilizer Contents,Съдържание на тора
 apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py,Research & Development,Проучване & развитие
 apps/erpnext/erpnext/accounts/report/purchase_order_items_to_be_billed/purchase_order_items_to_be_billed.py,Amount to Bill,Сума за Bill
 apps/erpnext/erpnext/accounts/report/accounts_receivable/accounts_receivable.js,Based On Payment Terms,Въз основа на условията за плащане
-apps/erpnext/erpnext/config/settings.py,ERP Settings,Настройки за ERP
+apps/erpnext/erpnext/config/settings.py,ERPNext Settings,Настройки за ERPNext
 DocType: Company,Registration Details,Регистрация Детайли
 apps/erpnext/erpnext/support/doctype/issue/issue.py,Couldn't Set Service Level Agreement {0}.,Споразумението за ниво на обслужване не можа да бъде зададено {0}.
 DocType: Timesheet,Total Billed Amount,Общо Обявен сума
@@ -4116,7 +4116,7 @@ DocType: Sales Partner,A third party distributor / dealer / commission agent / a
 apps/erpnext/erpnext/accounts/doctype/journal_entry/journal_entry.py,{0} against Purchase Order {1},{0} по Поръчка {1}
 DocType: Patient,Patient Demographics,Демографски данни за пациентите
 DocType: Task,Actual Start Date (via Time Sheet),Действително Начална дата (чрез Time Sheet)
-apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,GoPrime Explore,Това е пример за сайт автоматично генерирано от ERPNext
+apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,This is an example website auto-generated from ERPNext,Това е пример за сайт автоматично генерирано от ERPNext
 apps/erpnext/erpnext/accounts/report/accounts_payable/accounts_payable.js,Ageing Range 1,Застаряването на населението Range 1
 DocType: Shopify Settings,Enable Shopify,Активиране на Shopify
 apps/erpnext/erpnext/hr/doctype/expense_claim/expense_claim.py,Total advance amount cannot be greater than total claimed amount,Общият размер на авансовото плащане не може да бъде по-голям от общия размер на претендираната сума
