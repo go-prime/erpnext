@@ -1603,7 +1603,7 @@ DocType: Fertilizer,Fertilizer Contents,Sadržaj đubriva
 apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py,Research & Development,Istraživanje i razvoj
 apps/erpnext/erpnext/accounts/report/purchase_order_items_to_be_billed/purchase_order_items_to_be_billed.py,Amount to Bill,Iznos za naplatu
 apps/erpnext/erpnext/accounts/report/accounts_receivable/accounts_receivable.js,Based On Payment Terms,Na osnovu uslova plaćanja
-apps/erpnext/erpnext/config/settings.py,ERP Settings,Postavke ERP
+apps/erpnext/erpnext/config/settings.py,ERPNext Settings,Postavke ERPNext
 DocType: Company,Registration Details,Registracija Brodu
 apps/erpnext/erpnext/support/doctype/issue/issue.py,Couldn't Set Service Level Agreement {0}.,Nije moguće podesiti ugovor o nivou usluge {0}.
 DocType: Timesheet,Total Billed Amount,Ukupno Fakturisana iznos

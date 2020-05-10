@@ -1603,7 +1603,7 @@ DocType: Fertilizer,Fertilizer Contents,Contingut de fertilitzants
 apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py,Research & Development,Investigació i Desenvolupament
 apps/erpnext/erpnext/accounts/report/purchase_order_items_to_be_billed/purchase_order_items_to_be_billed.py,Amount to Bill,La quantitat a Bill
 apps/erpnext/erpnext/accounts/report/accounts_receivable/accounts_receivable.js,Based On Payment Terms,Basat en termes de pagament
-apps/erpnext/erpnext/config/settings.py,ERP Settings,Configuració ERP
+apps/erpnext/erpnext/config/settings.py,ERPNext Settings,Configuració ERPNext
 DocType: Company,Registration Details,Detalls de registre
 apps/erpnext/erpnext/support/doctype/issue/issue.py,Couldn't Set Service Level Agreement {0}.,No s&#39;ha pogut establir un acord de nivell de servei {0}.
 DocType: Timesheet,Total Billed Amount,Suma total Anunciada
