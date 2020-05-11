@@ -1,6 +1,6 @@
 {
-    "help": false,
-    "places": false,
-    "learn": false,
-    "quality": false
+    "help": true,
+    "places": true,
+    "learn": true,
+    "quality": true
 }
