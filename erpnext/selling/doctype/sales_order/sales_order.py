@@ -185,6 +185,36 @@ class SalesOrder(SellingController):
 			from erpnext.accounts.doctype.pricing_rule.utils import update_coupon_code_count
 			update_coupon_code_count(self.coupon_code,'used')
 
+		if not self.backordered:
+			self.set_backorder_quantities()
+
+		
+	def set_backorder_quantities(self):
+		""""
+		When validating a Sales order, check outstanding quantities and 
+		and add them to Sales Order Backorder items.
+		NB frappe uses projected quantity instead of actual quantity to validate orders
+		Projected quanitity includes quantity expected for delivery from outstanding orders.
+		"""
+		for d in self.get('items'):
+			tot_avail_qty = frappe.db.sql("select projected_qty from `tabBin` \
+				where item_code = %s and warehouse = %s", (d.item_code, d.warehouse))
+			ordered_qty = d.qty
+			if tot_avail_qty[0][0] < 0:
+				outstanding_qty = ordered_qty
+			else:
+				outstanding_qty = ordered_qty - tot_avail_qty[0][0]
+	
+			if outstanding_qty > 0:
+				self.backordered = True
+				boi = frappe.get_doc({'doctype':'Backordered Item','item': d.item_code, 'uom': d.uom,  'quantity': outstanding_qty, 'parent':self.name, 'parenttype':'Sales Order'})
+				boi.insert()
+			
+		# TODO check for unintended effects
+		# self.save()
+
+	
+
 	def on_cancel(self):
 		super(SalesOrder, self).on_cancel()
 

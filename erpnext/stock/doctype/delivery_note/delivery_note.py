@@ -211,6 +211,63 @@ class DeliveryNote(SellingController):
 		# because updating reserved qty in bin depends upon updated delivered qty in SO
 		self.update_stock_ledger()
 		self.make_gl_entries()
+		self.update_backordered_items()
+		
+
+	def update_backordered_items(self):
+		"""
+		Compare backordered quantity with already delivered quantity.
+
+		If ordered quantity -backordered quantity is greater than delivered quantity,
+		updated backordered quantity by the difference of this value and the quantity specified in the note.
+		If that value is less than delivered, reduce the backorder quantity by the total quantity specified in the note.
+
+		a = ordered qty
+		b = backordered qty
+		c = available qty = a - b #presumably delivered on order
+		d = delivery_note qty
+		e = delivered quantity (sum of delivery notes quantities for the item?)
+		if e >= c:
+			b = b - d
+		if e < c:
+			# before reducing backorder, reduce reserved quantity
+			f = available_undelivered = c - e
+			if d > f:
+				b = b - (d - f)
+			else: 
+				pass # b will not change
+		"""
+
+		for line in self.get('items'):
+			order = frappe.get_list(doctype='Sales Order Item', filters={
+																			'parent': line.against_sales_order, 
+																			'item_code': line.item_code
+																		}, fields='qty')
+			if len(order) == 0:
+				continue
+			ordered = order[0]['qty']
+			backorder_line = frappe.get_list(doctype='Backordered Item', filters={
+																					'parent': line.against_sales_order, 
+																					'item': line.item_code
+																				}, fields=['quantity', 'name'])
+			if len(backorder_line) == 0:
+				continue
+			backordered = backorder_line[0]['quantity']
+			available_at_order = ordered - backordered
+			delivered = sum([i['qty'] for i in frappe.get_list(doctype='Delivery Note Item', 
+														filters={
+															'against_sales_order': line.against_sales_order, 
+															'item_code': line.item_code
+															}, fields='qty')])
+
+			available_undelivered = available_at_order - delivered if delivered < available_at_order else 0
+			backorder_obj = frappe.get_doc('Backordered Item', backorder_line[0]['name'])
+			
+			if available_undelivered <  line.qty:
+				backorder_obj.quantity = backordered - (line.qty - available_undelivered)
+				backorder_obj.save()
+
+			#if greater, the quantity is subtracted without changing the backorder quantity
 
 	def on_cancel(self):
 		super(DeliveryNote, self).on_cancel()

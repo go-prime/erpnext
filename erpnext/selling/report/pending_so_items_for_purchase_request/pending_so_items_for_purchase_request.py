@@ -82,6 +82,12 @@ def get_columns():
 			"width": 140
 		},
 		{
+			"label": _("Backorderd Qty"),
+			"fieldname": "backordered_qty",
+			"fieldtype": "Float",
+			"width": 140
+		},
+		{
 			"label": _("Company"),
 			"fieldname": "company",
 			"fieldtype": "Data",
@@ -142,6 +148,7 @@ def get_data():
 			material_requests_against_so = materials_request_dict.get((so.name, so.item_code)) or {}
 			# check for pending sales order
 			if flt(so.total_qty) > flt(material_requests_against_so.get('qty')):
+				backordered = get_backordered_quantity(so.item_code, so.name)
 				so_record = {
 					"item_code": so.item_code,
 					"item_name": so.item_name,
@@ -154,12 +161,15 @@ def get_data():
 					"so_qty": so.total_qty,
 					"requested_qty": material_requests_against_so.get('qty'),
 					"pending_qty": so.total_qty - flt(material_requests_against_so.get('qty')),
+					"backordered_qty": backordered,
 					"company": so.company
 				}
 				pending_so.append(so_record)
 		else:
 			for item in bundled_item_map.get((so.name, so.item_code)):
 				material_requests_against_so = materials_request_dict.get((so.name, item.item_code)) or {}
+				#NB Manufacturing values, presumably wont use backorder. CK
+				backordered = get_backordered_quantity(item.item_code, so.name)
 				if flt(item.qty) > flt(material_requests_against_so.get('qty')):
 					so_record = {
 						"item_code": item.item_code,
@@ -173,6 +183,7 @@ def get_data():
 						"so_qty": item.qty,
 						"requested_qty": material_requests_against_so.get('qty', 0),
 						"pending_qty": item.qty - flt(material_requests_against_so.get('qty', 0)),
+						"backordered_qty": backordered,
 						"company": so.company
 					}
 					pending_so.append(so_record)
@@ -197,3 +208,16 @@ def get_packed_items(sales_order_list):
 		bundled_item_map.setdefault((d.parent, d.parent_item), []).append(d)
 
 	return bundled_item_map
+
+def get_backordered_quantity(item_code, sales_order):
+	qs = frappe.get_list('Backordered Item', 
+		filters={
+			'parent':sales_order,
+			'item': item_code
+		}, 
+		fields=['item', 'quantity', 'name'])
+	
+	if len(qs) > 0:
+		return qs[0]['quantity']
+	
+	return 0

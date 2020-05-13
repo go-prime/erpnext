@@ -20,6 +20,7 @@ class PickList(Document):
 	def before_save(self):
 		self.set_item_locations()
 
+	
 	def before_submit(self):
 		for item in self.locations:
 			if not frappe.get_cached_value('Item', item.item_code, 'has_serial_no'):
