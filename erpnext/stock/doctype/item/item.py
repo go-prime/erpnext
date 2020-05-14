@@ -1118,3 +1118,24 @@ def update_variants(variants, template, publish_progress=True):
 def on_doctype_update():
 	# since route is a Text column, it needs a length for indexing
 	frappe.db.add_index("Item", ["route(500)"])
+
+
+@frappe.whitelist()
+def get_inventory_quantities(item_code):
+	"""
+	"""
+	item = frappe.get_doc('Item', item_code)
+	bins = frappe.get_list(doctype='Bin', filters={'item_code': item_code}, fields=['actual_qty', 'reserved_qty', 'ordered_qty'])
+	bos = frappe.get_list(doctype='Backordered Item', filters={'item': item_code}, fields=['quantity'])
+	reserved = sum(i['reserved_qty'] for i in bins)
+	actual = sum(i['actual_qty'] for i in bins)
+	ordered = sum(i['ordered_qty'] for i in bins)
+	backordered = sum(i['quantity'] for i in bos)
+
+	return {
+	'available': actual,
+	'reserved': reserved,
+	'ordered': ordered,
+	'backordered': backordered
+	}
+

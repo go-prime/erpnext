@@ -87,6 +87,7 @@ frappe.ui.form.on("Sales Order", {
 
 frappe.ui.form.on("Sales Order Item", {
 	item_code: function(frm,cdt,cdn) {
+		console.log('Item!')
 		var row = locals[cdt][cdn];
 		if (frm.doc.delivery_date) {
 			row.delivery_date = frm.doc.delivery_date;
@@ -99,6 +100,32 @@ frappe.ui.form.on("Sales Order Item", {
 		if(!frm.doc.delivery_date) {
 			erpnext.utils.copy_value_in_all_rows(frm.doc, cdt, cdn, "items", "delivery_date");
 		}
+	},
+	inv_status: function(frm,cdt,cdn){
+		const line = locals[cdt][cdn]
+		console.log(line.item_code)
+		if(line.item_code == undefined){
+			frappe.msgprint("No item is currently selected")
+			return 
+		}
+		frappe.call({
+			'method': 'erpnext.stock.doctype.item.item.get_inventory_quantities',
+			'args': {
+				"item_code": line.item_code
+			},
+			'callback': function(data){
+				console.log(data)
+				frappe.msgprint("<h4>Item #"+ line.item_code +":</h4>" +
+							"<ul>" +
+							"<li>Available Qty: "+ data.message.available  +"</li>" +
+							"<li>Reserved Qty: "+ data.message.reserved +"</li>" +
+							"<li>Ordered Qty: "+ data.message.ordered +"</li>" +
+							"<li>Backordered Qty: "+ data.message.backordered +"</li>" +
+							
+							"</ul>", "Item Status")
+			}
+		})
+		
 	}
 });
 
