@@ -193,22 +193,34 @@ class SalesOrder(SellingController):
 		""""
 		When validating a Sales order, check outstanding quantities and 
 		and add them to Sales Order Backorder items.
-		NB frappe uses projected quantity instead of actual quantity to validate orders
-		Projected quanitity includes quantity expected for delivery from outstanding orders.
+		NB Projected quanitity includes quantity expected for delivery from outstanding orders.
+		Since this is calculated before this method is called, we can use this value to evaluate whether 
+		line in the order triggers a backorder.
+		The triggering condition is if 
+			1.	The projected quantity is less than 0
+			2.	The current order item is responsible for (1) 
+					a. Evaluated by determining whether the projected value is less than the ordered value,
+						in which case the backorder quantity is the total negative projected quantity 
+			3. The current order item is not responsible for (1), in which case the backorder quantity
+				is the total order quantity
 		"""
 		for d in self.get('items'):
+			#projected quantity is calculated before this function is called.
+			#so this must be factored into this equation.
 			tot_avail_qty = frappe.db.sql("select projected_qty from `tabBin` \
 				where item_code = %s and warehouse = %s", (d.item_code, d.warehouse))
 			ordered_qty = d.qty
-			if tot_avail_qty[0][0] < 0:
-				outstanding_qty = ordered_qty
+			if tot_avail_qty[0][0] < 0: 
+				if ordered_qty > abs(tot_avail_qty[0][0]):
+					outstanding_qty = abs(tot_avail_qty[0][0])
+				elif ordered_qty <= abs(tot_avail_qty[0][0]):
+					outstanding_qty = ordered_qty
 			else:
-				outstanding_qty = ordered_qty - tot_avail_qty[0][0]
-	
-			if outstanding_qty > 0:
-				self.backordered = True
-				boi = frappe.get_doc({'doctype':'Backordered Item','item': d.item_code, 'uom': d.uom,  'quantity': outstanding_qty, 'parent':self.name, 'parenttype':'Sales Order'})
-				boi.insert()
+				continue
+			
+			self.backordered = True
+			boi = frappe.get_doc({'doctype':'Backordered Item','item': d.item_code, 'uom': d.uom,  'quantity': outstanding_qty, 'parent':self.name, 'parenttype':'Sales Order'})
+			boi.insert()
 			
 		# TODO check for unintended effects
 		# self.save()
