@@ -1566,7 +1566,7 @@ DocType: Fertilizer,Fertilizer Contents,সার সার্টিফিকে
 apps/erpnext/erpnext/setup/setup_wizard/operations/install_fixtures.py,Research & Development,গবেষণা ও উন্নয়ন
 apps/erpnext/erpnext/accounts/report/purchase_order_items_to_be_billed/purchase_order_items_to_be_billed.py,Amount to Bill,বিল পরিমাণ
 apps/erpnext/erpnext/accounts/report/accounts_receivable/accounts_receivable.js,Based On Payment Terms,পেমেন্ট শর্তাদি উপর ভিত্তি করে
-apps/erpnext/erpnext/config/settings.py,ERP Settings,ERP সেটিংস
+apps/erpnext/erpnext/config/settings.py,ERPNext Settings,ERPNext সেটিংস
 DocType: Company,Registration Details,রেজিস্ট্রেশন বিস্তারিত
 DocType: Timesheet,Total Billed Amount,মোট বিল পরিমাণ
 DocType: Item Reorder,Re-Order Qty,পুনরায় আদেশ Qty
