@@ -1,9 +1,19 @@
 from __future__ import unicode_literals
 from frappe import _
+import os 
+import json
+
+CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ui.json')
+config = None
+with open(CONFIG_PATH, 'r') as fil:
+	config = json.load(fil)
+
 
 def get_data():
+	if not config['help']:
+		return []
 	return [
-		{
+{
 			"label": _("General"),
 			"items": [
 				{
@@ -269,5 +279,5 @@ def get_data():
 					"youtube_id": "xkrYO-KFukM"
 				},
 			]
-		},
+		}
 	]

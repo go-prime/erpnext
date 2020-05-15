@@ -1,6 +1,14 @@
 from __future__ import unicode_literals
 from frappe import _
 from frappe.desk.moduleview import add_setup_section
+import os 
+import json
+
+CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ui.json')
+config = None
+with open(CONFIG_PATH, 'r') as fil:
+	config = json.load(fil)
+
 
 def get_data():
 	data = [
@@ -46,36 +54,6 @@ def get_data():
 			]
 		},
 		{
-			"label": _("Help"),
-			"items": [
-				{
-					"type": "help",
-					"name": _("Data Import and Export"),
-					"youtube_id": "6wiriRKPhmg"
-				},
-				{
-					"type": "help",
-					"label": _("Setting up Email"),
-					"youtube_id": "YFYe0DrB95o"
-				},
-				{
-					"type": "help",
-					"label": _("Printing and Branding"),
-					"youtube_id": "cKZHcx1znMc"
-				},
-				{
-					"type": "help",
-					"label": _("Users and Permissions"),
-					"youtube_id": "8Slw1hsTmUI"
-				},
-				{
-					"type": "help",
-					"label": _("Workflow"),
-					"youtube_id": "yObJUg9FxFs"
-				},
-			]
-		},
-		{
 			"label": _("Customize"),
 			"icon": "fa fa-glass",
 			"items": [
@@ -104,13 +82,46 @@ def get_data():
 		}
 	]
 
+	if config['help']:
+		data.append({
+			"label": _("Help"),
+			"items": [
+				{
+					"type": "help",
+					"name": _("Data Import and Export"),
+					"youtube_id": "6wiriRKPhmg"
+				},
+				{
+					"type": "help",
+					"label": _("Setting up Email"),
+					"youtube_id": "YFYe0DrB95o"
+				},
+				{
+					"type": "help",
+					"label": _("Printing and Branding"),
+					"youtube_id": "cKZHcx1znMc"
+				},
+				{
+					"type": "help",
+					"label": _("Users and Permissions"),
+					"youtube_id": "8Slw1hsTmUI"
+				},
+				{
+					"type": "help",
+					"label": _("Workflow"),
+					"youtube_id": "yObJUg9FxFs"
+				},
+			]
+		})
+
 	for module, label, icon in (
 		("accounts", _("Accounting"), "fa fa-money"),
 		("stock", _("Stock"), "fa fa-truck"),
 		("selling", _("Selling"), "fa fa-tag"),
 		("buying", _("Buying"), "fa fa-shopping-cart"),
 		("hr", _("Human Resources"), "fa fa-group"),
-		("support", _("Support"), "fa fa-phone")):
+		#("support", _("Support"), "fa fa-phone")
+		):
 
 		add_setup_section(data, "erpnext", module, label, icon)
 
