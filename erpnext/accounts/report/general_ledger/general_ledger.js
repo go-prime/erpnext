@@ -49,6 +49,30 @@ frappe.query_reports["General Ledger"] = {
 			}
 		},
 		{
+			"fieldname":"start_period",
+			"label": __("From Accounting Period"),
+			"fieldtype": "Link",
+			"options": "Accounting Period",
+			"get_query": function() {
+				var company = frappe.query_report.get_filter_value('company');
+				return {
+					"doctype": "Accounting Period"
+				}
+			}
+		},
+		{
+			"fieldname":"end_period",
+			"label": __("To Accounting Period"),
+			"fieldtype": "Link",
+			"options": "Accounting Period",
+			"get_query": function() {
+				var company = frappe.query_report.get_filter_value('company');
+				return {
+					"doctype": "Accounting Period"
+				}
+			}
+		},
+		{
 			"fieldname":"voucher_no",
 			"label": __("Voucher No"),
 			"fieldtype": "Data",

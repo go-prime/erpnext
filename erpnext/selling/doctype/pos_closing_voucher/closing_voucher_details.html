@@ -43,10 +43,22 @@
 								</thead>
 								<tbody>
 								{% for d in data.payment_reconciliation %}
+									{% set mop_account = frappe.get_list('Mode of Payment Account', fields=['default_account'], filters={'parent': d.mode_of_payment})[0]['default_account'] %}
+									{% set mop_currency = frappe.get_doc('Account', mop_account).account_currency %}
+									{% set currency = frappe.get_list('Company', fields='default_currency')[0]['default_currency'] %}
+									{% if currency != mop_currency %}
+										{% set exchange = frappe.get_list('Currency Exchange', fields=['exchange_rate'], filters={'from_currency': mop_currency, 'to_currency': currency}, order_by='date desc')[0]['exchange_rate'] %}
+										{% set expected = d.expected_amount / exchange %}
 									<tr>
 										<td class="text-left">{{ d.mode_of_payment }}</td>
-										<td class='text-right'>{{ d.expected_amount }} {{ currency.symbol }}</td>
+										<td class='text-right'>{{ expected }} {{mop_currency}}</td>
 									</tr>
+									{% else %}
+									<tr>
+										<td class="text-left">{{ d.mode_of_payment }}</td>
+										<td class='text-right'>{{ d.expected_amount }} {{currency}}</td>
+									</tr>
+									{% endif %}
 								{% endfor %}
 							</tbody>
 						</table>

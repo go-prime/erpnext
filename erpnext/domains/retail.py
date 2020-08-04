@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 data = {
 	'desktop_icons': [
-		'POS',
+		# 'POS',
 		'Item',
 		'Customer',
 		'Sales Invoice',
