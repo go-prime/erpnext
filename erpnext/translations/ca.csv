@@ -4137,7 +4137,7 @@ DocType: Sales Partner,A third party distributor / dealer / commission agent / a
 apps/erpnext/erpnext/accounts/doctype/journal_entry/journal_entry.py,{0} against Purchase Order {1},{0} contra l'Ordre de Compra {1}
 DocType: Patient,Patient Demographics,Demografia del pacient
 DocType: Task,Actual Start Date (via Time Sheet),Data d&#39;inici real (a través de fulla d&#39;hores)
-apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,This is an example website auto-generated from ERPNext,Aquest és un lloc web d'exemple d'auto-generada a partir ERPNext
+apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,GoPrime Explore,Aquest és un lloc web d'exemple d'auto-generada a partir ERPNext
 apps/erpnext/erpnext/accounts/report/accounts_payable/accounts_payable.js,Ageing Range 1,Rang Envelliment 1
 DocType: Shopify Settings,Enable Shopify,Activa Shopify
 apps/erpnext/erpnext/hr/doctype/expense_claim/expense_claim.py,Total advance amount cannot be greater than total claimed amount,L&#39;import total anticipat no pot ser superior a l&#39;import total reclamat

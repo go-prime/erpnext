@@ -2,10 +2,17 @@
 
 from __future__ import unicode_literals
 from frappe import _
+import os 
+import json
+
+CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ui.json')
+config = None
+with open(CONFIG_PATH, 'r') as fil:
+	config = json.load(fil)
+
 
 def get_data():
-	return [
-		# Modules
+	modules = [
 		{
 			"module_name": "Getting Started",
 			"category": "Modules",
@@ -97,8 +104,10 @@ def get_data():
 			"icon": "octicon octicon-organization",
 			"type": "module",
 			"description": "Employees, attendance, payroll, leaves and shifts."
-		},
-		{
+		}
+	]
+	if config['quality']:
+		modules.append({
 			"module_name": "Quality Management",
 			"category": "Modules",
 			"label": _("Quality"),
@@ -106,10 +115,9 @@ def get_data():
 			"icon": "fa fa-check-square-o",
 			"type": "module",
 			"description": "Quality goals, procedures, reviews and action."
-		},
+		})
 
-
-		# Category: "Domains"
+	domains = [
 		{
 			"module_name": "Manufacturing",
 			"category": "Domains",
@@ -185,18 +193,9 @@ def get_data():
 			"type": "module",
 			"link": "List/Restaurant",
 			"description": "Menu, Orders and Table Reservations."
-		},
-
-		{
-			"module_name": "Help",
-			"category": "Administration",
-			"label": _("Learn"),
-			"color": "#FF888B",
-			"icon": "octicon octicon-device-camera-video",
-			"type": "module",
-			"is_help": True,
-			"description": "Explore Help Articles and Videos."
-		},
+		}
+	]
+	places = [
 		{
 			"module_name": 'Marketplace',
 			"category": "Places",
@@ -207,5 +206,26 @@ def get_data():
 			"color": '#FF4136',
 			'standard': 1,
 			"description": "Publish items to other ERPNext users."
-		},
+		}
 	]
+
+	if not config['places']:
+		places = []
+
+	admin = [
+		{
+			"module_name": "Help",
+			"category": "Administration",
+			"label": _("Learn"),
+			"color": "#FF888B",
+			"icon": "octicon octicon-device-camera-video",
+			"type": "module",
+			"is_help": True,
+			"description": "Explore Help Articles and Videos."
+		}
+	]
+
+	if not config['learn']:
+		admin = []
+
+	return modules + domains + places + admin

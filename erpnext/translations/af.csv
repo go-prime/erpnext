@@ -4115,7 +4115,7 @@ DocType: Sales Partner,A third party distributor / dealer / commission agent / a
 apps/erpnext/erpnext/accounts/doctype/journal_entry/journal_entry.py,{0} against Purchase Order {1},{0} teen aankooporder {1}
 DocType: Patient,Patient Demographics,Patient Demographics
 DocType: Task,Actual Start Date (via Time Sheet),Werklike Aanvangsdatum (via Tydblad)
-apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,This is an example website auto-generated from ERPNext,Dit is &#39;n voorbeeld webwerf wat outomaties deur ERPNext gegenereer word
+apps/erpnext/erpnext/portal/doctype/homepage/homepage.py,GoPrime Explore,Dit is &#39;n voorbeeld webwerf wat outomaties deur ERPNext gegenereer word
 apps/erpnext/erpnext/accounts/report/accounts_payable/accounts_payable.js,Ageing Range 1,Veroudering Reeks 1
 DocType: Shopify Settings,Enable Shopify,Aktiveer Shopify
 apps/erpnext/erpnext/hr/doctype/expense_claim/expense_claim.py,Total advance amount cannot be greater than total claimed amount,Totale voorskotbedrag kan nie groter wees as die totale geëisde bedrag nie
