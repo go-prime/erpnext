@@ -1,5 +1,4 @@
-# Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
-# License: GNU General Public License v3. See license.txt
+# Copyright (c) 2020, Goprime
 
 from __future__ import unicode_literals
 import frappe
@@ -305,13 +304,30 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 		filter_conditions = get_filters_cond(doctype, filters, [])
 		match_conditions += "{}".format(filter_conditions)
 
+	company_filter = ""
+	
+	perms = frappe.get_list('User Permission', filters={
+		'user': frappe.session.user,
+		'allow': 'Company'
+		}, fields=['for_value'], ignore_permissions=True)
+	company = None
+
+	if len(perms) > 0:
+		company = perms[0]['for_value']
+		groups = ["'%s'" % i['name'] for i in frappe.get_list('Customer Group', 
+					filters={'company': company}, ignore_permissions=True)]
+		if groups:
+			company_filter = "and customer_group in ({}) ".format(", ".join(groups))
+
 	return frappe.db.sql("""select %s from `tabCustomer` where docstatus < 2
 		and (%s like %s or customer_name like %s)
+		{company_filter}
 		{match_conditions}
 		order by
 		case when name like %s then 0 else 1 end,
 		case when customer_name like %s then 0 else 1 end,
-		name, customer_name limit %s, %s""".format(match_conditions=match_conditions) %
+		name, customer_name limit %s, %s""".format(match_conditions=match_conditions,
+			company_filter=company_filter) %
 		(", ".join(fields), searchfield, "%s", "%s", "%s", "%s", "%s", "%s"),
 		("%%%s%%" % txt, "%%%s%%" % txt, "%%%s%%" % txt, "%%%s%%" % txt, start, page_len))
 
