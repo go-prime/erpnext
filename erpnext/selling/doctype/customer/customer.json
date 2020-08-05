@@ -1,5 +1,4 @@
 {
- "actions": [],
  "allow_events_in_timeline": 1,
  "allow_import": 1,
  "allow_rename": 1,
@@ -471,9 +470,8 @@
  "icon": "fa fa-user",
  "idx": 363,
  "image_field": "image",
- "links": [],
- "modified": "2020-01-29 20:36:37.879581",
- "modified_by": "Administrator",
+ "modified": "2020-07-20 09:04:46.611106",
+ "modified_by": "kandoroc@yahoo.com",
  "module": "Selling",
  "name": "Customer",
  "name_case": "Title Case",

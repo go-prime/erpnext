@@ -2,22 +2,35 @@
 
 {% block title %}{{ _('Products') }}{% endblock %}
 {% block header %}
-<h1>{{ _('Products') }}</h1>
+<div class='product-header'>
+	<div class="header-img">
+		<i class="fa fa-camera fa-3x" aria-hidden="true"></i>
+		<!-- <img src="" alt="No img"> -->
+	</div>
+	<div class="input-group">
+		<input type="search" class="form-control" id='search-bar' placeholder="{{_('Search for Products')}}"
+			aria-label="{{_('Product Search')}}" aria-describedby="product-search"
+			value="{{ frappe.form_dict.search or '' }}"
+		>
+		<button id='search-bar-btn' class="btn-primary btn"> <i class="fa fa-search" aria-hidden="true"></i> SEARCH</button>
+		<script>
+			var btn = document.getElementById('search-bar-btn')
+			var evt = new KeyboardEvent('keydown', {keyCode: 13})
+			btn.addEventListener('click', function(){
+				console.log('running event')
+				var input = document.getElementById('search-bar')
+				input.dispatchEvent(evt)
+			})
+		</script>
+	</div>
+</div>
+
 {% endblock header %}
 
 {% block page_content %}
 <div class="row">
-	<div class="col-8">
-		<div class="input-group input-group-sm mb-3">
-			<input type="search" class="form-control" placeholder="{{_('Search')}}"
-				aria-label="{{_('Product Search')}}" aria-describedby="product-search"
-				value="{{ frappe.form_dict.search or '' }}"
-			>
-		</div>
-	</div>
-
-	<div class="col-4 pl-0">
-		<button class="btn btn-light btn-sm btn-block d-md-none"
+	<div class="col-12">
+		<button class="btn btn-light btn-sm mb-3 btn-block d-md-none"
 			type="button"
 			data-toggle="collapse"
 			data-target="#product-filters"
@@ -31,7 +44,7 @@
 </div>
 
 <div class="row">
-	<div class="col-12 order-2 col-md-8 order-md-1 products-list">
+	<div class="col-12 order-2 col-md-8 order-md-1 products-list card-deck">
 		{% if items %}
 			{% for item in items %}
 				{% include "erpnext/www/all-products/item_row.html" %}

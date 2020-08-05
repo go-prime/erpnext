@@ -19,7 +19,7 @@ def get_data():
 				{
 					"type": "doctype",
 					"name": "Global Defaults",
-					"label": _("ERPNext Settings"),
+					"label": _("ERP Settings"),
 					"description": _("Set Default Values like Company, Currency, Current Fiscal Year, etc."),
 					"hide_count": True,
 					"settings": 1,

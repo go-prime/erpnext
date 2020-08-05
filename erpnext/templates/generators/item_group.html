@@ -1,6 +1,10 @@
 {% extends "templates/web.html" %}
 
-{% block header %}<h1>{{ name }}</h1>{% endblock %}
+{% block header %}
+<div>
+	<h1>{{ name }}</h1>
+</div>
+{% endblock %}
 
 {% block page_content %}
 <div class="item-group-content" itemscope itemtype="http://schema.org/Product">
@@ -16,12 +20,14 @@
 		<div class="col-md-8">
 			{% if items %}
 			<div id="search-list">
-				{% for i in range(0, page_length) %}
+				<div class="card-deck">
+					{% for i in range(0, page_length) %}
 					{% if items[i] %}
 						{%- set item = items[i] %}
 						{% include "erpnext/www/all-products/item_row.html" %}
 					{% endif %}
 				{% endfor %}
+				</div>
 			</div>
 			<div class="item-group-nav-buttons">
 				{% if frappe.form_dict.start|int > 0 %}

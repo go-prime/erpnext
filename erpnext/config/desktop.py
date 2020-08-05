@@ -65,7 +65,7 @@ def get_data():
 			"category": "Modules",
 			"label": _("Assets"),
 			"color": "#4286f4",
-			"icon": "octicon octicon-database",
+			"icon": "fa fa-truck",
 			"type": "module",
 			"description": "Asset movement, maintainance and tools."
 		},

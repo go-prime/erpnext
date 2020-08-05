@@ -51,7 +51,9 @@
 										{% set expected = d.expected_amount / exchange %}
 									<tr>
 										<td class="text-left">{{ d.mode_of_payment }}</td>
+
 										<td class='text-right'>{{ "%.2f"|format(expected) }} {{mop_currency}}</td>
+
 									</tr>
 									{% else %}
 									<tr>

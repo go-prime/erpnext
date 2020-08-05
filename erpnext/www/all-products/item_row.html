@@ -1,23 +1,26 @@
-<div class="card mb-3">
-	<div class="row no-gutters">
-		<div class="col-md-3">
+<div class="card mb-3 ml-4 uniform-product-card">
+	<div class="product-card-body">
 			<div class="card-body">
-				<a class="no-underline" href="/{{ item.route }}">
-					<img class="website-image" src="{{ item.website_image or item.image or 'no-image.jpg' }}" alt="{{ item.item_name }}">
-				</a>
-			</div>
-		</div>
-		<div class="col-md-9">
-			<div class="card-body">
-				<h5 class="card-title">
-					<a class="text-dark" href="/{{ item.route }}">
-						{{ item.item_name or item.name }}
+				<div class="card-image-container">
+					<div class='card-overlay'>
+						<button class='btn'> <i class="fa fa-heart" aria-hidden="true"></i> ADD TO WISHLIST </button>
+					</div>
+					<a class="no-underline" href="/{{ item.route }}">
+						<img class="website-image" src="{{ item.website_image or item.image or 'no-image.jpg' }}" alt="{{ item.item_name }}">
 					</a>
-				</h5>
-				<p class="card-text">
-					{{ item.website_description or item.description or '<i class="text-muted">No description</i>' }}
-				</p>
-				<a href="/{{ item.route }}" class="btn btn-sm btn-light">{{ _('More details') }}</a>
+				</div>
+				<div class="card-info-container">
+					<h5 class="card-title">
+						<a class="text-dark" href="/{{ item.route }}">
+							{{ item.item_name or item.name }}
+						</a>
+					</h5>
+					<p class="card-text">
+						{{ item.website_description or item.description or '<i class="text-muted">No description</i>' }}
+					</p>
+					<button class="btn btn-primary"><i class="fa fa-shopping-cart" aria-hidden="true"></i> ADD TO CART</button>
+					<!-- <a href="/{{ item.route }}" class="btn btn-sm btn-light">{{ _('More details') }}</a> -->
+				</div>
 			</div>
 		</div>
 	</div>
