@@ -10,13 +10,15 @@
 	<div class="input-group">
 		<input type="search" class="form-control" id='search-bar' placeholder="{{_('Search for Products')}}"
 			aria-label="{{_('Product Search')}}" aria-describedby="product-search"
-			value="{{ frappe.form_dict.search or '' }}"
-		>
-		<button id='search-bar-btn' class="btn-primary btn"> <i class="fa fa-search" aria-hidden="true"></i> SEARCH</button>
+			value="{{ frappe.form_dict.search or '' }}">
+		<button id='search-bar-btn' class="btn-primary btn"> <i class="fa fa-search" aria-hidden="true"></i>
+			SEARCH</button>
 		<script>
 			var btn = document.getElementById('search-bar-btn')
-			var evt = new KeyboardEvent('keydown', {keyCode: 13})
-			btn.addEventListener('click', function(){
+			var evt = new KeyboardEvent('keydown', {
+				keyCode: 13
+			})
+			btn.addEventListener('click', function () {
 				console.log('running event')
 				var input = document.getElementById('search-bar')
 				input.dispatchEvent(evt)
@@ -30,30 +32,24 @@
 {% block page_content %}
 <div class="row">
 	<div class="col-12">
-		<button class="btn btn-light btn-sm mb-3 btn-block d-md-none"
-			type="button"
-			data-toggle="collapse"
-			data-target="#product-filters"
-			aria-expanded="false"
-			aria-controls="product-filters"
-			style="white-space: nowrap;"
-		>
+		<button class="btn btn-light btn-sm mb-3 btn-block d-md-none" type="button" data-toggle="collapse"
+			data-target="#product-filters" aria-expanded="false" aria-controls="product-filters"
+			style="white-space: nowrap;">
 			{{ _('Toggle Filters') }}
 		</button>
 	</div>
 </div>
-
 <div class="row">
-	<div class="col-12 order-2 col-md-8 order-md-1 products-list card-deck">
+	<div class="col-12 order-2 col-md-10 order-md-1 products-list card-deck">
 		{% if items %}
-			{% for item in items %}
-				{% include "erpnext/www/all-products/item_row.html" %}
-			{% endfor %}
+		{% for item in items %}
+		{% include "erpnext/www/all-products/item_row.html" %}
+		{% endfor %}
 		{% else %}
-			{% include "erpnext/www/all-products/not_found.html" %}
+		{% include "erpnext/www/all-products/not_found.html" %}
 		{% endif %}
 	</div>
-	<div class="col-12 order-1 col-md-4 order-md-2">
+	<div class="col-12 order-1 col-md-2 order-md-2 ">
 
 		{% if frappe.form_dict.start or frappe.form_dict.field_filters or frappe.form_dict.attribute_filters or frappe.form_dict.search %}
 		<a class="mb-3 d-inline-block" href="/all-products">{{ _('Clear filters') }}</a>
@@ -61,68 +57,61 @@
 
 		<div class="collapse d-md-block" id="product-filters">
 			{% for field_filter in field_filters %}
-				{%- set item_field =  field_filter[0] %}
-				{%- set values =  field_filter[1] %}
-				<div class="mb-4">
-					<h6>{{ item_field.label }}</h6>
+			{%- set item_field =  field_filter[0] %}
+			{%- set values =  field_filter[1] %}
+			<div class="mb-4">
+				<h6>{{ item_field.label }}</h6>
 
-					{% if values | len > 20 %}
-					<!-- show inline filter if values more than 20 -->
-					<input type="text" class="form-control form-control-sm mb-2 product-filter-filter"/>
-					{% endif %}
+				{% if values | len > 20 %}
+				<!-- show inline filter if values more than 20 -->
+				<input type="text" class="form-control form-control-sm mb-2 product-filter-filter" />
+				{% endif %}
 
-					{% if values %}
-					<div class="filter-options">
-						{% for value in values %}
-						<div class="custom-control custom-checkbox" data-value="{{ value }}">
-							<input type="checkbox"
-								class="product-filter field-filter custom-control-input"
-								id="{{value}}"
-								data-filter-name="{{ item_field.fieldname }}"
-								data-filter-value="{{ value }}"
-							>
-							<label class="custom-control-label" for="{{value}}">
-								{{ value }}
-							</label>
-						</div>
-						{% endfor %}
+				{% if values %}
+				<div class="filter-options">
+					{% for value in values %}
+					<div class="custom-control custom-checkbox" data-value="{{ value }}">
+						<input type="checkbox" class="product-filter field-filter custom-control-input" id="{{value}}"
+							data-filter-name="{{ item_field.fieldname }}" data-filter-value="{{ value }}">
+						<label class="custom-control-label" for="{{value}}">
+							{{ value }}
+						</label>
 					</div>
-					{% else %}
-					<i class="text-muted">{{ _('No values') }}</i>
-					{% endif %}
+					{% endfor %}
 				</div>
+				{% else %}
+				<i class="text-muted">{{ _('No values') }}</i>
+				{% endif %}
+			</div>
 			{% endfor %}
 
 			{% for attribute in attribute_filters %}
-				<div class="mb-4">
-					<h6>{{ attribute.name }}</h6>
+			<div class="mb-4">
+				<h6>{{ attribute.name }}</h6>
 
-					{% if values | len > 20 %}
-					<!-- show inline filter if values more than 20 -->
-					<input type="text" class="form-control form-control-sm mb-2 product-filter-filter"/>
-					{% endif %}
+				{% if values | len > 20 %}
+				<!-- show inline filter if values more than 20 -->
+				<input type="text" class="form-control form-control-sm mb-2 product-filter-filter" />
+				{% endif %}
 
-					{% if attribute.item_attribute_values %}
-					<div class="filter-options">
-						{% for attr_value in attribute.item_attribute_values %}
-						<div class="custom-control custom-checkbox" data-value="{{ value }}">
-							<input type="checkbox"
-								class="product-filter attribute-filter custom-control-input"
-								id="{{attr_value.name}}"
-								data-attribute-name="{{ attribute.name }}"
-								data-attribute-value="{{ attr_value.attribute_value }}"
-								{% if attr_value.checked %} checked {% endif %}
-							>
-							<label class="custom-control-label" for="{{attr_value.name}}">
-								{{ attr_value.attribute_value }}
-							</label>
-						</div>
-						{% endfor %}
+				{% if attribute.item_attribute_values %}
+				<div class="filter-options">
+					{% for attr_value in attribute.item_attribute_values %}
+					<div class="custom-control custom-checkbox" data-value="{{ value }}">
+						<input type="checkbox" class="product-filter attribute-filter custom-control-input"
+							id="{{attr_value.name}}" data-attribute-name="{{ attribute.name }}"
+							data-attribute-value="{{ attr_value.attribute_value }}" {% if attr_value.checked %} checked
+							{% endif %}>
+						<label class="custom-control-label" for="{{attr_value.name}}">
+							{{ attr_value.attribute_value }}
+						</label>
 					</div>
-					{% else %}
-					<i class="text-muted">{{ _('No values') }}</i>
-					{% endif %}
+					{% endfor %}
 				</div>
+				{% else %}
+				<i class="text-muted">{{ _('No values') }}</i>
+				{% endif %}
+			</div>
 			{% endfor %}
 		</div>
 
@@ -149,10 +138,12 @@
 <div class="row">
 	<div class="col-12">
 		{% if frappe.form_dict.start|int > 0 %}
-		<button class="btn btn-outline-secondary btn-prev" data-start="{{ frappe.form_dict.start|int - page_length }}">{{ _("Prev") }}</button>
+		<button class="btn btn-outline-secondary btn-prev"
+			data-start="{{ frappe.form_dict.start|int - page_length }}">{{ _("Prev") }}</button>
 		{% endif %}
 		{% if items|length >= page_length %}
-		<button class="btn btn-outline-secondary btn-next" data-start="{{ frappe.form_dict.start|int + page_length }}">{{ _("Next") }}</button>
+		<button class="btn btn-outline-secondary btn-next"
+			data-start="{{ frappe.form_dict.start|int + page_length }}">{{ _("Next") }}</button>
 		{% endif %}
 	</div>
 </div>
@@ -172,5 +163,3 @@
 </script>
 
 {% endblock %}
-
-
