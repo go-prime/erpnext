@@ -167,7 +167,7 @@ erpnext.accounts.bankTransactionUpload = class bankTransactionUpload {
 			})
 		}
 		catch(err) {
-			let msg = __(`Your file could not be processed by ERPNext.
+			let msg = __(`Your file could not be processed by Goprime.
 						<br>It should be a standard CSV or XLSX file.
 						<br>The headers should be in the first row.`)
 			frappe.throw(msg)
@@ -501,7 +501,7 @@ erpnext.accounts.ReconciliationRow = class ReconciliationRow {
 				proposals_wrapper.append(frappe.render_template("linked_payment_row", value))
 			})
 		} else {
-			const empty_data_msg = __("ERPNext could not find any matching payment entry")
+			const empty_data_msg = __("Goprime could not find any matching payment entry")
 			proposals_wrapper.append(`<div class="text-center"><h5 class="text-muted">${empty_data_msg}</h5></div>`)
 		}
 
