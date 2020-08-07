@@ -77,7 +77,7 @@ frappe.ui.form.on('Production Plan', {
 			<tr><td style="padding-left:25px">
 				<div>
 				<h3>
-					<a href = "https://erpnext.com/docs/user/manual/en/stock/projected-quantity">
+					<a href = "">
 						${__("Projected Quantity Formula")}
 					</a>
 				</h3>

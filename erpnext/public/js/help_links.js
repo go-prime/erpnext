@@ -1,6 +1,6 @@
 frappe.provide('frappe.help.help_links');
 
-const docsUrl = 'https://erpnext.com/docs/';
+const docsUrl = 'https://example.com/docs/';
 
 frappe.help.help_links['Form/Rename Tool'] = [
 	{ label: 'Bulk Rename', url: docsUrl + 'user/manual/en/setting-up/data/bulk-rename' },
