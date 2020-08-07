@@ -29,7 +29,7 @@ def execute(filters=None):
 	if filters.get('party'):
 		filters.party = frappe.parse_json(filters.get("party"))
 
-	validate_filters(filters, account_details)
+	filters = validate_filters(filters, account_details)
 
 	validate_party(filters)
 
@@ -66,6 +66,20 @@ def validate_filters(filters, account_details):
 	if filters.get('cost_center'):
 		filters.cost_center = frappe.parse_json(filters.get('cost_center'))
 
+	if filters.get('start_period') and filters.get('end_period'):
+		start = frappe.get_doc('Accounting Period', filters.get('start_period'))
+		end = frappe.get_doc('Accounting Period', filters.get('end_period'))
+		if start.start_date >= end.end_date:
+			frappe.throw("The end period must be greater than the start period.")
+		filters['from_date'] = start.start_date.strftime('%Y-%m-%d')
+		filters['to_date'] = end.end_date.strftime('%Y-%m-%d')
+
+	if filters.get('start_period') and not filters.get('end_period'):
+		span = frappe.get_doc('Accounting Period', filters.get('start_period'))
+		filters['from_date'] = span.start_date.strftime('%Y-%m-%d')
+		filters['to_date'] = span.end_date.strftime('%Y-%m-%d')
+
+	return filters
 
 def validate_party(filters):
 	party_type, party = filters.get("party_type"), filters.get("party")

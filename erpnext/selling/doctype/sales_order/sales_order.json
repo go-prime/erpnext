@@ -1,5 +1,4 @@
 {
- "actions": [],
  "allow_import": 1,
  "autoname": "naming_series:",
  "creation": "2013-06-18 12:39:59",
@@ -51,6 +50,7 @@
   "set_warehouse",
   "items_section",
   "scan_barcode",
+  "refine_btn",
   "items",
   "pricing_rule_details",
   "pricing_rules",
@@ -1190,13 +1190,17 @@
    "hidden": 1,
    "label": "Skip Delivery Note",
    "print_hide": 1
+  },
+  {
+   "fieldname": "refine_btn",
+   "fieldtype": "Button",
+   "label": "Refine Item Choices"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
- "links": [],
- "modified": "2019-12-30 19:15:28.605085",
+ "modified": "2020-07-15 11:59:47.117822",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order",

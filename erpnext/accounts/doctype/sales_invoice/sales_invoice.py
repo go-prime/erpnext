@@ -373,10 +373,29 @@ class SalesInvoice(SellingController):
 		self.set_paid_amount()
 
 	def set_paid_amount(self):
+		#goprime update
 		paid_amount = 0.0
 		base_paid_amount = 0.0
 		for data in self.payments:
-			data.base_amount = flt(data.amount*self.conversion_rate, self.precision("base_paid_amount"))
+			if data.amount == 0:
+				continue
+			acc = frappe.get_doc('Account', data.account)
+			if acc.account_currency == self.currency:
+				data.base_amount = data.amount
+			else:
+				ex_list = frappe.get_list('Currency Exchange', filters={
+						'from_currency': self.currency,
+						'to_currency': acc.account_currency,
+				}, fields=['name', 'date'])
+				if len(ex_list) > 0:
+					ex_list = sorted(ex_list, key=lambda x: x['date'], reverse=True)
+					ex = frappe.get_doc('Currency Exchange', ex_list[0]['name'])
+					data.base_amount = flt(data.amount * ex.exchange_rate, self.precision("base_paid_amount"))
+				else:
+					frappe.throw("""No exchange rate exists for converting 
+									between %s and %s for today's date. 
+									This payment cannot be processed.""" % (self.currency, acc.account_currency))
+
 			paid_amount += data.amount
 			base_paid_amount += data.base_amount
 
