@@ -223,8 +223,22 @@ class PurchaseReceipt(BuyingController):
 
 					if not stock_value_diff:
 						continue
+
+					# Goprime 2020
+					# Item group accounts 
+					gle_acc = warehouse_account[d.warehouse]["account"]
+
+					data = frappe.db.sql("""SELECT grp.account 
+					FROM tabItem as item 
+					INNER JOIN `tabItem Group` as grp ON item.item_group = grp.name
+					WHERE item.name = '{}'
+					""".format(d.item_code))
+					
+					if data and data[0]:
+						gle_acc = data[0][0]
+
 					gl_entries.append(self.get_gl_dict({
-						"account": warehouse_account[d.warehouse]["account"],
+						"account": gle_acc,
 						"against": stock_rbnb,
 						"cost_center": d.cost_center,
 						"remarks": self.get("remarks") or _("Accounting Entry for Stock"),
@@ -235,7 +249,7 @@ class PurchaseReceipt(BuyingController):
 					stock_rbnb_currency = get_account_currency(stock_rbnb)
 					gl_entries.append(self.get_gl_dict({
 						"account": stock_rbnb,
-						"against": warehouse_account[d.warehouse]["account"],
+						"against": gle_acc,
 						"cost_center": d.cost_center,
 						"remarks": self.get("remarks") or _("Accounting Entry for Stock"),
 						"credit": flt(d.base_net_amount, d.precision("base_net_amount")),
@@ -250,7 +264,7 @@ class PurchaseReceipt(BuyingController):
 						for account, amount in iteritems(landed_cost_entries[(d.item_code, d.name)]):
 							gl_entries.append(self.get_gl_dict({
 								"account": account,
-								"against": warehouse_account[d.warehouse]["account"],
+								"against": gle_acc,
 								"cost_center": d.cost_center,
 								"remarks": self.get("remarks") or _("Accounting Entry for Stock"),
 								"credit": flt(amount),
@@ -261,7 +275,7 @@ class PurchaseReceipt(BuyingController):
 					if flt(d.rm_supp_cost) and warehouse_account.get(self.supplier_warehouse):
 						gl_entries.append(self.get_gl_dict({
 							"account": warehouse_account[self.supplier_warehouse]["account"],
-							"against": warehouse_account[d.warehouse]["account"],
+							"against": gle_acc,
 							"cost_center": d.cost_center,
 							"remarks": self.get("remarks") or _("Accounting Entry for Stock"),
 							"credit": flt(d.rm_supp_cost)
@@ -282,7 +296,7 @@ class PurchaseReceipt(BuyingController):
 
 						gl_entries.append(self.get_gl_dict({
 							"account": loss_account,
-							"against": warehouse_account[d.warehouse]["account"],
+							"against": gle_acc,
 							"cost_center": d.cost_center,
 							"remarks": self.get("remarks") or _("Accounting Entry for Stock"),
 							"debit": divisional_loss,

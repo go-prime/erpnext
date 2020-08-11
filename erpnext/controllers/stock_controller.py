@@ -87,9 +87,21 @@ class StockController(AccountsController):
 							and not item_row.get("allow_zero_valuation_rate"):
 
 							sle = self.update_stock_ledger_entries(sle)
+						# Goprime 2020
+						# Item group accounts 
+						gle_acc = warehouse_account[sle.warehouse]["account"]
+
+						data = frappe.db.sql("""SELECT grp.account 
+						FROM tabItem as item 
+						INNER JOIN `tabItem Group` as grp ON item.item_group = grp.name
+						WHERE item.name = '{}'
+						""".format(sle.item_code))
+						
+						if data and data[0]:
+							gle_acc = data[0][0]
 
 						gl_list.append(self.get_gl_dict({
-							"account": warehouse_account[sle.warehouse]["account"],
+							"account": gle_acc,
 							"against": item_row.expense_account,
 							"cost_center": item_row.cost_center,
 							"remarks": self.get("remarks") or "Accounting Entry for Stock",
@@ -100,7 +112,7 @@ class StockController(AccountsController):
 						# to target warehouse / expense account
 						gl_list.append(self.get_gl_dict({
 							"account": item_row.expense_account,
-							"against": warehouse_account[sle.warehouse]["account"],
+							"against": gle_acc,
 							"cost_center": item_row.cost_center,
 							"remarks": self.get("remarks") or "Accounting Entry for Stock",
 							"credit": flt(sle.stock_value_difference, precision),
