@@ -42,7 +42,8 @@ class POSClosingVoucher(Document):
 		user = frappe.get_all('POS Closing Voucher',
 			filters = {
 				'user': self.user,
-				'docstatus': 1
+				'docstatus': 1,
+				'pos_profile': self.pos_profile
 			},
 			or_filters = {
 					'period_start_date': ('between', [self.period_start_date, self.period_end_date]),
