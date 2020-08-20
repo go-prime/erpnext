@@ -19,6 +19,55 @@ from erpnext.stock.doctype.item_manufacturer.item_manufacturer import get_item_m
 
 from six import string_types, iteritems
 
+# TEST TEST TEST
+def implicit_item_price(f):
+	"""decorator
+	This function returns a price for an item without a price for a specific 
+	unit of measure. It checks if the item has a price elsewhere in the 
+	pricelist.It also checks if there is a conversion between the existing
+	price and unit with the required unit. If it exists, it converts the price 
+	to the base unit price and then multiplies that price by the conversion rate 
+	of the other unit.
+	"""
+	def get_implicit_price(*args, **kwargs):
+		res = f(*args, **kwargs)
+		item_code = args[1]
+		uom = args[0]['uom']
+		price_list = args[0]['price_list']
+		if len(res) > 0:
+			return res
+
+		existing_prices = frappe.get_list('Item Price', filters={
+			'item_code': item_code,
+			'price_list': price_list
+			}, fields=['price_list_rate', 'uom', 'name'])
+		
+		if not existing_prices:
+			return res # no price defined at all
+
+		item = frappe.get_doc("Item", item_code)
+		conversions = frappe.get_list('UOM Conversion Detail', 
+			filters={'parent': item_code}, fields=['uom', 'conversion_factor'])
+
+		# get conversion price from first existing price
+		uom_w_price = existing_prices[0]['uom']
+		conversion_factors = [i['conversion_factor'] for i in conversions \
+				if i['uom'] == uom_w_price]
+		if not conversion_factors:
+			return res
+
+		default_price = existing_prices[0]['price_list_rate'] \
+				/ conversion_factors[0]
+
+		uom_conversions = [i for i in conversions if i['uom'] == uom]
+		if uom_conversions:
+			pl_rate = default_price * uom_conversions[0]['conversion_factor']
+			return ((existing_prices[0]['name'], default_price, existing_prices[0]['uom']), )
+		
+		return res
+
+	return get_implicit_price
+
 sales_doctypes = ['Quotation', 'Sales Order', 'Delivery Note', 'Sales Invoice']
 purchase_doctypes = ['Material Request', 'Supplier Quotation', 'Purchase Order', 'Purchase Receipt', 'Purchase Invoice']
 
@@ -576,6 +625,7 @@ def insert_item_price(args):
 				frappe.msgprint(_("Item Price added for {0} in Price List {1}").format(args.item_code,
 					args.price_list), alert=True)
 
+@implicit_item_price
 def get_item_price(args, item_code, ignore_party=False):
 	"""
 		Get name, price_list_rate from Item Price based on conditions
