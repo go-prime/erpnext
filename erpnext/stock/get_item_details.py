@@ -34,7 +34,7 @@ def implicit_item_price(f):
 		item_code = args[1]
 		uom = args[0]['uom']
 		price_list = args[0]['price_list']
-		if len(res) > 0:
+		if len(res) > 0 or not item_code:
 			return res
 
 		existing_prices = frappe.get_list('Item Price', filters={
