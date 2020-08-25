@@ -210,6 +210,7 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 		'allow': 'Company'
 		}, fields=['for_value'], ignore_permissions=True)
 	company = None
+	company_filter = ""
 	if len(perms) > 0:
 		company = perms[0]['for_value']
 		groups = ["'%s'" % i['name'] for i in frappe.get_list('Item Group', 

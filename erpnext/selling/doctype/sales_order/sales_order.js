@@ -516,10 +516,27 @@ erpnext.selling.SalesOrderController = erpnext.selling.SellingController.extend(
 	},
 
 	make_sales_invoice: function() {
-		frappe.model.open_mapped_doc({
-			method: "erpnext.selling.doctype.sales_order.sales_order.make_sales_invoice",
-			frm: this.frm
-		})
+
+		const handleInvoiceCreation = async () =>{
+			const res = await frappe.db.get_value("Customer", me.frm.doc.customer, "customer_group")
+			const allow_credit = await frappe.db.get_value("Customer Group", res.message.customer_group, "allow_credit")
+			
+			const createInvoice = () =>{
+				frappe.model.open_mapped_doc({
+					method: "erpnext.selling.doctype.sales_order.sales_order.make_sales_invoice",
+					frm: me.frm
+				})
+			}
+			if(allow_credit.message && allow_credit.message.allow_credit){
+				frappe.confirm(`${me.frm.doc.customer} is a credit customer.
+					 Do you want to proceed with creating the invoice?`,
+					() => { createInvoice() })
+			}else{
+				createInvoice()
+			}
+		}
+		
+		handleInvoiceCreation()
 	},
 
 	make_maintenance_schedule: function() {
