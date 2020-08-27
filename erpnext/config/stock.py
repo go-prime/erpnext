@@ -20,6 +20,12 @@ def get_data():
 				},
 				{
 					"type": "doctype",
+					"name": "Ship Confirmation",
+					"onboard": 1,
+					"dependencies": []
+				},
+				{
+					"type": "doctype",
 					"name": "Purchase Receipt",
 					"onboard": 1,
 					"dependencies": ["Item", "Supplier"],
@@ -88,6 +94,16 @@ def get_data():
 					"name": "Item Price Stock",
 					"doctype": "Item",
 					"dependencies": ["Item"],
+				},
+				{
+					"type": "report",
+					"is_query_report": True,
+					"name": "Backordered Inventory report",
+					"doctype":"Backordered Item",
+					"route": "#query-report/Backordered Inventory report",
+					"label": _("Backordered Inventory Report"),
+					"description": _("Summarizes the backorder quantities for each product listed in a sales order that cannot be fulfilled at present."),
+					"dependencies": []
 				}
 			]
 		},
