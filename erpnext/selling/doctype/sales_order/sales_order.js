@@ -160,6 +160,11 @@ erpnext.selling.SalesOrderController = erpnext.selling.SellingController.extend(
 						this.frm.add_custom_button(__('Invoice'), () => me.make_sales_invoice(), __('Create'));
 					}
 
+					// ship confirmation
+					if(!["Completed"].includes(doc.status)) {
+						this.frm.add_custom_button(__('Ship Confirmation'), () => me.make_ship_confirmation(), __('Create'));
+					}
+
 					// material request
 					if(!doc.order_type || ["Sales", "Shopping Cart"].indexOf(doc.order_type)!==-1
 						&& flt(doc.per_delivered, 6) < 100) {
@@ -514,7 +519,11 @@ erpnext.selling.SalesOrderController = erpnext.selling.SellingController.extend(
 			frm: me.frm
 		})
 	},
-
+	make_ship_confirmation: function() {
+		frappe.new_doc('Ship Confirmation', {
+			'sales_order': me.frm.doc.name
+		})
+	},
 	make_sales_invoice: function() {
 
 		const handleInvoiceCreation = async () =>{
