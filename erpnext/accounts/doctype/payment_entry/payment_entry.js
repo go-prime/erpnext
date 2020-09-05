@@ -13,6 +13,8 @@ function setCostCenter(frm) {
 						filters: {
 							'company':frm.doc.company
 						}
+					}).then(res => {
+						frm.set_value("cost_center", res.length > 0 ? res[0]['name'] : "")
 					})
 				}
 			})
