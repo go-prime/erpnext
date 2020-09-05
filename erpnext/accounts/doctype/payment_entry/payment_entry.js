@@ -2,6 +2,23 @@
 // For license information, please see license.txt
 {% include "erpnext/public/js/controllers/accounts.js" %}
 
+function setCostCenter(frm) {
+	if(!frm.doc.cost_center && frm.doc.payment_type == 'Internal Transfer'){
+		frappe.db.get_value("Company", frm.doc.company, "cost_center")
+			.then(res => {
+				if( res.message && res.message.cost_center) {
+					frm.set_value("cost_center", res.message.cost_center)
+				}else{
+					frappe.db.get_list('Cost Center', {
+						filters: {
+							'company':frm.doc.company
+						}
+					})
+				}
+			})
+	}
+}
+
 frappe.ui.form.on('Payment Entry', {
 	onload: function(frm) {
 		if(frm.doc.__islocal) {
@@ -61,7 +78,7 @@ frappe.ui.form.on('Payment Entry', {
 
 			return {
 				filters: {
-					"account_type": ["in", account_types],
+					// "account_type": ["in", account_types],
 					"is_group": 0,
 					"company": frm.doc.company
 				}
@@ -130,6 +147,7 @@ frappe.ui.form.on('Payment Entry', {
 		frm.events.hide_unhide_fields(frm);
 		frm.events.set_dynamic_labels(frm);
 		frm.events.show_general_ledger(frm);
+		
 	},
 
 	company: function(frm) {
@@ -332,7 +350,9 @@ frappe.ui.form.on('Payment Entry', {
 
 	paid_to: function(frm) {
 		if(frm.set_party_account_based_on_party) return;
-
+		if(frm.doc.payment_type == "Internal Transfer") {
+			setCostCenter(frm)
+		}
 		frm.events.set_account_currency_and_balance(frm, frm.doc.paid_to,
 			"paid_to_account_currency", "paid_to_account_balance", function(frm) {
 				if (frm.doc.payment_type == "Receive") {
