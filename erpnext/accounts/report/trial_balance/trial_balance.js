@@ -93,6 +93,12 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 				"label": __("Exclude Grouped Accounts"),
 				"fieldtype": "Check",
 				"default": 0
+			},
+			{
+				"fieldname": "hide_opening_balances",
+				"label": __("Hide Opening Balances"),
+				"fieldtype": "Check",
+				"default": 0
 			}
 		],
 		"formatter": erpnext.financial_statements.formatter,

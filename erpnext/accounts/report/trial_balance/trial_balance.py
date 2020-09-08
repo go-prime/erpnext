@@ -14,7 +14,7 @@ value_fields = ("opening_debit", "opening_credit", "debit", "credit", "closing_d
 def execute(filters=None):
 	validate_filters(filters)
 	data = get_data(filters)
-	columns = get_columns()
+	columns = get_columns(filters)
 	return columns, data
 
 def validate_filters(filters):
@@ -50,6 +50,13 @@ def validate_filters(filters):
 		frappe.msgprint(_("To Date should be within the Fiscal Year. Assuming To Date = {0}")\
 			.format(formatdate(filters.year_end_date)))
 		filters.to_date = filters.year_end_date
+
+def filter_zero_values_on_flattened_data(data, filters):
+	if not filters.get('show_zero_values'):
+		data = [i for i in data if i.get('has_value', False)]
+
+
+	return data 
 
 def prepare_flattened_data(accounts, currency, filters, total_row):
 	data = []
@@ -123,6 +130,7 @@ def get_data(filters):
 	else:
 		data = prepare_flattened_data(accounts, company_currency,filters, total_row)
 
+		data = filter_zero_values_on_flattened_data(data, filters)
 	return data
 
 def get_opening_balances(filters):
@@ -279,8 +287,8 @@ def prepare_data(accounts, filters, total_row, parent_children_map, company_curr
 
 	return data
 
-def get_columns():
-	return [
+def get_columns(filters):
+	cols = [
 		{
 			"fieldname": "account",
 			"label": _("Account"),
@@ -338,6 +346,11 @@ def get_columns():
 			"width": 120
 		}
 	]
+
+	if filters.get("hide_opening_balances"):
+		cols = cols[:2] + cols[-2:]
+
+	return cols
 
 def prepare_opening_closing(row):
 	dr_or_cr = "debit" if row["root_type"] in ["Asset", "Equity", "Expense"] else "credit"
