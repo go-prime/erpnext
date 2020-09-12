@@ -40,7 +40,8 @@ def implicit_item_price(f):
 		existing_prices = frappe.get_list('Item Price', filters={
 			'item_code': item_code,
 			'price_list': price_list
-			}, fields=['price_list_rate', 'uom', 'name'])
+			}, fields=['price_list_rate', 'uom', 'name'],
+			ignore_permissions=True)
 		
 		if not existing_prices:
 			return res # no price defined at all
