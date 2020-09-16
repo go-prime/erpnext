@@ -1,5 +1,4 @@
 {
- "actions": [],
  "allow_import": 1,
  "autoname": "naming_series:",
  "creation": "2013-05-24 19:29:08",
@@ -925,12 +924,12 @@
    "read_only": 1
   }
  ],
+ "hide_toolbar": 1,
  "icon": "fa fa-shopping-cart",
  "idx": 82,
  "is_submittable": 1,
- "links": [],
  "max_attachments": 1,
- "modified": "2019-12-30 19:14:56.630270",
+ "modified": "2020-09-16 20:13:16.819790",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quotation",

@@ -1565,10 +1565,11 @@
    "fieldtype": "Column Break"
   }
  ],
+ "hide_toolbar": 1,
  "icon": "fa fa-file-text",
  "idx": 181,
  "is_submittable": 1,
- "modified": "2020-02-10 04:57:11.221180",
+ "modified": "2020-09-16 20:12:49.742051",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice",

@@ -7,6 +7,8 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 from erpnext.accounts.utils import get_outstanding_invoices
+from erpnext.accounts.party import get_party_account
+from erpnext.setup.utils import get_exchange_rate
 from frappe.utils import nowdate
 from datetime import datetime
 import csv, os, re, io
@@ -277,11 +279,24 @@ class BankStatementTransactionEntry(Document):
 		je.cheque_date = pe.transaction_date
 		je.remark = pe.description
 		je.posting_date = pe.transaction_date
+		bank_currency = frappe.db.get_value('Account',self.bank_account, 'account_currency')
+		if pe.party_type == "Account":
+			party_account = pe.party
+		else:
+			party_account = get_partcount(pe.party_type, pe.party, je.company)
+		
+		party_currency = frappe.db.get_value('Account', party_account, 'account_currency')
+		amount_converted = abs(pe.amount)
+		if bank_currency != party_currency:
+			je.multi_currency = 1
+			exchange_rate = get_exchange_rate(bank_currency, party_currency, pe.transaction_date)
+			amount_converted = abs(pe.amount) * exchange_rate
+		
 		if (pe.amount < 0):
-			je.append("accounts", {"account": pe.party, "debit_in_account_currency": abs(pe.amount)})
+			je.append("accounts", {"account": pe.party, "debit_in_account_currency": amount_converted})
 			je.append("accounts", {"account": self.bank_account, "credit_in_account_currency": abs(pe.amount)})
 		else:
-			je.append("accounts", {"account": pe.party, "credit_in_account_currency": pe.amount})
+			je.append("accounts", {"account": pe.party, "credit_in_account_currency": amount_converted})
 			je.append("accounts", {"account": self.bank_account, "debit_in_account_currency": pe.amount})
 		je.save()
 		return je
