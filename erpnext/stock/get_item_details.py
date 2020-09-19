@@ -42,9 +42,16 @@ def implicit_item_price(f):
 			'price_list': price_list
 			}, fields=['price_list_rate', 'uom', 'name'],
 			ignore_permissions=True)
-		
+
 		if not existing_prices:
 			return res # no price defined at all
+
+		# the party might result in no prices being returned.
+		# check if the uom is already represented
+		price_w_uom = [i for i in existing_prices if i['uom'] == uom]
+		if price_w_uom:
+			return ((price_w_uom[0]['name'], price_w_uom[0]['price_list_rate'], uom), )
+	
 
 		item = frappe.get_doc("Item", item_code)
 		conversions = frappe.get_list('UOM Conversion Detail', 
