@@ -19,6 +19,15 @@ from erpnext.stock.doctype.item_manufacturer.item_manufacturer import get_item_m
 
 from six import string_types, iteritems
 
+# def dual_rate_pricing(f):
+# 	def get_dual_rate_price(*args, **kwargs):
+# 		res = f(*args, **kwargs)
+# 		price_list = args[0].get('price_list') if args else None
+# 		price = res[1] if res else None
+# 		if price and price_list:
+			
+
+
 # TEST TEST TEST
 def implicit_item_price(f):
 	"""decorator
