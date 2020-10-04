@@ -45,27 +45,27 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 				"fieldtype": "Date",
 				"default": frappe.defaults.get_user_default("year_end_date"),
 			},
-			{
-				"fieldname":"cost_center",
-				"label": __("Cost Center"),
-				"fieldtype": "Link",
-				"options": "Cost Center",
-				"get_query": function() {
-					var company = frappe.query_report.get_filter_value('company');
-					return {
-						"doctype": "Cost Center",
-						"filters": {
-							"company": company,
-						}
-					}
-				}
-			},
-			{
-				"fieldname":"finance_book",
-				"label": __("Finance Book"),
-				"fieldtype": "Link",
-				"options": "Finance Book",
-			},
+			// {
+			// 	"fieldname":"cost_center",
+			// 	"label": __("Cost Center"),
+			// 	"fieldtype": "Link",
+			// 	"options": "Cost Center",
+			// 	"get_query": function() {
+			// 		var company = frappe.query_report.get_filter_value('company');
+			// 		return {
+			// 			"doctype": "Cost Center",
+			// 			"filters": {
+			// 				"company": company,
+			// 			}
+			// 		}
+			// 	}
+			// },
+			// {
+			// 	"fieldname":"finance_book",
+			// 	"label": __("Finance Book"),
+			// 	"fieldtype": "Link",
+			// 	"options": "Finance Book",
+			// },
 			{
 				"fieldname": "with_period_closing_entry",
 				"label": __("Period Closing Entry"),
