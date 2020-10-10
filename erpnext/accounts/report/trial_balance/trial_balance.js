@@ -77,11 +77,11 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 				"label": __("Show zero values"),
 				"fieldtype": "Check"
 			},
-			{
-				"fieldname": "show_unclosed_fy_pl_balances",
-				"label": __("Show unclosed fiscal year's P&L balances"),
-				"fieldtype": "Check"
-			},
+			// {
+			// 	"fieldname": "show_unclosed_fy_pl_balances",
+			// 	"label": __("Show unclosed fiscal year's P&L balances"),
+			// 	"fieldtype": "Check"
+			// },
 			{
 				"fieldname": "include_default_book_entries",
 				"label": __("Include Default Book Entries"),
