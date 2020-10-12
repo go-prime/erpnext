@@ -29,6 +29,27 @@ def execute(filters=None):
 
 	columns = get_columns(filters.periodicity, period_list, filters.accumulated_values, filters.company)
 
+	#GoPrime 2020
+	columns = [
+		columns[0],
+		{
+			'fieldtype': 'Data',
+			'fieldname': 'account_number',
+			'label': 'Account Number',
+			'width': 140
+		},
+		*columns[1:]
+	]
+
+	def add_account_no(row):
+		if row.get('account'):
+			row['account_number'] = frappe.db.get_value('Account', row['account'], 'account_number')
+		else:
+			row['account_number'] = ''
+		return row
+
+	data = [add_account_no(i) for i in data]
+
 	chart = get_chart_data(filters, columns, income, expense, net_profit_loss)
 
 	return columns, data, None, chart

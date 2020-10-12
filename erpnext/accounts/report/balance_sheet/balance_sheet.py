@@ -58,6 +58,27 @@ def execute(filters=None):
 
 	chart = get_chart_data(filters, columns, asset, liability, equity)
 
+	# GoPrime 2020
+	columns = [
+		columns[0],
+		{
+			'fieldtype': 'Data',
+			'fieldname': 'account_number',
+			'label': 'Account Number',
+			'width': 140
+		},
+		*columns[1:]
+	]
+
+	def add_account_no(row):
+		if row.get('account'):
+			row['account_number'] = frappe.db.get_value('Account', row['account'], 'account_number')
+		else:
+			row['account_number'] = ''
+		return row
+
+	data = [add_account_no(i) for i in data]
+
 	return columns, data, message, chart
 
 def get_provisional_profit_loss(asset, liability, equity, period_list, company, currency=None, consolidated=False):
