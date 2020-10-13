@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from frappe import _
 import frappe 
 def get_data():
-	tiles = frappe.get_list("Module Tile", filters={'module': 'Projects'})
+	tiles = frappe.get_list("Module Tile", ignore_permissions=True, filters={'module': 'Projects'})
 	if tiles:
 		return [frappe.get_doc("Module Tile", tile['name']).as_module_dict() for tile in tiles]
     
