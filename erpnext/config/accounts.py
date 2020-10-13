@@ -4,6 +4,10 @@ import frappe
 
 
 def get_data():
+	tiles = frappe.get_list("Module Tile", filters={'module': 'Accounts'})
+	if tiles:
+		return [frappe.get_doc("Module Tile", tile['name']).as_module_dict() for tile in tiles]
+    
 	config = [
 		{
 			"label": _("Accounts Receivable"),
