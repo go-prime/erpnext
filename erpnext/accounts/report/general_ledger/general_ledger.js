@@ -181,7 +181,52 @@ frappe.query_reports["General Ledger"] = {
 			"label": __("Include Default Book Entries"),
 			"fieldtype": "Check",
 			"default": 1
+		},
+		{
+			"fieldname": "account_range_start",
+			"label": __("Account Range Start"),
+			"fieldtype": "Link",
+			"options": "Account",
+			"get_query": function() {
+				var company = frappe.query_report.get_filter_value('company');
+				return {
+					"doctype": "Account",
+					"filters": {
+						"company": company,
+						"account_number": ['not in', [null, ""]]
+					}
+				}
+			}
+		},
+		{
+			"fieldname": "account_range_end",
+			"label": __("Account Range End"),
+			"fieldtype": "Link",
+			"options": "Account",
+			"get_query": function() {
+				var company = frappe.query_report.get_filter_value('company');
+				return {
+					"doctype": "Account",
+					"filters": {
+						"company": company,
+						"account_number": ['not in', [null, ""]]
+					}
+				}
+			}
+
 		}
+		// {
+		// 	"fieldname": "account_range_start",
+		// 	"label": __("Account Range Start"),
+		// 	"fieldtype": "Select",
+		// 	"options": ""
+		// },
+		// {
+		// 	"fieldname": "account_range_end",
+		// 	"label": __("Account Range End"),
+		// 	"fieldtype": "Select",
+		// 	"options": ""
+		// }
 	]
 }
 
@@ -194,3 +239,22 @@ erpnext.dimension_filters.forEach((dimension) => {
 	});
 });
 
+// frappe.query_reports["General Ledger"]['onload'] = function(report) {
+// 	console.log(report)
+// 	frappe.db.get_list("Account", {
+// 		filters: {
+// 			is_group: 0,
+// 			account_number: ['not in', [null, ""]]
+// 		},
+// 		fields: 'account_number'})
+// 		.then(res => {
+// 			console.log(res)
+// 			const opts = res.map(i => i.account_number)
+// 			const start = report.filters[report.filters.length - 2]
+// 			const end = report.filters[report.filters.length - 1]
+// 			start.df.options = opts.join("\n")
+// 			end.df.options = opts.join("\n")
+// 			start.refresh()
+// 			end.refresh()
+// 		})
+// }
