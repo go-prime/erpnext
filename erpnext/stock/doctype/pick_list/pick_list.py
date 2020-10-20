@@ -36,6 +36,8 @@ class PickList(Document):
 		from_warehouses = None
 		if self.parent_warehouse:
 			from_warehouses = frappe.db.get_descendants('Warehouse', self.parent_warehouse)
+			if not from_warehouses:
+				from_warehouses = [self.parent_warehouse]
 
 		# reset
 		self.delete_key('locations')

@@ -1050,10 +1050,11 @@
    "options": "Warehouse"
   }
  ],
+ "hide_toolbar": 1,
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
- "modified": "2020-01-14 18:54:39.694448",
+ "modified": "2020-10-20 11:51:13.707481",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order",
