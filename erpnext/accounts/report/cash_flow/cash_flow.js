@@ -24,4 +24,20 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 			"default": 1
 		}
 	);
+
+	frappe.query_reports["Cash Flow"]["onload"] = function(report) {
+		function hideChart() {
+			if($('.chart-container').length == 0) {
+				setTimeout(hideChart, 500)
+				return
+			}
+			$('.chart-container').hide()
+			
+		}
+		setTimeout(hideChart, 500)
+		report.page.add_inner_button("Toggle Chart", function () {
+			$('.chart-container').toggle()
+		})
+	}
 });
+

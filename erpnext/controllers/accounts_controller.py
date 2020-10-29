@@ -249,6 +249,7 @@ class AccountsController(TransactionBase):
 
 		if hasattr(self, "items"):
 			parent_dict = {}
+			
 			for fieldname in self.meta.get_valid_columns():
 				parent_dict[fieldname] = self.get(fieldname)
 

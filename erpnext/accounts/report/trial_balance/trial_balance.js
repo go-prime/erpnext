@@ -45,27 +45,27 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 				"fieldtype": "Date",
 				"default": frappe.defaults.get_user_default("year_end_date"),
 			},
-			{
-				"fieldname":"cost_center",
-				"label": __("Cost Center"),
-				"fieldtype": "Link",
-				"options": "Cost Center",
-				"get_query": function() {
-					var company = frappe.query_report.get_filter_value('company');
-					return {
-						"doctype": "Cost Center",
-						"filters": {
-							"company": company,
-						}
-					}
-				}
-			},
-			{
-				"fieldname":"finance_book",
-				"label": __("Finance Book"),
-				"fieldtype": "Link",
-				"options": "Finance Book",
-			},
+			// {
+			// 	"fieldname":"cost_center",
+			// 	"label": __("Cost Center"),
+			// 	"fieldtype": "Link",
+			// 	"options": "Cost Center",
+			// 	"get_query": function() {
+			// 		var company = frappe.query_report.get_filter_value('company');
+			// 		return {
+			// 			"doctype": "Cost Center",
+			// 			"filters": {
+			// 				"company": company,
+			// 			}
+			// 		}
+			// 	}
+			// },
+			// {
+			// 	"fieldname":"finance_book",
+			// 	"label": __("Finance Book"),
+			// 	"fieldtype": "Link",
+			// 	"options": "Finance Book",
+			// },
 			{
 				"fieldname": "with_period_closing_entry",
 				"label": __("Period Closing Entry"),
@@ -77,16 +77,28 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 				"label": __("Show zero values"),
 				"fieldtype": "Check"
 			},
-			{
-				"fieldname": "show_unclosed_fy_pl_balances",
-				"label": __("Show unclosed fiscal year's P&L balances"),
-				"fieldtype": "Check"
-			},
+			// {
+			// 	"fieldname": "show_unclosed_fy_pl_balances",
+			// 	"label": __("Show unclosed fiscal year's P&L balances"),
+			// 	"fieldtype": "Check"
+			// },
 			{
 				"fieldname": "include_default_book_entries",
 				"label": __("Include Default Book Entries"),
 				"fieldtype": "Check",
 				"default": 1
+			},
+			{
+				"fieldname": "exclude_groups",
+				"label": __("Exclude Grouped Accounts"),
+				"fieldtype": "Check",
+				"default": 0
+			},
+			{
+				"fieldname": "hide_opening_balances",
+				"label": __("Hide Opening Balances"),
+				"fieldtype": "Check",
+				"default": 0
 			}
 		],
 		"formatter": erpnext.financial_statements.formatter,

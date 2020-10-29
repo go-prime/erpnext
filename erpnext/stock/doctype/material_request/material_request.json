@@ -4,6 +4,7 @@
  "creation": "2013-03-07 14:48:38",
  "doctype": "DocType",
  "document_type": "Document",
+ "engine": "InnoDB",
  "field_order": [
   "type_section",
   "naming_series",
@@ -272,10 +273,11 @@
    "read_only": 1
   }
  ],
+ "hide_toolbar": 1,
  "icon": "fa fa-ticket",
  "idx": 70,
  "is_submittable": 1,
- "modified": "2019-04-29 11:45:07.570292",
+ "modified": "2020-10-20 11:53:27.747998",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Material Request",
