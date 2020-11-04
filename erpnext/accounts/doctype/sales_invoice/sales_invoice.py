@@ -210,6 +210,46 @@ class SalesInvoice(SellingController):
 		if "Healthcare" in active_domains:
 			manage_invoice_submit_cancel(self, "on_submit")
 
+		if not cint(self.is_pos):
+			return
+
+		from erpnext.setup.utils import get_exchange_rate
+		valid_currencies = [self.company_currency, self.party_account_currency]
+		for payment_mode in self.payments:
+			payment_mode_account_currency = get_account_currency(payment_mode.account)
+			if payment_mode.amount and payment_mode_account_currency not in valid_currencies:
+				ex_rate = get_exchange_rate(payment_mode_account_currency, 
+					self.party_account_currency, self.posting_date)
+				paid_amount = payment_mode.base_amount * ex_rate
+				# !!! Should we allocate the amounts?
+				# How is change handled under normal circumstances
+				
+				payment = frappe.get_doc({
+					'doctype': 'Payment Entry',
+					'posting_date': self.posting_date,
+					'payment_type': 'Receive',
+					'company':self.company,
+					'mode_of_payment': payment_mode.mode_of_payment,
+					'paid_to': payment_mode.account,
+					'party_type': 'Customer',
+					'party': self.customer,
+					'paid_from': self.debit_to,
+					'paid_amount': paid_amount,
+					'received_amount': payment_mode.base_amount, 
+					'reference_date': self.posting_date,
+					'reference_no': self.name,
+					
+				})
+
+				payment.append('references',{
+						'reference_doctype': 'Sales Invoice',
+						'reference_name': self.name,
+						'allocated_amount': paid_amount
+					})
+
+				payment.submit()
+			
+
 	def validate_pos_return(self):
 
 		if self.is_pos and self.is_return:
@@ -879,10 +919,17 @@ class SalesInvoice(SellingController):
 			)
 
 	def make_pos_gl_entries(self, gl_entries):
+		
 		if cint(self.is_pos):
+			valid_currencies = [self.company_currency, self.party_account_currency]
 			for payment_mode in self.payments:
 				if payment_mode.amount:
 					# POS, make payment entries
+					payment_mode_account_currency = get_account_currency(payment_mode.account)
+					if payment_mode_account_currency not in valid_currencies:
+						#make payment entry after submitting
+						continue
+						
 					gl_entries.append(
 						self.get_gl_dict({
 							"account": self.debit_to,
@@ -899,7 +946,7 @@ class SalesInvoice(SellingController):
 						}, self.party_account_currency)
 					)
 
-					payment_mode_account_currency = get_account_currency(payment_mode.account)
+					
 					gl_entries.append(
 						self.get_gl_dict({
 							"account": payment_mode.account,
