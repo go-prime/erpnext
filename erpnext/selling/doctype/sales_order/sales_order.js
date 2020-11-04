@@ -162,7 +162,7 @@ erpnext.selling.SalesOrderController = erpnext.selling.SellingController.extend(
 
 					// ship confirmation
 					if(!["Completed"].includes(doc.status)) {
-						this.frm.add_custom_button(__('Ship Confirmation'), () => me.make_ship_confirmation(), __('Create'));
+						this.frm.add_custom_button(__('Sales Confirmation'), () => me.make_ship_confirmation(), __('Create'));
 					}
 
 					// material request
@@ -520,7 +520,7 @@ erpnext.selling.SalesOrderController = erpnext.selling.SellingController.extend(
 		})
 	},
 	make_ship_confirmation: function() {
-		frappe.new_doc('Ship Confirmation', {
+		frappe.new_doc('Sales Confirmation', {
 			'sales_order': me.frm.doc.name
 		})
 	},
