@@ -14,7 +14,7 @@ value_fields = ("opening_debit", "opening_credit", "debit", "credit", "closing_d
 def execute(filters=None):
 	validate_filters(filters)
 	data = get_data(filters)
-	columns = get_columns()
+	columns = get_columns(filters)
 	return columns, data
 
 def validate_filters(filters):
@@ -51,17 +51,64 @@ def validate_filters(filters):
 			.format(formatdate(filters.year_end_date)))
 		filters.to_date = filters.year_end_date
 
+def filter_zero_values_on_flattened_data(data, filters):
+	if not filters.get('show_zero_values'):
+		data = [i for i in data if i.get('has_value', False)]
+
+
+	return data 
+
+def prepare_flattened_data(accounts, currency, filters, total_row):
+	data = []
+	for a in accounts:
+		has_value = False
+		prepare_opening_closing(a)
+		row = {
+			'account': a['name'],
+			'account_name': a['name'],
+			'from_date': filters['from_date'],
+			'to_date': filters['to_date'],
+			'has_value': True,
+			'currency': currency
+		}
+
+		for key in value_fields:
+			row[key] = flt(a.get(key, 0.0), 3)
+
+			if abs(row[key]) >= 0.005:
+				# ignore zero values
+				has_value = True
+
+		row["has_value"] = has_value
+		data.append(row)
+
+	data.extend([{},total_row])
+	return data
+
+def get_accounts_by_name(accounts):
+	accounts_by_name = {}
+	for acc in accounts:
+		accounts_by_name[acc.name] = acc
+
+
 def get_data(filters):
+	extra_filters = ""
+	if filters.get('exclude_groups'):
+		extra_filters = " and is_group = 0 "
 
-	accounts = frappe.db.sql("""select name, account_number, parent_account, account_name, root_type, report_type, lft, rgt
+	accounts = frappe.db.sql("""select name, is_group, account_number, parent_account, account_name, root_type, report_type, lft, rgt
 
-		from `tabAccount` where company=%s order by lft""", filters.company, as_dict=True)
+		from `tabAccount` where company=%s {} order by lft""".format(extra_filters), filters.company, as_dict=True)#and is_group = 0
 	company_currency = erpnext.get_company_currency(filters.company)
 
 	if not accounts:
 		return None
 
-	accounts, accounts_by_name, parent_children_map = filter_accounts(accounts)
+	if filters.get('exclude_groups'):
+		accounts_by_name = get_accounts_by_name(accounts)
+	
+	else:
+		accounts, accounts_by_name, parent_children_map = filter_accounts(accounts)
 
 	min_lft, max_rgt = frappe.db.sql("""select min(lft), max(rgt) from `tabAccount`
 		where company=%s""", (filters.company,))[0]
@@ -73,11 +120,17 @@ def get_data(filters):
 		filters.to_date, min_lft, max_rgt, filters, gl_entries_by_account, ignore_closing_entries=not flt(filters.with_period_closing_entry))
 
 	total_row = calculate_values(accounts, gl_entries_by_account, opening_balances, filters, company_currency)
-	accumulate_values_into_parents(accounts, accounts_by_name)
+	if not filters.get('exclude_groups'):
+		accumulate_values_into_parents(accounts, accounts_by_name)
 
-	data = prepare_data(accounts, filters, total_row, parent_children_map, company_currency)
-	data = filter_out_zero_value_rows(data, parent_children_map, show_zero_values=filters.get("show_zero_values"))
+		data = prepare_data(accounts, filters, total_row, parent_children_map, company_currency)
+	
+		data = filter_out_zero_value_rows(data, parent_children_map, show_zero_values=filters.get("show_zero_values"))
 
+	else:
+		data = prepare_flattened_data(accounts, company_currency,filters, total_row)
+
+		data = filter_zero_values_on_flattened_data(data, filters)
 	return data
 
 def get_opening_balances(filters):
@@ -211,6 +264,7 @@ def prepare_data(accounts, filters, total_row, parent_children_map, company_curr
 		has_value = False
 		row = {
 			"account": d.name,
+			"account_number": d.account_number,
 			"parent_account": d.parent_account,
 			"indent": d.indent,
 			"from_date": filters.from_date,
@@ -234,14 +288,20 @@ def prepare_data(accounts, filters, total_row, parent_children_map, company_curr
 
 	return data
 
-def get_columns():
-	return [
+def get_columns(filters):
+	cols = [
 		{
 			"fieldname": "account",
 			"label": _("Account"),
 			"fieldtype": "Link",
 			"options": "Account",
 			"width": 300
+		},
+		{
+			"fieldname": "account_number",
+			"label": _("Account Number"),
+			"fieldtype": "Data",
+			"width": 150
 		},
 		{
 			"fieldname": "currency",
@@ -293,6 +353,11 @@ def get_columns():
 			"width": 120
 		}
 	]
+
+	if filters.get("hide_opening_balances"):
+		cols = cols[:2] + cols[-2:]
+
+	return cols
 
 def prepare_opening_closing(row):
 	dr_or_cr = "debit" if row["root_type"] in ["Asset", "Equity", "Expense"] else "credit"
