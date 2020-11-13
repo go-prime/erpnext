@@ -18,6 +18,7 @@
   "image_view",
   "quantity_and_rate",
   "qty",
+  "free_stock",
   "stock_uom",
   "col_break2",
   "uom",
@@ -382,6 +383,7 @@
    "read_only": 1
   },
   {
+   "default": "0",
    "fieldname": "is_free_item",
    "fieldtype": "Check",
    "label": "Is Free Item",
@@ -517,6 +519,7 @@
   },
   {
    "allow_on_submit": 1,
+   "default": "0",
    "fieldname": "page_break",
    "fieldtype": "Check",
    "label": "Page Break",
@@ -570,11 +573,19 @@
    "fieldname": "image_section",
    "fieldtype": "Section Break",
    "label": "Image"
+  },
+  {
+   "columns": 1,
+   "fieldname": "free_stock",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Free Stock",
+   "read_only": 1
   }
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2019-05-01 17:39:14.228141",
+ "modified": "2020-11-12 15:22:18.608005",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quotation Item",

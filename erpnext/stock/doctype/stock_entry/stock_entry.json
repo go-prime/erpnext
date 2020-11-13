@@ -117,6 +117,7 @@
    "depends_on": "eval:doc.purpose == 'Receive at Warehouse'",
    "fieldname": "outgoing_stock_entry",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Stock Entry (Outward GIT)",
    "options": "Stock Entry"
   },
@@ -628,7 +629,7 @@
  "icon": "fa fa-file-text",
  "idx": 1,
  "is_submittable": 1,
- "modified": "2020-10-20 11:53:52.015077",
+ "modified": "2020-11-12 12:30:55.683386",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Entry",
