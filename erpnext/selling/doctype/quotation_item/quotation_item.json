@@ -67,7 +67,8 @@
   "shopping_cart_section",
   "additional_notes",
   "section_break_61",
-  "page_break"
+  "page_break",
+  "match_free_stock"
  ],
  "fields": [
   {
@@ -581,11 +582,17 @@
    "in_list_view": 1,
    "label": "Free Stock",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "match_free_stock",
+   "fieldtype": "Check",
+   "label": "Validate Against Free Stock"
   }
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2020-11-12 15:22:18.608005",
+ "modified": "2020-11-13 08:28:41.415440",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quotation Item",
