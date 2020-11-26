@@ -862,8 +862,13 @@ class AccountsController(TransactionBase):
 				frappe.throw(_("Total Payment Amount in Payment Schedule must be equal to Grand / Rounded Total"))
 
 	def is_rounded_total_disabled(self):
+		from goprime.config.utils import get_features
+
 		if self.meta.get_field("disable_rounded_total"):
 			return self.disable_rounded_total
+		elif self.doctype == "Sales Invoice" and get_features().get('JMann_simple_ui'):
+			customer_group = frappe.db.get_value('Customer', self.customer, 'customer_group')
+			return frappe.db.get_value('Customer Group', customer_group, 'allow_credit')
 		else:
 			return frappe.db.get_single_value("Global Defaults", "disable_rounded_total")
 
