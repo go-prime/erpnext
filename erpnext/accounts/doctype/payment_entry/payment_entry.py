@@ -186,8 +186,8 @@ class PaymentEntry(AccountsController):
 		if self.payment_type in ("Pay", "Internal Transfer"):
 			self.validate_account_type(self.paid_from, ["Bank", "Cash"])
 
-		if self.payment_type in ("Receive", "Internal Transfer"):
-			self.validate_account_type(self.paid_to, ["Bank", "Cash"])
+		# if self.payment_type in ("Receive", "Internal Transfer"):
+			# self.validate_account_type(self.paid_to, ["Bank", "Cash"])
 
 	def validate_account_type(self, account, account_types):
 		account_type = frappe.db.get_value("Account", account, "account_type")

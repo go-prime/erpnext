@@ -283,7 +283,7 @@ class BankStatementTransactionEntry(Document):
 		if pe.party_type == "Account":
 			party_account = pe.party
 		else:
-			party_account = get_partcount(pe.party_type, pe.party, je.company)
+			party_account = get_party_account(pe.party_type, pe.party, je.company)
 		
 		party_currency = frappe.db.get_value('Account', party_account, 'account_currency')
 		amount_converted = abs(pe.amount)

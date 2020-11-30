@@ -699,7 +699,14 @@ class ReceivablePayableReport(object):
 
 
 	def get_columns(self):
+		from goprime.config.utils import get_features
+		config = get_features()
+		jmann = config.get("JMann_item_fields", False)
 		self.columns = []
+	
+		if jmann:
+			self.add_column(_('Total'), fieldname='outstanding')
+
 		self.add_column('Posting Date', fieldtype='Date')
 		self.add_column(label=_(self.party_type), fieldname='party',
 			fieldtype='Link', options=self.party_type, width=180)
@@ -732,7 +739,9 @@ class ReceivablePayableReport(object):
 		else:
 			# note: fieldname is still `credit_note`
 			self.add_column(_('Debit Note'), fieldname='credit_note')
-		self.add_column(_('Outstanding Amount'), fieldname='outstanding')
+	
+		if not jmann:
+			self.add_column(_('Outstanding Amount'), fieldname='outstanding')
 
 		self.setup_ageing_columns()
 

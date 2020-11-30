@@ -28,6 +28,7 @@ erpnext.taxes_and_totals = erpnext.payments.extend({
 	},
 
 	calculate_taxes_and_totals: function(update_paid_amount) {
+
 		this.discount_amount_applied = false;
 		this._calculate_taxes_and_totals();
 		this.calculate_discount_amount();
@@ -300,6 +301,7 @@ erpnext.taxes_and_totals = erpnext.payments.extend({
 						&& me.frm.doc.apply_discount_on == "Grand Total" && me.frm.doc.discount_amount) {
 						me.frm.doc.rounding_adjustment = flt(me.frm.doc.grand_total -
 							flt(me.frm.doc.discount_amount) - tax.total, precision("rounding_adjustment"));
+						
 					}
 				}
 			});
@@ -457,19 +459,42 @@ erpnext.taxes_and_totals = erpnext.payments.extend({
 			disable_rounded_total = frappe.sys_defaults.disable_rounded_total;
 		}
 
-		if (cint(disable_rounded_total)) {
-			this.frm.doc.rounded_total = 0;
-			this.frm.doc.base_rounded_total = 0;
-			return;
+		const me = this
+		function _round_totals() {
+			if (cint(disable_rounded_total)) {
+				me.frm.doc.rounded_total = 0;
+				me.frm.doc.base_rounded_total = 0;
+				return;
+			}
+	
+			if(frappe.meta.get_docfield(me.frm.doc.doctype, "rounded_total", me.frm.doc.name)) {
+				me.frm.doc.rounded_total = round_based_on_smallest_currency_fraction(me.frm.doc.grand_total,
+					me.frm.doc.currency, precision("rounded_total"));
+				me.frm.doc.rounding_adjustment += flt(me.frm.doc.rounded_total - me.frm.doc.grand_total,
+					precision("rounding_adjustment"));
+			
+				me.set_in_company_currency(me.frm.doc, ["rounding_adjustment", "rounded_total"]);
+				me.frm.refresh_field('rounding_adjustment')
+			}
 		}
 
-		if(frappe.meta.get_docfield(this.frm.doc.doctype, "rounded_total", this.frm.doc.name)) {
-			this.frm.doc.rounded_total = round_based_on_smallest_currency_fraction(this.frm.doc.grand_total,
-				this.frm.doc.currency, precision("rounded_total"));
-			this.frm.doc.rounding_adjustment += flt(this.frm.doc.rounded_total - this.frm.doc.grand_total,
-				precision("rounding_adjustment"));
-
-			this.set_in_company_currency(this.frm.doc, ["rounding_adjustment", "rounded_total"]);
+		if(this.frm.doc.doctype == 'Sales Invoice' && this.frm.doc.customer) {
+			frappe.call({
+				method: 'goprime.config.utils.get_features'
+			}).then(res => {
+				if(res.message.JMann_simple_ui) {
+					frappe.db.get_value('Customer', me.frm.doc.customer, 'customer_group')
+						.then(res => {
+							frappe.db.get_value('Customer Group', res.message.customer_group, 'allow_credit')
+								.then(r => {
+									disable_rounded_total = r.message.allow_credit
+									_round_totals()
+								})
+						})
+				}
+			})
+		}else {
+			_round_totals()
 		}
 	},
 

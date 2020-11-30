@@ -160,6 +160,11 @@ erpnext.selling.SalesOrderController = erpnext.selling.SellingController.extend(
 						this.frm.add_custom_button(__('Invoice'), () => me.make_sales_invoice(), __('Create'));
 					}
 
+					// ship confirmation
+					if(!["Completed"].includes(doc.status)) {
+						this.frm.add_custom_button(__('Sales Confirmation'), () => me.make_ship_confirmation(), __('Create'));
+					}
+
 					// material request
 					if(!doc.order_type || ["Sales", "Shopping Cart"].indexOf(doc.order_type)!==-1
 						&& flt(doc.per_delivered, 6) < 100) {
@@ -514,12 +519,33 @@ erpnext.selling.SalesOrderController = erpnext.selling.SellingController.extend(
 			frm: me.frm
 		})
 	},
-
-	make_sales_invoice: function() {
-		frappe.model.open_mapped_doc({
-			method: "erpnext.selling.doctype.sales_order.sales_order.make_sales_invoice",
-			frm: this.frm
+	make_ship_confirmation: function() {
+		frappe.new_doc('Sales Confirmation', {
+			'sales_order': me.frm.doc.name
 		})
+	},
+	make_sales_invoice: function() {
+
+		const handleInvoiceCreation = async () =>{
+			const res = await frappe.db.get_value("Customer", me.frm.doc.customer, "customer_group")
+			const allow_credit = await frappe.db.get_value("Customer Group", res.message.customer_group, "allow_credit")
+			
+			const createInvoice = () =>{
+				frappe.model.open_mapped_doc({
+					method: "erpnext.selling.doctype.sales_order.sales_order.make_sales_invoice",
+					frm: me.frm
+				})
+			}
+			if(allow_credit.message && allow_credit.message.allow_credit){
+				frappe.confirm(`${me.frm.doc.customer} is a credit customer.
+					 Do you want to proceed with creating the invoice?`,
+					() => { createInvoice() })
+			}else{
+				createInvoice()
+			}
+		}
+		
+		handleInvoiceCreation()
 	},
 
 	make_maintenance_schedule: function() {

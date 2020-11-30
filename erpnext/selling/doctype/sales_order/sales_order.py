@@ -636,6 +636,11 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 
 	return target_doc
 
+# @frappe.whitelist()
+# def make_ship_confirmation(source_name, target_doc=None, ignore_permissions=False):
+# 	pass
+
+
 @frappe.whitelist()
 def make_sales_invoice(source_name, target_doc=None, ignore_permissions=False):
 	def postprocess(source, target):
