@@ -213,8 +213,11 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 	company_filter = ""
 	if len(perms) > 0:
 		company = perms[0]['for_value']
-		groups = ["'%s'" % i['name'] for i in frappe.get_list('Item Group', 
-					filters={'company': company}, ignore_permissions=True)]
+		groups = [f'"{i[0]}"' for i in frappe.db.sql("""
+			SELECT grp.name FROM `tabItem Group` AS grp 
+			INNER JOIN `tabItem Default` AS deflt ON deflt.parent = grp.name 
+			WHERE deflt.company = '{}' 
+			""".format(company))]
 		if groups:
 			company_filter = "and item_group in ({}) ".format(", ".join(groups))
 

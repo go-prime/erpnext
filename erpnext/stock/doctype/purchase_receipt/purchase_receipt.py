@@ -228,11 +228,14 @@ class PurchaseReceipt(BuyingController):
 					# Item group accounts 
 					gle_acc = warehouse_account[d.warehouse]["account"]
 
-					data = frappe.db.sql("""SELECT grp.account 
-					FROM tabItem as item 
-					INNER JOIN `tabItem Group` as grp ON item.item_group = grp.name
-					WHERE item.name = '{}'
-					""".format(d.item_code))
+					data = frappe.db.sql("""
+						SELECT deflt.inventory_account 
+						FROM `tabItem Default` as deflt
+						INNER JOIN `tabItem Group` as grp ON deflt.parent = grp.name 
+						INNER JOIN tabItem as item ON  item.item_group = grp.name
+						WHERE item.name = '{}'
+						AND deflt.company = '{}'
+						""".format(d.item_code, self.company))
 					
 					if data and data[0]:
 						gle_acc = data[0][0]
