@@ -46,6 +46,7 @@ def get_pricing_rules(args, doc=None):
 	return rules
 
 def _get_pricing_rules(apply_on, args, values):
+	from goprime.config.utils import get_features
 	apply_on_field = frappe.scrub(apply_on)
 
 	if not args.get(apply_on_field): return []
@@ -79,17 +80,22 @@ def _get_pricing_rules(apply_on, args, values):
 	conditions += " and ifnull(`tabPricing Rule`.for_price_list, '') in (%(price_list)s, '')"
 	values["price_list"] = args.get("price_list")
 
+	jmann_cond = ""
+	if get_features().get('JMann_simple_ui'):
+		jmann_cond = "or (%(item_code)s between `tabPricing Rule`.from_item_code and `tabPricing Rule`.to_item_code)"
+
 	qs = """select `tabPricing Rule`.*,
 			{child_doc}.{apply_on_field}, {child_doc}.uom
 		from `tabPricing Rule`, {child_doc}
 		where ({item_conditions} or (`tabPricing Rule`.apply_rule_on_other is not null
-			and `tabPricing Rule`.{apply_on_other_field}=%({apply_on_field})s) {item_variant_condition})
+			and `tabPricing Rule`.{apply_on_other_field}=%({apply_on_field})s) {jmann_cond} {item_variant_condition})
 			and {child_doc}.parent = `tabPricing Rule`.name
 			and `tabPricing Rule`.disable = 0 and
 			`tabPricing Rule`.{transaction_type} = 1 {warehouse_cond} {conditions}
 		order by `tabPricing Rule`.priority desc,
 			`tabPricing Rule`.name desc""".format(
 			child_doc = child_doc,
+			jmann_cond = jmann_cond,
 			apply_on_field = apply_on_field,
 			item_conditions = item_conditions,
 			item_variant_condition = item_variant_condition,
