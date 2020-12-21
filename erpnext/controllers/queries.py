@@ -70,8 +70,13 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 
 	meta = frappe.get_meta("Customer")
 	searchfields = meta.get_search_fields()
+	from goprime.config.utils import get_features
 	searchfields = searchfields + [f for f in [searchfield or "name", "customer_name"] \
 			if not f in searchfields]
+	
+	if get_features().get('JMann_simple_ui'):
+		searchfields.append('legacy_customer_number')
+
 	fields = fields + [f for f in searchfields if not f in fields]
 
 	fields = ", ".join(fields)
