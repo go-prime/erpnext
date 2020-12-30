@@ -364,8 +364,11 @@ class StockEntry(StockController):
 					+ self.work_order + ":" + ", ".join(other_ste), DuplicateEntryForWorkOrderError)
 
 	def set_incoming_rate(self):
+		from goprime.config.utils import get_features
 		for d in self.items:
-			if d.s_warehouse:
+			if get_features.get('manual_stock_valuation') and d.valuation_rate > 0:
+				d.basic_rate = d.valuation_rate
+			elif d.s_warehouse:
 				args = self.get_args_for_incoming_rate(d)
 				d.basic_rate = get_incoming_rate(args)
 			elif d.allow_zero_valuation_rate and not d.s_warehouse:
