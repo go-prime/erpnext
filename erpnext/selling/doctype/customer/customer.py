@@ -105,8 +105,7 @@ class Customer(TransactionBase):
 				self.db_set('email_id', self.email_id)
 
 	def create_primary_address(self):
-		from goprime.config.utils import get_features
-		if self.flags.is_new_doc and self.get('address_line1') and not get_features().get('JMann_simple_ui'):
+		if self.flags.is_new_doc and self.get('address_line1'):
 			make_address(self)
 
 	def update_lead_status(self):
@@ -455,7 +454,6 @@ def make_address(args, is_primary_address=1):
 
 	address = frappe.get_doc({
 		'doctype': 'Address',
-		'address_type': args.get('address_type') if args.get('address_type') else 'Billing',
 		'address_title': args.get('name'),
 		'address_line1': args.get('address_line1'),
 		'address_line2': args.get('address_line2'),

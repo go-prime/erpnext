@@ -51,12 +51,12 @@
 										{% set expected = d.expected_amount / exchange %}
 									<tr>
 										<td class="text-left">{{ d.mode_of_payment }}</td>
-										<td class='text-right'>{{ expected }} {{mop_currency}}</td>
+										<td class='text-right'>{{ "%.2f"|format(expected) }} {{mop_currency}}</td>
 									</tr>
 									{% else %}
 									<tr>
 										<td class="text-left">{{ d.mode_of_payment }}</td>
-										<td class='text-right'>{{ d.expected_amount }} {{currency}}</td>
+										<td class='text-right'>{{ "%.2f"|format(d.expected_amount) }} {{currency}}</td>
 									</tr>
 									{% endif %}
 								{% endfor %}
@@ -81,7 +81,7 @@
 								{% for d in data.taxes %}
 									<tr>
 										<td class="text-left">{{ d.rate }} %</td>
-										<td class='text-right'>{{ d.amount }} {{ currency.symbol }}</td>
+										<td class='text-right'>{{ "%.2f"|format(d.amount) }} {{ currency.symbol }}</td>
 									</tr>
 								{% endfor %}
 							</tbody>
