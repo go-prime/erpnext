@@ -161,9 +161,9 @@ erpnext.selling.SalesOrderController = erpnext.selling.SellingController.extend(
 					}
 
 					// ship confirmation
-					if(!["Completed"].includes(doc.status)) {
-						this.frm.add_custom_button(__('Sales Confirmation'), () => me.make_ship_confirmation(), __('Create'));
-					}
+					// if(!["Completed"].includes(doc.status)) {
+					// 	this.frm.add_custom_button(__('Sales Confirmation'), () => me.make_ship_confirmation(), __('Create'));
+					// }
 
 					// material request
 					if(!doc.order_type || ["Sales", "Shopping Cart"].indexOf(doc.order_type)!==-1
