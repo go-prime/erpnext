@@ -1,6 +1,6 @@
 {
  "allow_import": 1,
- "autoname": "naming_series:",
+ "autoname": "field:purchase_order_id",
  "creation": "2013-05-21 16:16:39",
  "doctype": "DocType",
  "document_type": "Document",
@@ -13,6 +13,7 @@
   "get_items_from_open_material_requests",
   "supplier_name",
   "company",
+  "purchase_order_id",
   "column_break1",
   "transaction_date",
   "schedule_date",
@@ -153,7 +154,6 @@
    "oldfieldtype": "Select",
    "options": "PUR-ORD-.YYYY.-",
    "print_hide": 1,
-   "reqd": 1,
    "set_only_once": 1
   },
   {
@@ -1048,13 +1048,20 @@
    "fieldtype": "Link",
    "label": "Set Reserve Warehouse",
    "options": "Warehouse"
+  },
+  {
+   "fieldname": "purchase_order_id",
+   "fieldtype": "Data",
+   "label": "Purchase Order ID",
+   "reqd": 1,
+   "unique": 1
   }
  ],
  "hide_toolbar": 1,
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
- "modified": "2020-10-28 08:48:08.945318",
+ "modified": "2021-01-11 06:32:56.658462",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order",
