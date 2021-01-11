@@ -366,7 +366,7 @@ class StockEntry(StockController):
 	def set_incoming_rate(self):
 		from goprime.config.utils import get_features
 		for d in self.items:
-			if get_features.get('manual_stock_valuation') and d.valuation_rate > 0:
+			if get_features().get('manual_stock_valuation') and d.valuation_rate > 0:
 				d.basic_rate = d.valuation_rate
 			elif d.s_warehouse:
 				args = self.get_args_for_incoming_rate(d)

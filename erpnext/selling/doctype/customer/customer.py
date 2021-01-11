@@ -105,7 +105,8 @@ class Customer(TransactionBase):
 				self.db_set('email_id', self.email_id)
 
 	def create_primary_address(self):
-		if self.flags.is_new_doc and self.get('address_line1'):
+		from goprime.config.utils import get_features
+		if self.flags.is_new_doc and self.get('address_line1') and not get_features().get('JMann_simple_ui'):
 			make_address(self)
 
 	def update_lead_status(self):
