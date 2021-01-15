@@ -506,6 +506,7 @@ def update_billed_amount_based_on_po(po_detail, update_modified=True):
 @frappe.whitelist()
 def make_purchase_invoice(source_name, target_doc=None):
 	from frappe.model.mapper import get_mapped_doc
+	from goprime.config.utils import get_features
 	doc = frappe.get_doc('Purchase Receipt', source_name)
 	returned_qty_map = get_returned_qty_map(source_name)
 	invoiced_qty_map = get_invoiced_qty_map(source_name)
@@ -536,14 +537,22 @@ def make_purchase_invoice(source_name, target_doc=None):
 				returned_qty = 0
 		return pending_qty, returned_qty
 
+	fieldmap = {
+		"supplier_warehouse":"supplier_warehouse",
+		"is_return": "is_return"
+	}
+
+	if get_features().get('JMann_simple_ui'):
+		fieldmap.update({
+			"invoice_originator":"invoice_originator",
+			"supplier_invoice_date": "bill_date",
+			"supplier_invoice_no": "bill_no"
+		})
 
 	doclist = get_mapped_doc("Purchase Receipt", source_name,	{
 		"Purchase Receipt": {
 			"doctype": "Purchase Invoice",
-			"field_map": {
-				"supplier_warehouse":"supplier_warehouse",
-				"is_return": "is_return"
-			},
+			"field_map": fieldmap,
 			"validation": {
 				"docstatus": ["=", 1],
 			},
