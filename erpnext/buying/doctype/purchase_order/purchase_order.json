@@ -1052,7 +1052,7 @@
   {
    "fieldname": "purchase_order_id",
    "fieldtype": "Data",
-   "label": "Purchase Order ID",
+   "label": "PO Number",
    "unique": 1
   }
  ],
@@ -1060,7 +1060,7 @@
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
- "modified": "2021-01-12 12:10:03.534198",
+ "modified": "2021-01-18 09:42:33.809686",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order",

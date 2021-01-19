@@ -60,6 +60,7 @@ def lead_query(doctype, txt, searchfield, start, page_len, filters):
 
  # searches for customer
 def customer_query(doctype, txt, searchfield, start, page_len, filters):
+	from goprime.config.utils import get_features
 	conditions = []
 	cust_master_name = frappe.defaults.get_user_default("cust_master_name")
 
@@ -72,6 +73,12 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 	searchfields = meta.get_search_fields()
 	searchfields = searchfields + [f for f in [searchfield or "name", "customer_name"] \
 			if not f in searchfields]
+	
+	jmann = get_features().get('JMann_simple_ui')
+	if jmann:
+		searchfields.append('legacy_customer_number')
+
+
 	fields = fields + [f for f in searchfields if not f in fields]
 
 	fields = ", ".join(fields)
@@ -91,6 +98,7 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 		if groups:
 			company_filter = "and customer_group in ({}) ".format(", ".join(groups))
 	
+	
 	return frappe.db.sql("""select {fields} from `tabCustomer`
 		where docstatus < 2
 			{comp_filter}
@@ -108,7 +116,7 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 			"mcond": get_match_cond(doctype),
 			"fcond": get_filters_cond(doctype, filters, conditions).replace('%', '%%'),
 		}), {
-			'txt': "%%%s%%" % txt,
+			'txt': "%s%%"  % txt if jmann else "%%%s%%" % txt ,
 			'_txt': txt.replace("%", ""),
 			'start': start,
 			'page_len': page_len
