@@ -107,7 +107,7 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 			if(locate(%(_txt)s, name), locate(%(_txt)s, name), 99999),
 			if(locate(%(_txt)s, customer_name), locate(%(_txt)s, customer_name), 99999),
 			idx desc,
-			name, customer_name
+			customer_name
 		limit %(start)s, %(page_len)s""".format(**{
 			"fields": fields,
 			"scond": searchfields,
