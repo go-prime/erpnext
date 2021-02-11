@@ -13,15 +13,25 @@ form_grid_templates = {
 
 class BankReconciliation(Document):
 	def get_payment_entries(self):
+		from goprime.config.utils import get_features
+		from goprime.goprime_erp.utils import get_user_perm
+
 		if not (self.from_date and self.to_date):
 			frappe.throw(_("From Date and To Date are Mandatory"))
 
 		if not self.account:
 			frappe.throw(_("Account is mandatory to get payment entries"))
 
+		if get_features().get('JMann_simple_ui'):
+			branch = get_user_perm('Branch')
+
 		condition = ""
 		if not self.include_reconciled_entries:
 			condition = "and (clearance_date IS NULL or clearance_date='0000-00-00')"
+
+		common_condition = condition
+		if branch:
+			condition += " and t2.branch = '{}'"
 
 		journal_entries = frappe.db.sql("""
 			select
@@ -38,10 +48,13 @@ class BankReconciliation(Document):
 			group by t2.account, t1.name
 			order by t1.posting_date ASC, t1.name DESC
 		""".format(condition=condition), {"account": self.account, "from": self.from_date, "to": self.to_date}, as_dict=1)
-		# condition = ''
+		condition = common_condition
 
 		if self.bank_account:
 			condition += 'and bank_account = %(bank_account)s'
+
+		if branch:
+			condition += " and payment_document.branch = '{}'"
 
 		payment_entries = frappe.db.sql("""
 			select
