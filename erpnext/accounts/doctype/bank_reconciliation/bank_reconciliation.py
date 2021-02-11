@@ -31,7 +31,7 @@ class BankReconciliation(Document):
 
 		common_condition = condition
 		if branch:
-			condition += " and t2.branch = '{}'"
+			condition += f" and t2.branch = '{branch}'"
 
 		journal_entries = frappe.db.sql("""
 			select
@@ -54,7 +54,7 @@ class BankReconciliation(Document):
 			condition += 'and bank_account = %(bank_account)s'
 
 		if branch:
-			condition += " and branch = '{}'"
+			condition += f" and branch = '{branch}'"
 
 		payment_entries = frappe.db.sql("""
 			select
