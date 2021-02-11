@@ -54,7 +54,7 @@ class BankReconciliation(Document):
 			condition += 'and bank_account = %(bank_account)s'
 
 		if branch:
-			condition += " and payment_document.branch = '{}'"
+			condition += " and branch = '{}'"
 
 		payment_entries = frappe.db.sql("""
 			select
