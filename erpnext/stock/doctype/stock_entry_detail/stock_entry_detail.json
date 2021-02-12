@@ -78,6 +78,7 @@
   {
    "fieldname": "s_warehouse",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "in_list_view": 1,
    "label": "Source Warehouse",
    "oldfieldname": "s_warehouse",
@@ -91,6 +92,7 @@
   {
    "fieldname": "t_warehouse",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "in_list_view": 1,
    "label": "Target Warehouse",
    "oldfieldname": "t_warehouse",
@@ -495,7 +497,7 @@
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2021-02-01 14:55:02.158653",
+ "modified": "2021-02-12 08:15:51.281828",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Entry Detail",
