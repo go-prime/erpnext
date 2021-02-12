@@ -70,10 +70,6 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 
 	meta = frappe.get_meta("Customer")
 	searchfields = meta.get_search_fields()
-<<<<<<< HEAD
-	searchfields = searchfields + [f for f in [searchfield or "name", "customer_name"] \
-			if not f in searchfields]
-=======
 	from goprime.config.utils import get_features
 	searchfields = searchfields + [f for f in [searchfield or "name", "customer_name"] \
 			if not f in searchfields]
@@ -82,7 +78,6 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 	if jmann:
 		searchfields.append('legacy_customer_number')
 
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 	fields = fields + [f for f in searchfields if not f in fields]
 
 	fields = ", ".join(fields)
@@ -102,10 +97,7 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 		if groups:
 			company_filter = "and customer_group in ({}) ".format(", ".join(groups))
 	
-<<<<<<< HEAD
-=======
 	
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 	return frappe.db.sql("""select {fields} from `tabCustomer`
 		where docstatus < 2
 			{comp_filter}
@@ -115,11 +107,7 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 			if(locate(%(_txt)s, name), locate(%(_txt)s, name), 99999),
 			if(locate(%(_txt)s, customer_name), locate(%(_txt)s, customer_name), 99999),
 			idx desc,
-<<<<<<< HEAD
-			name, customer_name
-=======
 			customer_name
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 		limit %(start)s, %(page_len)s""".format(**{
 			"fields": fields,
 			"scond": searchfields,
@@ -127,11 +115,7 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 			"mcond": get_match_cond(doctype),
 			"fcond": get_filters_cond(doctype, filters, conditions).replace('%', '%%'),
 		}), {
-<<<<<<< HEAD
-			'txt': "%%%s%%" % txt,
-=======
 			'txt': "%s%%"  % txt if jmann else "%%%s%%" % txt ,
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 			'_txt': txt.replace("%", ""),
 			'start': start,
 			'page_len': page_len
@@ -226,8 +210,6 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 		if not field in searchfields]
 	searchfields = " or ".join([field + " like %(txt)s" for field in searchfields])
 	
-<<<<<<< HEAD
-=======
 
 	#Goprime 2020
 	perms = frappe.get_list('User Permission', filters={
@@ -247,17 +229,12 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 			company_filter = "and item_group in ({}) ".format(", ".join(groups))
 
 
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 	description_cond = ''
 	if frappe.db.count('Item', cache=True) < 50000:
 		# scan description only if items are less than 50000
 		description_cond = 'or tabItem.description LIKE %(txt)s'
 
-<<<<<<< HEAD
-	qs = frappe.db.sql("""select tabItem.name,
-=======
 	return frappe.db.sql("""select tabItem.name,
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 		if(length(tabItem.item_name) > 40,
 			concat(substr(tabItem.item_name, 1, 40), "..."), item_name) as item_name,
 		tabItem.item_group,
@@ -266,10 +243,7 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 		{columns}
 		from tabItem
 		where tabItem.docstatus < 2
-<<<<<<< HEAD
-=======
 			{company_filter}
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 			and tabItem.has_variants=0
 			and tabItem.disabled=0
 			and (tabItem.end_of_life > %(today)s or ifnull(tabItem.end_of_life, '0000-00-00')='0000-00-00')
@@ -284,10 +258,7 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 		limit %(start)s, %(page_len)s """.format(
 			key=searchfield,
 			columns=columns,
-<<<<<<< HEAD
-=======
 			company_filter=company_filter,
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 			scond=searchfields,
 			fcond=get_filters_cond(doctype, filters, conditions).replace('%', '%%'),
 			mcond=get_match_cond(doctype).replace('%', '%%'),
@@ -300,35 +271,10 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 				"page_len": page_len
 			}, as_dict=as_dict)
 
-<<<<<<< HEAD
-	filtered_qs = []
-	perms = frappe.get_list('User Permission', filters={
-		'user': frappe.session.user,
-		'allow': 'Company'
-		}, fields=['for_value'], ignore_permissions=True)
-	company = None
-
-	if len(perms) > 0:
-		company = perms[0]['for_value']
-
-	if not company:
-		return qs
-
-	qs = list(qs)
-
-	for i, res in enumerate(qs):
-		item = frappe.get_doc("Item", res[0])
-		if item.item_defaults and item.item_defaults[0].company != company:
-			qs.pop(i -1)
-
-	return tuple(qs)
-
-=======
 	
 
 	
 	
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 def bom(doctype, txt, searchfield, start, page_len, filters):
 	conditions = []
 

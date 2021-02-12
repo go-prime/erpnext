@@ -105,12 +105,8 @@ class Customer(TransactionBase):
 				self.db_set('email_id', self.email_id)
 
 	def create_primary_address(self):
-<<<<<<< HEAD
-		if self.flags.is_new_doc and self.get('address_line1'):
-=======
 		from goprime.config.utils import get_features
 		if self.flags.is_new_doc and self.get('address_line1') and not get_features().get('JMann_simple_ui'):
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 			make_address(self)
 
 	def update_lead_status(self):
@@ -297,11 +293,8 @@ def get_loyalty_programs(doc):
 	return lp_details
 
 def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
-<<<<<<< HEAD
-=======
 	from goprime.config.utils import get_features
 	jmann = get_features().get('JMann_simple_ui')
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 	if frappe.db.get_default("cust_master_name") == "Customer Name":
 		fields = ["name", "customer_group", "territory"]
 	else:
@@ -336,12 +329,6 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 		order by
 		case when name like %s then 0 else 1 end,
 		case when customer_name like %s then 0 else 1 end,
-<<<<<<< HEAD
-		name, customer_name limit %s, %s""".format(match_conditions=match_conditions,
-			company_filter=company_filter) %
-		(", ".join(fields), searchfield, "%s", "%s", "%s", "%s", "%s", "%s"),
-		("%%%s%%" % txt, "%%%s%%" % txt, "%%%s%%" % txt, "%%%s%%" % txt, start, page_len))
-=======
 		customer_name limit %s, %s""".format(match_conditions=match_conditions,
 			company_filter=company_filter) %
 		(", ".join(fields), searchfield, "%s", "%s", "%s", "%s", "%s", "%s"),
@@ -350,7 +337,6 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 			"%s%%" % txt if jmann else "%%%s%%" % txt, 
 			"%s%%" % txt if jmann else "%%%s%%" % txt, 
 			"%s%%" % txt if jmann else "%%%s%%" % txt, start, page_len))
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 
 
 def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, extra_amount=0):
@@ -475,10 +461,7 @@ def make_address(args, is_primary_address=1):
 
 	address = frappe.get_doc({
 		'doctype': 'Address',
-<<<<<<< HEAD
-=======
 		'address_type': args.get('address_type') if args.get('address_type') else 'Billing',
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 		'address_title': args.get('name'),
 		'address_line1': args.get('address_line1'),
 		'address_line2': args.get('address_line2'),

@@ -13,11 +13,7 @@ from frappe.utils import floor, flt, today, cint
 from frappe.model.mapper import get_mapped_doc, map_child_doc
 from erpnext.stock.get_item_details import get_conversion_factor
 from erpnext.selling.doctype.sales_order.sales_order import make_delivery_note as create_delivery_note_from_sales_order
-<<<<<<< HEAD
 import copy
-=======
-
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 # TODO: Prioritize SO or WO group warehouse
 
 class PickList(Document):
@@ -43,7 +39,6 @@ class PickList(Document):
 			if not from_warehouses:
 				from_warehouses = [self.parent_warehouse]
 
-<<<<<<< HEAD
 		# Goprime 2021
 		# Use stock setting for negative stock, if allowed, return the pick list without setting item locations.
 		# reset
@@ -54,9 +49,6 @@ class PickList(Document):
 		settings = frappe.get_doc('Stock Settings')
 		unallocated_locations = copy.deepcopy(self.locations)
 		 
-=======
-		# reset
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 		self.delete_key('locations')
 		for item_doc in items:
 			item_code = item_doc.item_code
@@ -78,15 +70,12 @@ class PickList(Document):
 				location.update(row)
 				self.append('locations', location)
 
-<<<<<<< HEAD
 		if settings.allow_negative_stock and not hasattr(self, 'locations'):
 			self.locations = unallocated_locations
 			for i, item in enumerate(self.locations, start=0):
 				item.idx = i
 			
 	
-=======
->>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 	def aggregate_item_qty(self):
 		locations = self.get('locations')
 		self.item_count_map = {}
