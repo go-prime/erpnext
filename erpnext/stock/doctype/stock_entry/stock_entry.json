@@ -294,7 +294,10 @@
   {
    "fieldname": "from_warehouse",
    "fieldtype": "Link",
+<<<<<<< HEAD
    "ignore_user_permissions": 1,
+=======
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Default Source Warehouse",
@@ -324,7 +327,10 @@
   {
    "fieldname": "to_warehouse",
    "fieldtype": "Link",
+<<<<<<< HEAD
    "ignore_user_permissions": 1,
+=======
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Default Target Warehouse",
@@ -631,7 +637,11 @@
  "icon": "fa fa-file-text",
  "idx": 1,
  "is_submittable": 1,
+<<<<<<< HEAD
  "modified": "2021-02-12 08:15:00.249678",
+=======
+ "modified": "2020-11-12 12:30:55.683386",
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Entry",

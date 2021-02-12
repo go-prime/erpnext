@@ -520,6 +520,7 @@ erpnext.TransactionController = erpnext.taxes_and_totals.extend({
 								},
 								() => me.conversion_factor(doc, cdt, cdn, true),
 								() => me.remove_pricing_rule(item),
+<<<<<<< HEAD
 								/** Goprime 2021
 								 *  Removed default to zero to ensure quantity field in item filter works on quotations
 								 */
@@ -529,6 +530,14 @@ erpnext.TransactionController = erpnext.taxes_and_totals.extend({
 								// 	d.qty = 0
 								// 	me.frm.refresh_field('items')
 								// }
+=======
+								() => {
+									if(cdt != "Quotation Item") { return }
+									var d = locals[cdt][cdn]
+									d.qty = 0
+									me.frm.refresh_field('items')
+								}
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 							]);
 						}
 					}

@@ -78,7 +78,10 @@
   {
    "fieldname": "s_warehouse",
    "fieldtype": "Link",
+<<<<<<< HEAD
    "ignore_user_permissions": 1,
+=======
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
    "in_list_view": 1,
    "label": "Source Warehouse",
    "oldfieldname": "s_warehouse",
@@ -92,7 +95,10 @@
   {
    "fieldname": "t_warehouse",
    "fieldtype": "Link",
+<<<<<<< HEAD
    "ignore_user_permissions": 1,
+=======
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
    "in_list_view": 1,
    "label": "Target Warehouse",
    "oldfieldname": "t_warehouse",
@@ -107,7 +113,10 @@
    "bold": 1,
    "fieldname": "item_code",
    "fieldtype": "Link",
+<<<<<<< HEAD
    "ignore_user_permissions": 1,
+=======
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
    "in_global_search": 1,
    "in_list_view": 1,
    "label": "Item Code",
@@ -497,7 +506,11 @@
  ],
  "idx": 1,
  "istable": 1,
+<<<<<<< HEAD
  "modified": "2021-02-12 08:15:51.281828",
+=======
+ "modified": "2019-08-20 14:01:02.319754",
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Entry Detail",

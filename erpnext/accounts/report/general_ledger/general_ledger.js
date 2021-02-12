@@ -11,12 +11,21 @@ frappe.query_reports["General Ledger"] = {
 			"default": frappe.defaults.get_user_default("Company"),
 			"reqd": 1
 		},
+<<<<<<< HEAD
 		{
 			"fieldname":"finance_book",
 			"label": __("Finance Book"),
 			"fieldtype": "Link",
 			"options": "Finance Book"
 		},
+=======
+		// {
+		// 	"fieldname":"finance_book",
+		// 	"label": __("Finance Book"),
+		// 	"fieldtype": "Link",
+		// 	"options": "Finance Book"
+		// },
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 		{
 			"fieldname":"from_date",
 			"label": __("From Date"),
@@ -154,6 +163,7 @@ frappe.query_reports["General Ledger"] = {
 			"fieldtype": "Select",
 			"options": erpnext.get_presentation_currency_list()
 		},
+<<<<<<< HEAD
 		{
 			"fieldname":"cost_center",
 			"label": __("Cost Center"),
@@ -174,13 +184,85 @@ frappe.query_reports["General Ledger"] = {
 			"fieldname": "show_opening_entries",
 			"label": __("Show Opening Entries"),
 			"fieldtype": "Check"
+=======
+		// {
+		// 	"fieldname":"cost_center",
+		// 	"label": __("Cost Center"),
+		// 	"fieldtype": "MultiSelectList",
+		// 	get_data: function(txt) {
+		// 		return frappe.db.get_link_options('Cost Center', txt);
+		// 	}
+		// },
+		// {
+		// 	"fieldname":"project",
+		// 	"label": __("Project"),
+		// 	"fieldtype": "MultiSelectList",
+		// 	get_data: function(txt) {
+		// 		return frappe.db.get_link_options('Project', txt);
+		// 	}
+		// },
+		{
+			"fieldname": "show_opening_entries",
+			"label": __("Show Opening Entries"),
+			"fieldtype": "Check",
+			"default": 1
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 		},
 		{
 			"fieldname": "include_default_book_entries",
 			"label": __("Include Default Book Entries"),
 			"fieldtype": "Check",
 			"default": 1
+<<<<<<< HEAD
 		}
+=======
+		},
+		{
+			"fieldname": "account_range_start",
+			"label": __("Account Range Start"),
+			"fieldtype": "Link",
+			"options": "Account",
+			"get_query": function() {
+				var company = frappe.query_report.get_filter_value('company');
+				return {
+					"doctype": "Account",
+					"filters": {
+						"company": company,
+						"account_number": ['not in', [null, ""]]
+					}
+				}
+			}
+		},
+		{
+			"fieldname": "account_range_end",
+			"label": __("Account Range End"),
+			"fieldtype": "Link",
+			"options": "Account",
+			"get_query": function() {
+				var company = frappe.query_report.get_filter_value('company');
+				return {
+					"doctype": "Account",
+					"filters": {
+						"company": company,
+						"account_number": ['not in', [null, ""]]
+					}
+				}
+			}
+
+		}
+		// {
+		// 	"fieldname": "account_range_start",
+		// 	"label": __("Account Range Start"),
+		// 	"fieldtype": "Select",
+		// 	"options": ""
+		// },
+		// {
+		// 	"fieldname": "account_range_end",
+		// 	"label": __("Account Range End"),
+		// 	"fieldtype": "Select",
+		// 	"options": ""
+		// }
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
 	]
 }
 
@@ -193,3 +275,25 @@ erpnext.dimension_filters.forEach((dimension) => {
 	});
 });
 
+<<<<<<< HEAD
+=======
+// frappe.query_reports["General Ledger"]['onload'] = function(report) {
+// 	console.log(report)
+// 	frappe.db.get_list("Account", {
+// 		filters: {
+// 			is_group: 0,
+// 			account_number: ['not in', [null, ""]]
+// 		},
+// 		fields: 'account_number'})
+// 		.then(res => {
+// 			console.log(res)
+// 			const opts = res.map(i => i.account_number)
+// 			const start = report.filters[report.filters.length - 2]
+// 			const end = report.filters[report.filters.length - 1]
+// 			start.df.options = opts.join("\n")
+// 			end.df.options = opts.join("\n")
+// 			start.refresh()
+// 			end.refresh()
+// 		})
+// }
+>>>>>>> 5d03b2984588abde49b01eedb4f0512ca49a0ebb
