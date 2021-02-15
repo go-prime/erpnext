@@ -53,8 +53,6 @@ def jmann_execute(filters=None):
 		accumulated_values=filters.accumulated_values,
 		ignore_closing_entries=True, ignore_accumulated_values_for_fy= True)
 	
-	
-	
 	direct_expenses_parent = frappe.db.sql('''
 		select name from `tabAccount` where name like "%direct expenses%"
 		and name not like "%indirect%" and company = "{}"'''.format(filters.get('company')))[0][0]
@@ -67,10 +65,6 @@ def jmann_execute(filters=None):
 	direct_expenses_account = None
 	indirect_expenses_account = None
 
-	print(direct_income_parent)
-	print(indirect_income_parent)
-	print(direct_expenses_parent)
-	print(indirect_expenses_parent)
 	for i in expense:
 		if i.get('account') == direct_expenses_parent:
 			direct_expenses_account = i
@@ -91,12 +85,13 @@ def jmann_execute(filters=None):
 		'currency': frappe.db.get_value('Company', filters.get('company'), 'default_currency'),
 	}
 	gross_profit_total = 0
-	for key in period_keys:
-		gross = direct_income_account[key] - direct_expenses_account[key]
-		gross_profit[key] = gross
-		gross_profit_total += gross
+	if direct_income_account and direct_expenses_account:
+		for key in period_keys:
+			gross = direct_income_account[key] - direct_expenses_account[key]
+			gross_profit[key] = gross
+			gross_profit_total += gross
 
-	gross_profit['total'] = gross_profit_total
+		gross_profit['total'] = gross_profit_total
 
 	if direct_expenses_account:
 		direct_expenses.insert(0, direct_expenses_account)
