@@ -20,8 +20,12 @@ def jmann_execute(filters=None):
 		return [child for child in data_list \
 			if child.get('parent_account') == name]
 
-	direct_income_parent = f'Direct Income - {abbr}'
-	indirect_income_parent = f'Indirect Income - {abbr}'
+	direct_income_parent = frappe.db.sql('''
+		select name from `tabAccount` where name like "%direct income%"
+		and name not like "%indirect%" and company = "{}"'''.format(filters.get('company')))[0][0]
+	indirect_income_parent = frappe.db.sql('''
+		select name from `tabAccount` where name like "%indirect income%"
+		 and company = "{}"'''.format(filters.get('company')))[0][0]
 	direct_income = []
 	indirect_income = []
 	
@@ -39,7 +43,6 @@ def jmann_execute(filters=None):
 			indirect_income.append(i)
 			indirect_income.extend(get_children(income, i.get('account')))
 			
-	
 	if direct_income_account:
 		direct_income.insert(0, direct_income_account)
 	if indirect_income_account:
@@ -52,15 +55,22 @@ def jmann_execute(filters=None):
 	
 	
 	
-	direct_expenses_parent = f'Direct Expenses - {abbr}'
-	indirect_expenses_parent = f'Indirect Expenses - {abbr}'
+	direct_expenses_parent = frappe.db.sql('''
+		select name from `tabAccount` where name like "%direct expenses%"
+		and name not like "%indirect%" and company = "{}"'''.format(filters.get('company')))[0][0]
+	indirect_expenses_parent = frappe.db.sql('''
+		select name from `tabAccount` where name like "%indirect expenses%"
+		and company = "{}"'''.format(filters.get('company')))[0][0]
 	direct_expenses = []
 	indirect_expenses = []
 	
 	direct_expenses_account = None
 	indirect_expenses_account = None
 
-
+	print(direct_income_parent)
+	print(indirect_income_parent)
+	print(direct_expenses_parent)
+	print(indirect_expenses_parent)
 	for i in expense:
 		if i.get('account') == direct_expenses_parent:
 			direct_expenses_account = i
@@ -78,7 +88,7 @@ def jmann_execute(filters=None):
 	gross_profit = {
 		'account': 'Gross Profit',
 		'account_name': 'Gross Profit',
-		'currency': direct_income_account.get('currency'),
+		'currency': frappe.db.get_value('Company', filters.get('company'), 'default_currency'),
 	}
 	gross_profit_total = 0
 	for key in period_keys:
