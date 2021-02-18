@@ -43,9 +43,10 @@ class PickList(Document):
 		# Use stock setting for negative stock, if allowed, return the pick list without setting item locations.
 		# reset
 		# if settings.allow_negative_stock:
-		# 	for i, item in enumerate(self.locations, start=0):
-		# 		item.idx = i
-		# 	return
+		if True:
+			for i, item in enumerate(self.locations, start=0):
+				item.idx = i
+			return
 		settings = frappe.get_doc('Stock Settings')
 		unallocated_locations = copy.deepcopy(self.locations)
 		 
@@ -70,7 +71,8 @@ class PickList(Document):
 				location.update(row)
 				self.append('locations', location)
 
-		if settings.allow_negative_stock and not hasattr(self, 'locations'):
+		#settings.allow_negative_stock
+		if True and not hasattr(self, 'locations'):
 			self.locations = unallocated_locations
 			for i, item in enumerate(self.locations, start=0):
 				item.idx = i
