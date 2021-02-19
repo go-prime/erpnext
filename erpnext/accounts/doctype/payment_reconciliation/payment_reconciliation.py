@@ -164,7 +164,7 @@ class PaymentReconciliation(Document):
 			reconcile_against_document(lst)
 
 		if dr_or_cr_notes:
-			reconcile_dr_cr_note(dr_or_cr_notes)
+			reconcile_dr_cr_note(dr_or_cr_notes, self.company)
 
 		msgprint(_("Successfully Reconciled"))
 		self.get_unreconciled_entries()
@@ -255,7 +255,7 @@ class PaymentReconciliation(Document):
 
 		return cond
 
-def reconcile_dr_cr_note(dr_cr_notes):
+def reconcile_dr_cr_note(dr_cr_notes, company):
 	for d in dr_cr_notes:
 		voucher_type = ('Credit Note'
 			if d.voucher_type == 'Sales Invoice' else 'Debit Note')
@@ -263,10 +263,13 @@ def reconcile_dr_cr_note(dr_cr_notes):
 		reconcile_dr_or_cr = ('debit_in_account_currency'
 			if d.dr_or_cr == 'credit_in_account_currency' else 'credit_in_account_currency')
 
+		company_currency = frappe.db.get_value('Company', company, 'default_currency')
+
 		jv = frappe.get_doc({
 			"doctype": "Journal Entry",
 			"voucher_type": voucher_type,
 			"posting_date": today(),
+			"multi_currency": 1 if d.currency != company_currency else 0,
 			"accounts": [
 				{
 					'account': d.account,
