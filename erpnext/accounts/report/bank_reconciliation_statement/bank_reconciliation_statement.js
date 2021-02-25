@@ -35,3 +35,13 @@ frappe.query_reports["Bank Reconciliation Statement"] = {
 		},
 	]
 }
+
+if(frappe.boot.features.JMann_simple_ui) {
+	frappe.query_reports["Bank Reconciliation Statement"]['filters'].push({
+		'label': 'Branch',
+		'fieldname': 'branch',
+		'fieldtype': 'Link',
+		'reqd': 1,
+		'options': 'Branch'
+	})
+}
