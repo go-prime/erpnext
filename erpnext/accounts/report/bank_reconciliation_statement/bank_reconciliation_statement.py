@@ -117,6 +117,12 @@ def get_columns():
 	]
 
 def get_entries(filters):
+	from goprime.config.utils import get_features
+	
+	branch_filter = ""
+	if get_features().get('JMann_simple_ui'):
+		branch_filter = ' and branch = "{}"'.format(filters.get("branch"))
+	
 	journal_entries = frappe.db.sql("""
 		select "Journal Entry" as payment_document, jv.posting_date,
 			jv.name as payment_entry, jvd.debit_in_account_currency as debit,
@@ -127,7 +133,7 @@ def get_entries(filters):
 		where jvd.parent = jv.name and jv.docstatus=1
 			and jvd.account = %(account)s and jv.posting_date <= %(report_date)s
 			and ifnull(jv.clearance_date, '4000-01-01') > %(report_date)s
-			and ifnull(jv.is_opening, 'No') = 'No'""", filters, as_dict=1)
+			and ifnull(jv.is_opening, 'No') = 'No' {}""".format(branch_filter), filters, as_dict=1)
 
 	payment_entries = frappe.db.sql("""
 		select
@@ -142,7 +148,8 @@ def get_entries(filters):
 			(paid_from=%(account)s or paid_to=%(account)s) and docstatus=1
 			and posting_date <= %(report_date)s
 			and ifnull(clearance_date, '4000-01-01') > %(report_date)s
-	""", filters, as_dict=1)
+			{}
+	""".format(branch_filter), filters, as_dict=1)
 
 	pos_entries = []
 	if filters.include_pos_transactions:
