@@ -325,7 +325,7 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 		order by
 		case when name like %s then 0 else 1 end,
 		case when customer_name like %s then 0 else 1 end,
-		name, customer_name limit %s, %s""".format(match_conditions=match_conditions,
+		customer_name limit %s, %s""".format(match_conditions=match_conditions,
 			company_filter=company_filter) %
 		(", ".join(fields), searchfield, "%s", "%s", "%s", "%s", "%s", "%s"),
 		("%s%%" % txt, "%s%%" % txt, "%s%%" % txt, "%s%%" % txt, start, page_len))
