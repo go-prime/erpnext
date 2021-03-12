@@ -344,7 +344,8 @@ def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, 
 		# If not authorized person raise exception
 		credit_controller = frappe.db.get_value('Accounts Settings', None, 'credit_controller')
 		if not credit_controller or credit_controller not in frappe.get_roles():
-			throw("The order has been credit referred")
+			msgprint("The order has been credit referred")
+			
    			# throw(_("Please contact to the user who have Sales Master Manager {0} role")
 			# 	.format(" / " + credit_controller if credit_controller else ""))
 
