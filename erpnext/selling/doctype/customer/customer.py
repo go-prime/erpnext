@@ -292,6 +292,7 @@ def get_loyalty_programs(doc):
 	return lp_details
 
 def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
+	page_len = 50
 	if frappe.db.get_default("cust_master_name") == "Customer Name":
 		fields = ["name", "customer_group", "territory"]
 	else:
