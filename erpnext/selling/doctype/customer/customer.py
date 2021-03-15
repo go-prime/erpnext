@@ -332,15 +332,7 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 		customer_name limit %s, %s""".format(match_conditions=match_conditions,
 			company_filter=company_filter) %
 		(", ".join(fields), searchfield, "%s", "%s", "%s", "%s", "%s", "%s"),
-<<<<<<< HEAD
-		(
-			"%s%%" % txt if jmann else "%%%s%%" % txt, 
-			"%s%%" % txt if jmann else "%%%s%%" % txt, 
-			"%s%%" % txt if jmann else "%%%s%%" % txt, 
-			"%s%%" % txt if jmann else "%%%s%%" % txt, start, page_len))
-=======
 		("%s%%" % txt, "%s%%" % txt, "%s%%" % txt, "%s%%" % txt, start, page_len))
->>>>>>> prime-erp-master
 
 
 def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, extra_amount=0):
