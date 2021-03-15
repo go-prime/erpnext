@@ -295,6 +295,7 @@ def get_loyalty_programs(doc):
 def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 	from goprime.config.utils import get_features
 	jmann = get_features().get('JMann_simple_ui')
+	page_len = 50
 	if frappe.db.get_default("cust_master_name") == "Customer Name":
 		fields = ["name", "customer_group", "territory"]
 	else:
@@ -321,7 +322,6 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 					filters={'company': company}, ignore_permissions=True)]
 		if groups:
 			company_filter = "and customer_group in ({}) ".format(", ".join(groups))
-
 	return frappe.db.sql("""select %s from `tabCustomer` where docstatus < 2
 		and (%s like %s or customer_name like %s)
 		{company_filter}
@@ -332,11 +332,15 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 		customer_name limit %s, %s""".format(match_conditions=match_conditions,
 			company_filter=company_filter) %
 		(", ".join(fields), searchfield, "%s", "%s", "%s", "%s", "%s", "%s"),
+<<<<<<< HEAD
 		(
 			"%s%%" % txt if jmann else "%%%s%%" % txt, 
 			"%s%%" % txt if jmann else "%%%s%%" % txt, 
 			"%s%%" % txt if jmann else "%%%s%%" % txt, 
 			"%s%%" % txt if jmann else "%%%s%%" % txt, start, page_len))
+=======
+		("%s%%" % txt, "%s%%" % txt, "%s%%" % txt, "%s%%" % txt, start, page_len))
+>>>>>>> prime-erp-master
 
 
 def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, extra_amount=0):
@@ -352,8 +356,10 @@ def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, 
 		# If not authorized person raise exception
 		credit_controller = frappe.db.get_value('Accounts Settings', None, 'credit_controller')
 		if not credit_controller or credit_controller not in frappe.get_roles():
-			throw(_("Please contact to the user who have Sales Master Manager {0} role")
-				.format(" / " + credit_controller if credit_controller else ""))
+			msgprint("The order has been credit referred")
+			
+   			# throw(_("Please contact to the user who have Sales Master Manager {0} role")
+			# 	.format(" / " + credit_controller if credit_controller else ""))
 
 def get_customer_outstanding(customer, company, ignore_outstanding_sales_order=False, cost_center=None):
 	# Outstanding based on GL Entries
