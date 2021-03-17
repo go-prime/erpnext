@@ -91,13 +91,17 @@ class StockController(AccountsController):
 						# Item group accounts 
 						gle_acc = warehouse_account[sle.warehouse]["account"]
 
-						data = frappe.db.sql("""SELECT grp.account 
-						FROM tabItem as item 
-						INNER JOIN `tabItem Group` as grp ON item.item_group = grp.name
+
+						data = frappe.db.sql("""
+						SELECT deflt.inventory_account 
+						FROM `tabItem Default` as deflt
+						INNER JOIN `tabItem Group` as grp ON deflt.parent = grp.name 
+						INNER JOIN tabItem as item ON  item.item_group = grp.name
 						WHERE item.name = '{}'
-						""".format(sle.item_code))
+						AND deflt.company = '{}'
+						""".format(sle.item_code, self.company))
 						
-						if data and data[0]:
+						if data and data[0] and data[0][0]:
 							gle_acc = data[0][0]
 
 						gl_list.append(self.get_gl_dict({

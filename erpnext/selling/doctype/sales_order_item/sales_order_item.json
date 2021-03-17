@@ -21,6 +21,7 @@
   "image_view",
   "quantity_and_rate",
   "qty",
+  "free_stock",
   "stock_uom",
   "col_break2",
   "uom",
@@ -754,11 +755,18 @@
    "fieldname": "additional_notes",
    "fieldtype": "Text",
    "label": "Additional Notes"
+  },
+  {
+   "fieldname": "free_stock",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Free Stock",
+   "read_only": 1
   }
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2020-07-15 12:00:06.665001",
+ "modified": "2020-12-14 08:45:46.076976",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order Item",

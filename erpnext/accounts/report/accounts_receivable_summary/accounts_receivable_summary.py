@@ -23,6 +23,24 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 		self.party_naming_by = frappe.db.get_value(args.get("naming_by")[0], None, args.get("naming_by")[1])
 		self.get_columns()
 		self.get_data(args)
+
+		# Goprime 2021
+		from goprime.config.utils import get_features
+		config = get_features()
+		jmann = config.get("JMann_item_fields", False)
+		if jmann:
+			if args.get('party_type') == "Customer":
+				new_order = ['party', 'customer_name', 'outstanding','range1','range2','range3','range4','range5', 'age', 'currency']
+			else:
+				new_order = ['party', 'supplier_name', 'outstanding','range1','range2','range3','range4','range5', 'age', 'currency']
+			new_columns = []
+			for column in new_order:
+				try:
+					new_columns.append([i for i in self.columns if i.get('fieldname') == column][0])
+				except:
+					continue
+			self.columns = new_columns
+		
 		return self.columns, self.data
 
 	def get_data(self, args):
@@ -88,7 +106,7 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 	def set_party_details(self, row):
 		self.party_total[row.party].currency = row.currency
 
-		for key in ('territory', 'customer_group', 'supplier_group'):
+		for key in ('territory', 'customer_name', 'supplier_name','customer_group', 'supplier_group'):
 			if row.get(key):
 				self.party_total[row.party][key] = row.get(key)
 
@@ -96,6 +114,10 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 			self.party_total[row.party].sales_person.append(row.sales_person)
 
 	def get_columns(self):
+		from goprime.config.utils import get_features
+		config = get_features()
+		jmann = config.get("JMann_item_fields", False)
+
 		self.columns = []
 		self.add_column(label=_(self.party_type), fieldname='party',
 			fieldtype='Link', options=self.party_type, width=180)
@@ -121,9 +143,15 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 				options='Customer Group')
 			if self.filters.show_sales_person:
 				self.add_column(label=_('Sales Person'), fieldname='sales_person', fieldtype='Data')
+			if jmann:
+				self.add_column(_("Customer Name"), fieldname='customer_name', fieldtype='Data',
+					width=200)
 		else:
 			self.add_column(label=_('Supplier Group'), fieldname='supplier_group', fieldtype='Link',
 				options='Supplier Group')
+			if jmann:
+				self.add_column(_("Supplier Name"), fieldname='supplier_name', fieldtype='Data',
+					width=200)
 
 		self.add_column(label=_('Currency'), fieldname='currency', fieldtype='Link',
 			options='Currency', width=80)

@@ -4,6 +4,7 @@
  "description": "This tool helps you to update or fix the quantity and valuation of stock in the system. It is typically used to synchronise the system values and what actually exists in your warehouses.",
  "doctype": "DocType",
  "document_type": "Document",
+ "engine": "InnoDB",
  "field_order": [
   "naming_series",
   "company",
@@ -149,11 +150,12 @@
    "fieldtype": "Column Break"
   }
  ],
+ "hide_toolbar": 1,
  "icon": "fa fa-upload-alt",
  "idx": 1,
  "is_submittable": 1,
  "max_attachments": 1,
- "modified": "2019-05-26 09:03:09.542141",
+ "modified": "2020-11-05 11:54:42.669446",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Reconciliation",

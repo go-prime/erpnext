@@ -117,6 +117,7 @@
    "depends_on": "eval:doc.purpose == 'Receive at Warehouse'",
    "fieldname": "outgoing_stock_entry",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Stock Entry (Outward GIT)",
    "options": "Stock Entry"
   },
@@ -293,6 +294,7 @@
   {
    "fieldname": "from_warehouse",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Default Source Warehouse",
@@ -322,6 +324,7 @@
   {
    "fieldname": "to_warehouse",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Default Target Warehouse",
@@ -628,7 +631,7 @@
  "icon": "fa fa-file-text",
  "idx": 1,
  "is_submittable": 1,
- "modified": "2020-10-20 11:53:52.015077",
+ "modified": "2021-02-12 08:15:00.249678",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Entry",
