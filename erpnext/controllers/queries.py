@@ -61,6 +61,7 @@ def lead_query(doctype, txt, searchfield, start, page_len, filters):
  # searches for customer
 def customer_query(doctype, txt, searchfield, start, page_len, filters):
 	from goprime.config.utils import get_features
+	page_len = 50
 	conditions = []
 	cust_master_name = frappe.defaults.get_user_default("cust_master_name")
 
