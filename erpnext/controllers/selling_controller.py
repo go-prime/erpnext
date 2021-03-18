@@ -171,8 +171,10 @@ class SellingController(StockController):
 				d.stock_qty = flt(d.qty) * flt(d.conversion_factor)
 
 	def validate_selling_price(self):
+		from goprime.config.utils import get_features
+		jmann = get_features().get('JMann_simple_ui')
 		def throw_message(item_name, rate, ref_rate_field):
-			frappe.throw(_("""Selling rate for item {0} is lower than its {1}. Selling rate should be atleast {2}""")
+			frappe.throw(_("""Selling rate for item {0} is lower than its {1}. Selling rate should be at least {2}""")
 				.format(item_name, ref_rate_field, rate))
 
 		if not frappe.db.get_single_value("Selling Settings", "validate_selling_price"):
@@ -187,7 +189,8 @@ class SellingController(StockController):
 
 			last_purchase_rate, is_stock_item = frappe.get_cached_value("Item", it.item_code, ["last_purchase_rate", "is_stock_item"])
 			last_purchase_rate_in_sales_uom = last_purchase_rate / (it.conversion_factor or 1)
-			if flt(it.base_rate) < flt(last_purchase_rate_in_sales_uom):
+			
+   			if flt(it.base_rate) < flt(last_purchase_rate_in_sales_uom) and not jmann:
 				throw_message(it.item_name, last_purchase_rate_in_sales_uom, "last purchase rate")
 
 			last_valuation_rate = frappe.db.sql("""
