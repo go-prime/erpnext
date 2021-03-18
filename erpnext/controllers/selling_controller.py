@@ -190,7 +190,7 @@ class SellingController(StockController):
 			last_purchase_rate, is_stock_item = frappe.get_cached_value("Item", it.item_code, ["last_purchase_rate", "is_stock_item"])
 			last_purchase_rate_in_sales_uom = last_purchase_rate / (it.conversion_factor or 1)
 			
-   			if flt(it.base_rate) < flt(last_purchase_rate_in_sales_uom) and not jmann:
+			if flt(it.base_rate) < flt(last_purchase_rate_in_sales_uom) and not jmann:
 				throw_message(it.item_name, last_purchase_rate_in_sales_uom, "last purchase rate")
 
 			last_valuation_rate = frappe.db.sql("""
