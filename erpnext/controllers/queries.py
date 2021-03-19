@@ -60,7 +60,7 @@ def lead_query(doctype, txt, searchfield, start, page_len, filters):
 
  # searches for customer
 def customer_query(doctype, txt, searchfield, start, page_len, filters):
-    page_len = 50
+	page_len = 50
 	conditions = []
 	cust_master_name = frappe.defaults.get_user_default("cust_master_name")
 
