@@ -256,6 +256,7 @@ class PaymentReconciliation(Document):
 		return cond
 
 def reconcile_dr_cr_note(dr_cr_notes, company):
+	from goprime.config.utils import get_features
 	for d in dr_cr_notes:
 		voucher_type = ('Credit Note'
 			if d.voucher_type == 'Sales Invoice' else 'Debit Note')
@@ -264,7 +265,6 @@ def reconcile_dr_cr_note(dr_cr_notes, company):
 			if d.dr_or_cr == 'credit_in_account_currency' else 'credit_in_account_currency')
 
 		company_currency = frappe.db.get_value('Company', company, 'default_currency')
-
 		jv = frappe.get_doc({
 			"doctype": "Journal Entry",
 			"voucher_type": voucher_type,
@@ -290,5 +290,10 @@ def reconcile_dr_cr_note(dr_cr_notes, company):
 				}
 			]
 		})
+  
+		if get_features().get('JMann_simple_ui'):
+			branch = frappe.db.get_value(d.against_voucher_type, d.against_voucher, 'branch')
+			for acc in jv['accounts']:
+				acc['branch'] = branch
 
 		jv.submit()

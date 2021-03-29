@@ -322,6 +322,7 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 					filters={'company': company}, ignore_permissions=True)]
 		if groups:
 			company_filter = "and customer_group in ({}) ".format(", ".join(groups))
+	
 	return frappe.db.sql("""select %s from `tabCustomer` where docstatus < 2
 		and (%s like %s or customer_name like %s)
 		{company_filter}
@@ -333,7 +334,6 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 			company_filter=company_filter) %
 		(", ".join(fields), searchfield, "%s", "%s", "%s", "%s", "%s", "%s"),
 		("%s%%" % txt, "%s%%" % txt, "%s%%" % txt, "%s%%" % txt, start, page_len))
-
 
 def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, extra_amount=0):
 	customer_outstanding = get_customer_outstanding(customer, company, ignore_outstanding_sales_order)
@@ -409,7 +409,6 @@ def get_customer_outstanding(customer, company, ignore_outstanding_sales_order=F
 				/ dn_item.base_net_total) * dn_item.base_grand_total
 
 	return outstanding_based_on_gle + outstanding_based_on_so + outstanding_based_on_dn
-
 
 def get_credit_limit(customer, company):
 	credit_limit = None
