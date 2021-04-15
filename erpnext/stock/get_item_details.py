@@ -616,6 +616,7 @@ def get_price_list_rate(args, item_doc, out):
 
 def insert_item_price(args):
 	"""Insert Item Price if Price List and Price List Rate are specified and currency is the same"""
+	from goprime.goprime_erp.loggers.price import price_logger
 	if frappe.db.get_value("Price List", args.price_list, "currency", cache=True) == args.currency \
 		and cint(frappe.db.get_single_value("Stock Settings", "auto_insert_price_list_rate_if_missing")):
 		if frappe.has_permission("Item Price", "write"):
@@ -628,6 +629,7 @@ def insert_item_price(args):
 			if item_price and item_price.name:
 				if item_price.price_list_rate != price_list_rate:
 					frappe.db.set_value('Item Price', item_price.name, "price_list_rate", price_list_rate)
+					price_logger.info(f'Price change - Item: {args.item_code}, Price: {price_list_rate}, User: {frappe.session.user}')
 					frappe.msgprint(_("Item Price updated for {0} in Price List {1}").format(args.item_code,
 						args.price_list), alert=True)
 			else:
