@@ -571,11 +571,7 @@ class ReceivablePayableReport(object):
 		conditions, values = self.prepare_conditions()
 		order_by = self.get_order_by_condition()
 
-		if self.filters.get(scrub(self.party_type)) and not self.filters.display_currency:
-			select_fields = "debit_in_account_currency as debit, credit_in_account_currency as credit"
-		else:
-			select_fields = "debit, credit"
-
+		select_fields = "debit, credit, debit_in_account_currency, credit_in_account_currency"
 		self.gl_entries = frappe.db.sql("""
 			select
 				name, posting_date, account, party_type, party, voucher_type, voucher_no,
@@ -602,10 +598,13 @@ class ReceivablePayableReport(object):
 		entries = []
 		for e in self.gl_entries:
 			rate = get_rate(e)
-			e.debit *= rate
-			e.credit *= rate
+			if e.account_currency != "USD":
+				e.debit = e.debit_in_account_currency
+				e.credit = e.credit_in_account_currency
+			else:
+				e.debit *= rate
+				e.credit *= rate
 			entries.append(e)
-   
 		self.gl_entries = entries
 
 	def get_sales_invoices_or_customers_based_on_sales_person(self):
