@@ -58,13 +58,6 @@ frappe.query_reports["Accounts Payable Summary"] = {
 			"options": "Finance Book"
 		},
 		{
-			"fieldname":"display_currency",
-			"label": __("Currency"),
-			"fieldtype": "Select",
-			"options": "USD\nZWD",
-			"default": 'USD'
-		},
-		{
 			"fieldname":"cost_center",
 			"label": __("Cost Center"),
 			"fieldtype": "Link",
