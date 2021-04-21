@@ -757,6 +757,7 @@
    "label": "Additional Notes"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "free_stock",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -766,7 +767,7 @@
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2020-12-14 08:45:46.076976",
+ "modified": "2021-04-20 20:46:07.016652",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order Item",
