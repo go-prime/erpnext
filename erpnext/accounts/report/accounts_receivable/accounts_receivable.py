@@ -354,9 +354,9 @@ class ReceivablePayableReport(object):
 		party_details = self.get_party_details(row.party) or {}
 		row.update(party_details)
 		if self.filters.get(scrub(self.filters.party_type)):
-			row.currency = row.account_currency if not self.filters.get('display_currency') else self.filters['display_currency']
+			row.currency = row.account_currency
 		else:
-			row.currency = self.company_currency if not self.filters.get('display_currency') else self.filters['display_currency']
+			row.currency = self.company_currency
 
 	def allocate_outstanding_based_on_payment_terms(self, row):
 		self.get_payment_terms(row)
@@ -571,7 +571,11 @@ class ReceivablePayableReport(object):
 		conditions, values = self.prepare_conditions()
 		order_by = self.get_order_by_condition()
 
-		select_fields = "debit, credit, debit_in_account_currency, credit_in_account_currency"
+		if self.filters.get(scrub(self.party_type)):
+			select_fields = "debit_in_account_currency as debit, credit_in_account_currency as credit"
+		else:
+			select_fields = "debit, credit"
+
 		self.gl_entries = frappe.db.sql("""
 			select
 				name, posting_date, account, party_type, party, voucher_type, voucher_no,
@@ -585,27 +589,6 @@ class ReceivablePayableReport(object):
 				and posting_date <= %s
 				{1} {2}"""
 			.format(select_fields, conditions, order_by), values, as_dict=True)
-  
-		if self.filters.get('display_currency') == "USD":
-			return
-
-		rates = frappe.db.sql('select exchange_rate, date from `tabCurrency Exchange` where from_currency = "USD" and to_currency ="ZWD" order by date desc')
-		def get_rate(entry):
-			for rate in rates:
-				if entry.posting_date >= rate[1]:
-					return rate[0]
-
-		entries = []
-		for e in self.gl_entries:
-			rate = get_rate(e)
-			if e.account_currency != "USD":
-				e.debit = e.debit_in_account_currency
-				e.credit = e.credit_in_account_currency
-			else:
-				e.debit *= rate
-				e.credit *= rate
-			entries.append(e)
-		self.gl_entries = entries
 
 	def get_sales_invoices_or_customers_based_on_sales_person(self):
 		if self.filters.get("sales_person"):
