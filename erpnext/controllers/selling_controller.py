@@ -200,7 +200,7 @@ class SellingController(StockController):
 				""", (it.item_code, it.warehouse))
 			if last_valuation_rate:
 				last_valuation_rate_in_sales_uom = last_valuation_rate[0][0] / (it.conversion_factor or 1)
-				if is_stock_item and flt(it.base_rate) < flt(last_valuation_rate_in_sales_uom):
+				if is_stock_item and flt(it.base_rate, 2) < flt(last_valuation_rate_in_sales_uom, 2):
 					throw_message(it.item_name, last_valuation_rate_in_sales_uom, "valuation rate")
 
 
