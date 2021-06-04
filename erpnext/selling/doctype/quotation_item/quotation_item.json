@@ -11,6 +11,7 @@
   "item_name",
   "section_break_5",
   "description",
+  "special_instructions",
   "item_group",
   "brand",
   "image_section",
@@ -33,7 +34,6 @@
   "rate_with_margin",
   "column_break_18",
   "discount_percentage",
-  "independent_discount_percentage",
   "discount_amount",
   "base_rate_with_margin",
   "section_break1",
@@ -42,7 +42,6 @@
   "amount",
   "net_amount",
   "item_tax_template",
-  "special_instructions",
   "col_break3",
   "base_rate",
   "base_net_rate",
@@ -593,18 +592,13 @@
   },
   {
    "fieldname": "special_instructions",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "label": "Special Instructions"
-  },
-  {
-   "fieldname": "independent_discount_percentage",
-   "fieldtype": "Float",
-   "label": "Independent Discount Percentage"
   }
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2021-04-26 16:14:47.833364",
+ "modified": "2021-06-04 15:27:01.825271",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quotation Item",
