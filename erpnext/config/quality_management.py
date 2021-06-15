@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from frappe import _
 import frappe 
-from frappe.desk.utils import get_tiles
+from erpnext.utilities.desk import get_tiles
 
 def get_data():
 	return get_tiles('Quality Management', [
