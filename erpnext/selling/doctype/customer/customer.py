@@ -47,9 +47,11 @@ class Customer(TransactionBase):
 		self.update_lead_status()
 
 	def validate(self):
+		from goprime.goprime_erp.accounts_api import validate_customer_credit_limit
 		self.flags.is_new_doc = self.is_new()
 		self.flags.old_lead = self.lead_name
 		validate_party_accounts(self)
+		validate_customer_credit_limit(self)
 		self.validate_credit_limit_on_change()
 		self.set_loyalty_program()
 		self.check_customer_group_change()
@@ -105,8 +107,7 @@ class Customer(TransactionBase):
 				self.db_set('email_id', self.email_id)
 
 	def create_primary_address(self):
-		from goprime.config.utils import get_features
-		if self.flags.is_new_doc and self.get('address_line1') and not get_features().get('JMann_simple_ui'):
+		if self.flags.is_new_doc and self.get('address_line1'):
 			make_address(self)
 
 	def update_lead_status(self):
@@ -293,9 +294,6 @@ def get_loyalty_programs(doc):
 	return lp_details
 
 def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
-	from goprime.config.utils import get_features
-	jmann = get_features().get('JMann_simple_ui')
-	page_len = 50
 	if frappe.db.get_default("cust_master_name") == "Customer Name":
 		fields = ["name", "customer_group", "territory"]
 	else:
@@ -322,7 +320,7 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 					filters={'company': company}, ignore_permissions=True)]
 		if groups:
 			company_filter = "and customer_group in ({}) ".format(", ".join(groups))
-	
+
 	return frappe.db.sql("""select %s from `tabCustomer` where docstatus < 2
 		and (%s like %s or customer_name like %s)
 		{company_filter}
@@ -330,10 +328,11 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 		order by
 		case when name like %s then 0 else 1 end,
 		case when customer_name like %s then 0 else 1 end,
-		customer_name limit %s, %s""".format(match_conditions=match_conditions,
+		name, customer_name limit %s, %s""".format(match_conditions=match_conditions,
 			company_filter=company_filter) %
 		(", ".join(fields), searchfield, "%s", "%s", "%s", "%s", "%s", "%s"),
-		("%s%%" % txt, "%s%%" % txt, "%s%%" % txt, "%s%%" % txt, start, page_len))
+		("%%%s%%" % txt, "%%%s%%" % txt, "%%%s%%" % txt, "%%%s%%" % txt, start, page_len))
+
 
 def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, extra_amount=0):
 	customer_outstanding = get_customer_outstanding(customer, company, ignore_outstanding_sales_order)
@@ -348,10 +347,8 @@ def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, 
 		# If not authorized person raise exception
 		credit_controller = frappe.db.get_value('Accounts Settings', None, 'credit_controller')
 		if not credit_controller or credit_controller not in frappe.get_roles():
-			msgprint("The order has been credit referred")
-			
-   			# throw(_("Please contact to the user who have Sales Master Manager {0} role")
-			# 	.format(" / " + credit_controller if credit_controller else ""))
+			throw(_("Please contact to the user who have Sales Master Manager {0} role")
+				.format(" / " + credit_controller if credit_controller else ""))
 
 def get_customer_outstanding(customer, company, ignore_outstanding_sales_order=False, cost_center=None):
 	# Outstanding based on GL Entries
@@ -410,6 +407,7 @@ def get_customer_outstanding(customer, company, ignore_outstanding_sales_order=F
 
 	return outstanding_based_on_gle + outstanding_based_on_so + outstanding_based_on_dn
 
+
 def get_credit_limit(customer, company):
 	credit_limit = None
 
@@ -458,7 +456,6 @@ def make_address(args, is_primary_address=1):
 
 	address = frappe.get_doc({
 		'doctype': 'Address',
-		'address_type': args.get('address_type') if args.get('address_type') else 'Billing',
 		'address_title': args.get('name'),
 		'address_line1': args.get('address_line1'),
 		'address_line2': args.get('address_line2'),
