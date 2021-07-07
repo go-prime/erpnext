@@ -47,11 +47,11 @@ class Customer(TransactionBase):
 		self.update_lead_status()
 
 	def validate(self):
-		from goprime.goprime_erp.accounts_api import validate_customer_credit_limit
+		# from goprime.goprime_erp.accounts_api import validate_customer_credit_limit
 		self.flags.is_new_doc = self.is_new()
 		self.flags.old_lead = self.lead_name
 		validate_party_accounts(self)
-		validate_customer_credit_limit(self)
+		# validate_customer_credit_limit(self)
 		self.validate_credit_limit_on_change()
 		self.set_loyalty_program()
 		self.check_customer_group_change()
@@ -347,7 +347,7 @@ def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, 
 		# If not authorized person raise exception
 		credit_controller = frappe.db.get_value('Accounts Settings', None, 'credit_controller')
 		if not credit_controller or credit_controller not in frappe.get_roles():
-			throw(_("Please contact to the user who have Sales Master Manager {0} role")
+			msgprint(_("Please contact to the user who have Sales Master Manager {0} role")
 				.format(" / " + credit_controller if credit_controller else ""))
 
 def get_customer_outstanding(customer, company, ignore_outstanding_sales_order=False, cost_center=None):
