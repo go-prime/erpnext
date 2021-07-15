@@ -47,11 +47,11 @@ class Customer(TransactionBase):
 		self.update_lead_status()
 
 	def validate(self):
-		# from goprime.goprime_erp.accounts_api import validate_customer_credit_limit
+		from goprime.goprime_erp.accounts_api import validate_customer_credit_limit
 		self.flags.is_new_doc = self.is_new()
 		self.flags.old_lead = self.lead_name
 		validate_party_accounts(self)
-		# validate_customer_credit_limit(self)
+		validate_customer_credit_limit(self)
 		self.validate_credit_limit_on_change()
 		self.set_loyalty_program()
 		self.check_customer_group_change()
