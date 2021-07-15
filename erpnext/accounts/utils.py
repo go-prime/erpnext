@@ -64,7 +64,7 @@ def get_fiscal_years(transaction_date=None, fiscal_year=None, label="Date", verb
 		matched = False
 		if fiscal_year and fy.name == fiscal_year:
 			matched = True
-
+		
 		if (transaction_date and getdate(fy.year_start_date) <= transaction_date
 			and getdate(fy.year_end_date) >= transaction_date):
 			matched = True
