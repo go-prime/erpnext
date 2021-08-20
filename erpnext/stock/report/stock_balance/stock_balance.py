@@ -191,7 +191,7 @@ def get_item_warehouse_map(filters, sle):
 
 		qty_dict = iwb_map[(d.company, d.item_code, d.warehouse)]
 
-		if d.voucher_type == "Stock Reconciliation":
+		if d.voucher_type in ["Stock Reconciliation", "Simple Stock Take"]:
 			qty_diff = flt(d.qty_after_transaction) - flt(qty_dict.bal_qty)
 		else:
 			qty_diff = flt(d.actual_qty)
