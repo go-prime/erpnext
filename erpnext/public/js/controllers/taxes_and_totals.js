@@ -651,7 +651,6 @@ erpnext.taxes_and_totals = erpnext.payments.extend({
 	},
 
 	calculate_paid_amount: function(){
-		return
 		var me = this;
 		var paid_amount = 0.0;
 		var base_paid_amount = 0.0;
