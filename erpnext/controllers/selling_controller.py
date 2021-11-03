@@ -180,6 +180,18 @@ class SellingController(StockController):
 		if not frappe.db.get_single_value("Selling Settings", "validate_selling_price"):
 			return
 
+		# Goprime 2021
+		price_exempted_roles = frappe.db.sql_list("""
+            select role from `tabHas Role` 
+            where parent = "Transaction controls"
+            and parentfield = "price_validation_exemptions"
+        """)
+
+		if len(set(price_exempted_roles).intersection(set(frappe.get_roles()))) > 0:
+			return
+
+		# End
+
 		if hasattr(self, "is_return") and self.is_return:
 			return
 
