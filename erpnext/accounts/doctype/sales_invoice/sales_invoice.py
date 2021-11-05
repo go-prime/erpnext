@@ -807,7 +807,6 @@ class SalesInvoice(SellingController):
 		self.make_write_off_gl_entry(gl_entries)
 		self.make_gle_for_rounding_adjustment(gl_entries)
 		self.make_handling_fee_gl_entry(gl_entries)
-		frappe.msgprint(str(gl_entries))
 
 		return gl_entries
 
@@ -825,10 +824,8 @@ class SalesInvoice(SellingController):
 
 		amount = dnote.handling_fee_total
 		debtors = gl_entries[0]
-		print(debtors)
 		debtors.debit += amount
 		debtors.debit_in_account_currency += (amount / self.conversion_rate)
-		print(debtors)
 		# new_entries = [debtors] + gl_entries[1:]
 		handling_fee_account = frappe.db.get_value(
 			'Transaction controls',
