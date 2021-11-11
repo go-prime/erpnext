@@ -79,6 +79,21 @@ def validate_filters(filters, account_details):
 		filters['from_date'] = span.start_date.strftime('%Y-%m-%d')
 		filters['to_date'] = span.end_date.strftime('%Y-%m-%d')
 
+	range_start = filters.get('account_range_start')
+	range_end = filters.get('account_range_end')
+	range_filters = (range_start, range_end)
+	
+	if any(range_filters) and not all(range_filters):
+		frappe.throw("Both a start amd end range account must be set.")
+
+	if all(range_filters):
+		start_no = frappe.db.get_value("Account", range_start, 'account_number')
+		end_no = frappe.db.get_value("Account", range_end, 'account_number')
+
+		if start_no >= end_no:
+			frappe.throw("The start account number is less than the end "
+			"account number in the range.")
+
 	return filters
 
 def validate_party(filters):
@@ -166,7 +181,18 @@ def get_gl_entries(filters):
 
 def get_conditions(filters):
 	conditions = []
-	if filters.get("account"):
+	if filters.get("account_range_start") and filters.get("account_range_end"):
+		start_no = frappe.db.get_value("Account", 
+					filters.get('account_range_start'), 'account_number')
+		end_no = frappe.db.get_value("Account", 
+					filters.get('account_range_end'), 'account_number')
+					
+		conditions.append("""
+			account in (select name from `tabAccount` 
+			where account_number >= {} 
+			and account_number <= {})
+			""".format(start_no, end_no))
+	elif filters.get("account"):
 		lft, rgt = frappe.db.get_value("Account", filters["account"], ["lft", "rgt"])
 		conditions.append("""account in (select name from tabAccount
 			where lft>=%s and rgt<=%s and docstatus<2)""" % (lft, rgt))

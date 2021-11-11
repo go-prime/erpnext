@@ -46,6 +46,23 @@ class ReceivablePayableReport(object):
 		self.get_columns()
 		self.get_data()
 		self.get_chart_data()
+		
+		# Goprime 2021
+		from goprime.config.utils import get_features
+		config = get_features()
+		jmann = config.get("JMann_item_fields", False)
+		if jmann:
+			if args.get('party_type') == "Customer":
+				new_order = ['party', 'customer_name', 'outstanding','range1','range2','range3','range4','range5', 'age', 'currency']
+			else:
+				new_order = ['party', 'supplier_name', 'outstanding','range1','range2','range3','range4','range5', 'currency']
+			new_columns = []
+			for column in new_order:
+				try:
+					new_columns.append([i for i in self.columns if i.get('fieldname') == column][0])
+				except:
+					continue
+			self.columns = new_columns
 		return self.columns, self.data, None, self.chart, None, self.skip_total_row
 
 	def set_defaults(self):
@@ -718,6 +735,9 @@ class ReceivablePayableReport(object):
 		if self.party_type == 'Customer':
 			self.add_column(_("Customer Contact"), fieldname='customer_primary_contact',
 				fieldtype='Link', options='Contact')
+			if jmann:
+				self.add_column(_("Customer Name"), fieldname='customer_name', fieldtype='Data',
+					width=200)
 
 		self.add_column(label=_('Voucher Type'), fieldname='voucher_type', fieldtype='Data')
 		self.add_column(label=_('Voucher No'), fieldname='voucher_no', fieldtype='Dynamic Link',
@@ -727,6 +747,9 @@ class ReceivablePayableReport(object):
 		if self.party_type == "Supplier":
 			self.add_column(label=_('Bill No'), fieldname='bill_no', fieldtype='Data')
 			self.add_column(label=_('Bill Date'), fieldname='bill_date', fieldtype='Date')
+			if jmann:
+				self.add_column(_("Supplier Name"), fieldname='supplier_name', fieldtype='Data',
+					width=200)
 
 		if self.filters.based_on_payment_terms:
 			self.add_column(label=_('Payment Term'), fieldname='payment_term', fieldtype='Data')

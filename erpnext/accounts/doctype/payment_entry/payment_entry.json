@@ -378,6 +378,7 @@
    "fieldname": "unallocated_amount",
    "fieldtype": "Currency",
    "label": "Unallocated Amount",
+   "precision": "6",
    "print_hide": 1
   },
   {
@@ -575,7 +576,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2020-09-05 14:13:47.885083",
+ "modified": "2021-04-24 16:22:00.563068",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Payment Entry",

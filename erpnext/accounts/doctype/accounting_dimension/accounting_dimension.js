@@ -4,6 +4,7 @@
 frappe.ui.form.on('Accounting Dimension', {
 
 	refresh: function(frm) {
+		frm.disable_save()
 		frm.set_query('document_type', () => {
 			let invalid_doctypes = frappe.model.core_doctypes_list;
 			invalid_doctypes.push('Accounting Dimension', 'Project',

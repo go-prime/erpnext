@@ -21,7 +21,8 @@ class BankReconciliation(Document):
 
 		if not self.account:
 			frappe.throw(_("Account is mandatory to get payment entries"))
-
+		
+		branch = None
 		if get_features().get('JMann_simple_ui'):
 			branch = get_user_perm('Branch')
 
