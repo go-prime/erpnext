@@ -41,7 +41,7 @@ if(frappe.boot.features.JMann_simple_ui) {
 		'label': 'Branch',
 		'fieldname': 'branch',
 		'fieldtype': 'Link',
-		'reqd': 1,
+		//'reqd': 1,
 		'options': 'Branch'
 	})
 }

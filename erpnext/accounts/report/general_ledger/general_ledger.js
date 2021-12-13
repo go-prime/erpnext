@@ -193,22 +193,3 @@ erpnext.dimension_filters.forEach((dimension) => {
 	});
 });
 
-// frappe.query_reports["General Ledger"]['onload'] = function(report) {
-// 	console.log(report)
-// 	frappe.db.get_list("Account", {
-// 		filters: {
-// 			is_group: 0,
-// 			account_number: ['not in', [null, ""]]
-// 		},
-// 		fields: 'account_number'})
-// 		.then(res => {
-// 			console.log(res)
-// 			const opts = res.map(i => i.account_number)
-// 			const start = report.filters[report.filters.length - 2]
-// 			const end = report.filters[report.filters.length - 1]
-// 			start.df.options = opts.join("\n")
-// 			end.df.options = opts.join("\n")
-// 			start.refresh()
-// 			end.refresh()
-// 		})
-// }

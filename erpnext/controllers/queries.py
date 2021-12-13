@@ -60,7 +60,6 @@ def lead_query(doctype, txt, searchfield, start, page_len, filters):
 
  # searches for customer
 def customer_query(doctype, txt, searchfield, start, page_len, filters):
-	page_len = 50
 	conditions = []
 	cust_master_name = frappe.defaults.get_user_default("cust_master_name")
 
@@ -71,14 +70,8 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 
 	meta = frappe.get_meta("Customer")
 	searchfields = meta.get_search_fields()
-	from goprime.config.utils import get_features
 	searchfields = searchfields + [f for f in [searchfield or "name", "customer_name"] \
 			if not f in searchfields]
-	
-	jmann = get_features().get('JMann_simple_ui')
-	if jmann:
-		searchfields.append('legacy_customer_number')
-
 	fields = fields + [f for f in searchfields if not f in fields]
 
 	fields = ", ".join(fields)
@@ -98,7 +91,6 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 		if groups:
 			company_filter = "and customer_group in ({}) ".format(", ".join(groups))
 	
-	
 	return frappe.db.sql("""select {fields} from `tabCustomer`
 		where docstatus < 2
 			{comp_filter}
@@ -108,7 +100,7 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 			if(locate(%(_txt)s, name), locate(%(_txt)s, name), 99999),
 			if(locate(%(_txt)s, customer_name), locate(%(_txt)s, customer_name), 99999),
 			idx desc,
-			customer_name
+			name, customer_name
 		limit %(start)s, %(page_len)s""".format(**{
 			"fields": fields,
 			"scond": searchfields,
@@ -116,7 +108,7 @@ def customer_query(doctype, txt, searchfield, start, page_len, filters):
 			"mcond": get_match_cond(doctype),
 			"fcond": get_filters_cond(doctype, filters, conditions).replace('%', '%%'),
 		}), {
-			'txt': "%s%%"  % txt if jmann else "%%%s%%" % txt ,
+			'txt': "%%%s%%" % txt,
 			'_txt': txt.replace("%", ""),
 			'start': start,
 			'page_len': page_len
@@ -211,25 +203,6 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 		if not field in searchfields]
 	searchfields = " or ".join([field + " like %(txt)s" for field in searchfields])
 	
-
-	#Goprime 2020
-	perms = frappe.get_list('User Permission', filters={
-		'user': frappe.session.user,
-		'allow': 'Company'
-		}, fields=['for_value'], ignore_permissions=True)
-	company = None
-	company_filter = ""
-	if len(perms) > 0:
-		company = perms[0]['for_value']
-		groups = [f'"{i[0]}"' for i in frappe.db.sql("""
-			SELECT grp.name FROM `tabItem Group` AS grp 
-			INNER JOIN `tabItem Default` AS deflt ON deflt.parent = grp.name 
-			WHERE deflt.company = '{}' 
-			""".format(company))]
-		if groups:
-			company_filter = "and item_group in ({}) ".format(", ".join(groups))
-
-
 	description_cond = ''
 	if frappe.db.count('Item', cache=True) < 50000:
 		# scan description only if items are less than 50000

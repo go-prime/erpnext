@@ -120,8 +120,8 @@ def get_entries(filters):
 	from goprime.config.utils import get_features
 	
 	branch_filter = ""
-	if get_features().get('JMann_simple_ui'):
-		branch_filter = ' and branch = "{}"'.format(filters.get("branch"))
+	#if get_features().get('JMann_simple_ui'):
+	#	branch_filter = ' and branch = "{}"'.format(filters.get("branch"))
 	
 	journal_entries = frappe.db.sql("""
 		select "Journal Entry" as payment_document, jv.posting_date,
