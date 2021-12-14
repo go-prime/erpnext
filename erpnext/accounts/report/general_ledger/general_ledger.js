@@ -182,6 +182,13 @@ frappe.query_reports["General Ledger"] = {
 			"fieldtype": "Check",
 			"default": 1
 		},
+		// Goprime 2021
+		{
+			"fieldname": "pl_accounts_on_transaction_date",
+			"label": __("Report P & L Accounts as at Transaction Date "),
+			"fieldtype": "Check",
+			"default": 1
+		},
 		{
 			"fieldname": "account_range_start",
 			"label": __("Account Range Start"),

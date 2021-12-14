@@ -84,7 +84,7 @@ def is_p_or_l_account(account_name):
 	return account_name in P_OR_L_ACCOUNTS
 
 
-def convert_to_presentation_currency(gl_entries, currency_info):
+def convert_to_presentation_currency(gl_entries, currency_info, force_transaction_date=False):
 	"""
 	Take a list of GL Entries and change the 'debit' and 'credit' values to currencies
 	in `currency_info`.
@@ -107,7 +107,10 @@ def convert_to_presentation_currency(gl_entries, currency_info):
 		if account_currency != presentation_currency:
 			value = debit or credit
 
-			date = currency_info['report_date'] if not is_p_or_l_account(account) else entry['posting_date']
+			if force_transaction_date:
+				date = entry['posting_date']
+			else:
+				date = currency_info['report_date'] if not is_p_or_l_account(account) else entry['posting_date']
 			converted_value = convert(value, presentation_currency, company_currency, date)
 
 			if entry.get('debit'):
