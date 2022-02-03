@@ -26,19 +26,14 @@ def execute(filters=None):
     data = get_entries(filters)
 
     from erpnext.accounts.utils import get_balance_on
-    # issue #1: getting account balance instead of filtering transactions by branch.
-    balance_as_per_system = 0
-    if get_features().get('JMann_simple_ui'):
-        balance_as_per_system = get_balance_by_branch(filters["account"], filters["report_date"], filters['branch'])
-    else:
-        balance_as_per_system = get_balance_on(filters["account"], filters["report_date"])
+
+    balance_as_per_system = get_balance_on(filters["account"], filters["report_date"])
 
     total_debit, total_credit = 0, 0
     for d in data:
         total_debit += flt(d.debit)
         total_credit += flt(d.credit)
 
-    # issue #2: this function does not filter by branch - done
     amounts_not_reflected_in_system = get_amounts_not_reflected_in_system(filters)
 
     bank_bal = flt(balance_as_per_system) - flt(total_debit) + flt(total_credit) \
@@ -142,9 +137,7 @@ def get_columns():
 def get_entries(filters):
     from goprime.config.utils import get_features
 
-    branch_filter = ""
-    if get_features().get('JMann_simple_ui'):
-        branch_filter = ' and branch = "{}"'.format(filters.get("branch"))
+    
 
     journal_entries = frappe.db.sql("""
         select "Journal Entry" as payment_document, jv.posting_date,
@@ -156,7 +149,7 @@ def get_entries(filters):
         where jvd.parent = jv.name and jv.docstatus=1
             and jvd.account = %(account)s and jv.posting_date <= %(report_date)s
             and ifnull(jv.clearance_date, '4000-01-01') > %(report_date)s
-            and ifnull(jv.is_opening, 'No') = 'No' {}""".format(branch_filter), filters, as_dict=1)
+            and ifnull(jv.is_opening, 'No') = 'No' """, filters, as_dict=1)
 
     payment_entries = frappe.db.sql("""
         select
@@ -171,8 +164,8 @@ def get_entries(filters):
             (paid_from=%(account)s or paid_to=%(account)s) and docstatus=1
             and posting_date <= %(report_date)s
             and ifnull(clearance_date, '4000-01-01') > %(report_date)s
-            {}
-    """.format(branch_filter), filters, as_dict=1)
+            
+    """, filters, as_dict=1)
 
     pos_entries = []
     if filters.include_pos_transactions:
@@ -200,11 +193,7 @@ def get_entries(filters):
 def get_amounts_not_reflected_in_system(filters):
     from goprime.config.utils import get_features
 
-    branch_filter = ""
-    pe_branch_filter = ""
-    if get_features().get('JMann_simple_ui'):
-        branch_filter = ' and jvd.branch = "{}"'.format(filters.get("branch"))
-        pe_branch_filter = ' and branch = "{}"'.format(filters.get("branch"))
+    
 
     je_amount = frappe.db.sql("""
         select sum(jvd.debit_in_account_currency - jvd.credit_in_account_currency)
@@ -212,7 +201,7 @@ def get_amounts_not_reflected_in_system(filters):
         where jvd.parent = jv.name and jv.docstatus=1 and jvd.account=%(account)s
         and jv.posting_date > %(report_date)s and jv.clearance_date <= %(report_date)s
         and ifnull(jv.is_opening, 'No') = 'No' 
-        {}""".format(branch_filter), filters)
+        """, filters)
 
     je_amount = flt(je_amount[0][0]) if je_amount else 0.0
 
@@ -221,7 +210,7 @@ def get_amounts_not_reflected_in_system(filters):
         from `tabPayment Entry`
         where (paid_from=%(account)s or paid_to=%(account)s) and docstatus=1
         and posting_date > %(report_date)s and clearance_date <= %(report_date)s
-        {}""".format(pe_branch_filter), filters)
+        """, filters)
 
     pe_amount = flt(pe_amount[0][0]) if pe_amount else 0.0
 
@@ -243,66 +232,3 @@ def get_balance_row(label, amount, account_currency):
             "credit": abs(amount),
             "account_currency": account_currency
         }
-
-
-def get_balance_by_branch(account, date, branch):
-    cond = []
-    in_account_currency = True
-
-    if branch:
-        cond.append("branch = '%s'" % branch)
-
-    if date:
-        cond.append("posting_date <= %s" % frappe.db.escape(cstr(date)))
-    else:
-        # get balance of all entries that exist
-        date = nowdate()
-    acc = frappe.get_doc("Account", account)
-
-    try:
-        year_start_date = get_fiscal_year(date, verbose=0)[1]
-    except FiscalYearError:
-        if getdate(date) > getdate(nowdate()):
-            # if fiscal year not found and the date is greater than today
-            # get fiscal year for today's date and its corresponding year start date
-            year_start_date = get_fiscal_year(nowdate(), verbose=1)[1]
-        else:
-            # this indicates that it is a date older than any existing fiscal year.
-            # hence, assuming balance as 0.0
-            return 0.0
-
-    report_type = acc.report_type
-
-    if not (frappe.flags.ignore_account_permission or False):
-        acc.check_permission("read")
-
-    if report_type == 'Profit and Loss':
-        # for pl accounts, get balance within a fiscal year
-        cond.append("posting_date >= '%s' and voucher_type != 'Period Closing Voucher'" \
-            % year_start_date)
-    # different filter for group and ledger - improved performance
-    if acc.is_group:
-        cond.append("""exists (
-            select name from `tabAccount` ac where ac.name = gle.account
-            and ac.lft >= %s and ac.rgt <= %s
-        )""" % (acc.lft, acc.rgt))
-
-        # If group and currency same as company,
-        # always return balance based on debit and credit in company currency
-        if acc.account_currency == frappe.get_cached_value('Company',  acc.company,  "default_currency"):
-            in_account_currency = False
-    else:
-        cond.append("""gle.account = %s """ % (frappe.db.escape(account, percent=False), ))
-
-    if account:
-        if in_account_currency:
-            select_field = "sum(debit_in_account_currency) - sum(credit_in_account_currency)"
-        else:
-            select_field = "sum(debit) - sum(credit)"
-        bal = frappe.db.sql("""
-            SELECT {0}
-            FROM `tabGL Entry` gle
-            WHERE {1}""".format(select_field, " and ".join(cond)))[0][0]
-
-        # if bal is None, return 0
-        return flt(bal)
