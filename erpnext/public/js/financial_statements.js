@@ -130,12 +130,16 @@ function get_filters(){
 	]
 
 	erpnext.dimension_filters.forEach((dimension) => {
-		filters.push({
+		const dim_filter = {
 			"fieldname": dimension["fieldname"],
 			"label": __(dimension["label"]),
 			"fieldtype": "Link",
 			"options": dimension["document_type"]
-		});
+		}
+		if(dimension['document_type'] == 'Branch') {
+			dim_filter['default'] = frappe.defaults.get_user_default("branch")
+		}
+		filters.push(dim_filter);
 	});
 
 	return filters;
