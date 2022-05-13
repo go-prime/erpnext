@@ -290,8 +290,8 @@ def reconcile_dr_cr_note(dr_cr_notes, company):
 				}
 			]
 		})
-  
-		if get_features().get('JMann_simple_ui'):
+
+		if get_features().get('JMann_simple_ui') and d.against_voucher_type != "Journal Entry":
 			branch = frappe.db.get_value(d.against_voucher_type, d.against_voucher, 'branch')
 			for acc in jv.accounts:
 				acc.branch = branch
