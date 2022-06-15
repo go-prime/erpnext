@@ -576,6 +576,7 @@ class ReceivablePayableReport(object):
 		else:
 			select_fields = "debit, credit"
 
+		
 		self.gl_entries = frappe.db.sql("""
 			select
 				name, posting_date, account, party_type, party, voucher_type, voucher_no,
