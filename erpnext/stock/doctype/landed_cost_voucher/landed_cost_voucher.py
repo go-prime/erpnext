@@ -86,7 +86,6 @@ class LandedCostVoucher(Document):
 
 		precision = get_field_precision(frappe.get_meta("Landed Cost Item").get_field("applicable_charges"),
 		currency=frappe.get_cached_value('Company',  self.company,  "default_currency"))
-
 		diff = flt(self.total_taxes_and_charges) - flt(total_applicable_charges)
 		diff = flt(diff, precision)
 
