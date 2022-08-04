@@ -112,6 +112,18 @@ class PaymentReconciliation(Document):
 	def add_payment_entries(self, entries):
 		self.set('payments', [])
 		for e in entries:
+			if e.reference_type == "Payment Entry":
+				doc = frappe.get_doc(e.reference_type, e.reference_name)
+				if doc.source_exchange_rate * e.amount < 0.01:
+					continue
+			else:
+				exchange_rates = frappe.db.sql('''
+					select exchange_rate from `tabJournal Entry Account`
+					where name = "{}"
+				'''.format(e.reference_row))
+				rate = exchange_rates[0][0] if exchange_rates else 1
+				if rate * e.amount < 0.01:
+					continue
 			row = self.append('payments', {})
 			row.update(e)
 
@@ -140,6 +152,14 @@ class PaymentReconciliation(Document):
 													"conversion_rate")
 				base_amount = e.get('outstanding_amount') * exchange_rate
 				if base_amount < 0.01:
+					continue
+			elif e.get('voucher_type') == "Journal Entry":
+				exchange_rates = frappe.db.sql('''
+					select exchange_rate from `tabJournal Entry Account`
+					where parent = "{}" and party = "{}" and party_type = "{}"
+				'''.format(e.voucher_no, self.party, self.party_type))
+				rate = exchange_rates[0][0] if exchange_rates else 1
+				if rate * e.outstanding_amount < 0.01:
 					continue
 			ent = self.append('invoices', {})
 			ent.invoice_type = e.get('voucher_type')
