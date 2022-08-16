@@ -82,10 +82,11 @@ class ExchangeRateRevaluation(Document):
 				from `tabGL Entry`
 				where account in (%s)
     			and branch = "{}"
+				and posting_date <= "{}"
 				group by account, party_type, party
 				having sum(debit) != sum(credit)
 				order by account
-			""".format(self.branch) % ', '.join(['%s']*len(accounts)), tuple(accounts), as_dict=1)
+			""".format(self.branch, self.posting_date) % ', '.join(['%s']*len(accounts)), tuple(accounts), as_dict=1)
 
 		return account_details
 
