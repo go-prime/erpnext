@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://raw.githubusercontent.com/frappe/erpnext/develop/erpnext/public/images/erpnext-logo.png" height="128">
-    <h2>ERPNext</h2>
+    <h2>Goprime ERP</h2>
     <p align="center">
         <p>ERP made simple</p>
     </p>
