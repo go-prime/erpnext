@@ -51,8 +51,7 @@ def convert(value, from_, to, date):
 	"""
 	rate = get_rate_as_at(date, from_, to)
 	converted_value = flt(value) / (rate or 1)
-	return converted_value
-
+	return flt(converted_value, 2)
 
 def get_rate_as_at(date, from_currency, to_currency):
 	"""
@@ -98,25 +97,27 @@ def convert_to_presentation_currency(gl_entries, currency_info):
 
 	for entry in gl_entries:
 		account = entry['account']
-		debit = flt(entry['debit'])
-		credit = flt(entry['credit'])
-		debit_in_account_currency = flt(entry['debit_in_account_currency'])
-		credit_in_account_currency = flt(entry['credit_in_account_currency'])
+		debit = flt(entry['debit'], 2)
+		credit = flt(entry['credit'], 2)
+		debit_in_account_currency = flt(entry['debit_in_account_currency'], 2)
+		credit_in_account_currency = flt(entry['credit_in_account_currency'], 2)
 		account_currency = entry['account_currency']
 
 		if account_currency != presentation_currency:
-			value = debit or credit
+			if presentation_currency == company_currency:
+				entry['debit'] = debit
+				entry['credit'] = credit
+			else:
+				date = currency_info['report_date'] if not is_p_or_l_account(account) else entry['posting_date']
+				debit_value = credit_value = 0
+				if debit:
+					debit_value = convert(debit, presentation_currency, company_currency, date)
+				if credit:
+					credit_value = convert(credit, presentation_currency, company_currency, date)
 
-			date = currency_info['report_date'] if not is_p_or_l_account(account) else entry['posting_date']
-			converted_value = convert(value, presentation_currency, company_currency, date)
-
-			if entry.get('debit'):
-				entry['debit'] = converted_value
-
-			if entry.get('credit'):
-				entry['credit'] = converted_value
-
-		elif account_currency == presentation_currency:
+				entry['debit'] = debit_value
+				entry['credit'] = credit_value
+		else:
 			if entry.get('debit'):
 				entry['debit'] = debit_in_account_currency
 
