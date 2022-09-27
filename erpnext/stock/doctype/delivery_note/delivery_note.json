@@ -1,5 +1,4 @@
 {
- "actions": [],
  "allow_import": 1,
  "autoname": "naming_series:",
  "creation": "2013-05-24 19:29:09",
@@ -440,7 +439,7 @@
    "label": "Exchange Rate",
    "oldfieldname": "conversion_rate",
    "oldfieldtype": "Currency",
-   "precision": "9",
+   "precision": "12",
    "print_hide": 1,
    "reqd": 1
   },
@@ -1239,8 +1238,7 @@
  "icon": "fa fa-truck",
  "idx": 146,
  "is_submittable": 1,
- "links": [],
- "modified": "2019-12-30 19:17:13.122644",
+ "modified": "2022-09-27 07:49:09.551161",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Delivery Note",
