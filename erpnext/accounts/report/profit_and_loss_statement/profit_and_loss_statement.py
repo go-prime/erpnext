@@ -114,6 +114,18 @@ def jmann_execute(filters=None):
 	
 	net_profit_loss = get_net_profit_loss(income, expense, period_list, filters.company, filters.presentation_currency)
 
+	profit_before_valuations  = frappe._dict({
+		"account_name": "'" + _("Profit Before Valuations") + "'",
+		"account": "'" + _("Profit for the year") + "'",
+  		"currency": filters.presentation_currency or frappe.get_cached_value('Company',  filters.company,  "default_currency")
+	})
+	total_valuation_expenses = frappe._dict({})
+	for period in period_list:
+		key = period.key
+		total_valuation_expenses[key] = sum([i[key] for i in list(filter(lambda x: x.get('indent', 1) == 1, valuation_expenses))])
+		profit_before_valuations[key] = total_valuation_expenses[key] + net_profit_loss[key]
+	
+
 	data = []
 	data.extend(direct_income or [])
 	data.extend(direct_expenses or [])
@@ -122,8 +134,10 @@ def jmann_execute(filters=None):
 	data.extend(indirect_income or [])
 	data.extend(indirect_expenses or [])
 	if net_profit_loss:
-		data.append(net_profit_loss)
+		data.append(profit_before_valuations)
 	data.extend(valuation_expenses or [])
+	if net_profit_loss:
+		data.append(net_profit_loss)
 
 	for i in data:
 		if i.get('indent'):
