@@ -290,8 +290,8 @@ class Item(WebsiteGenerator):
 			if not self.asset_category:
 				frappe.throw(_("Asset Category is mandatory for Fixed Asset item"))
 
-			if self.stock_ledger_created():
-				frappe.throw(_("Cannot be a fixed asset item as Stock Ledger is created."))
+			# if self.stock_ledger_created():
+			# 	frappe.throw(_("Cannot be a fixed asset item as Stock Ledger is created."))
 
 		if not self.is_fixed_asset:
 			asset = frappe.db.get_all("Asset", filters={"item_code": self.name, "docstatus": 1}, limit=1)
