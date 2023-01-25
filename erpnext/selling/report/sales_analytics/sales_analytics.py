@@ -93,6 +93,8 @@ class Analytics(object):
 	def get_sales_transactions_based_on_order_type(self):
 		if self.filters["value_quantity"] == 'Value':
 			value_field = "base_net_total"
+		elif self.filters['value_quantity'] == "Weight":
+			value_field = "total_net_weight"
 		else:
 			value_field = "total_qty"
 
@@ -108,6 +110,8 @@ class Analytics(object):
 	def get_sales_transactions_based_on_customers_or_suppliers(self):
 		if self.filters["value_quantity"] == 'Value':
 			value_field = "base_net_total as value_field"
+		elif self.filters['value_quantity'] == "Weight":
+			value_field = "total_net_weight as value_field"
 		else:
 			value_field = "total_qty as value_field"
 
@@ -135,6 +139,8 @@ class Analytics(object):
 
 		if self.filters["value_quantity"] == 'Value':
 			value_field = 'base_amount'
+		elif self.filters['value_quantity'] == "Weight":
+			value_field = "total_weight"
 		else:
 			value_field = 'stock_qty'
 
@@ -154,6 +160,8 @@ class Analytics(object):
 	def get_sales_transactions_based_on_customer_or_territory_group(self):
 		if self.filters["value_quantity"] == 'Value':
 			value_field = "base_net_total as value_field"
+		elif self.filters['value_quantity'] == "Weight":
+			value_field = "total_net_weight as value_field"
 		else:
 			value_field = "total_qty as value_field"
 
@@ -178,6 +186,8 @@ class Analytics(object):
 	def get_sales_transactions_based_on_item_group(self):
 		if self.filters["value_quantity"] == 'Value':
 			value_field = "base_amount"
+		elif self.filters['value_quantity'] == "Weight":
+			value_field = "total_weight"
 		else:
 			value_field = "qty"
 
