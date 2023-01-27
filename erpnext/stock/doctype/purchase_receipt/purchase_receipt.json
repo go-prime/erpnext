@@ -351,7 +351,7 @@
    "label": "Exchange Rate",
    "oldfieldname": "conversion_rate",
    "oldfieldtype": "Currency",
-   "precision": "9",
+   "precision": "12",
    "print_hide": 1,
    "reqd": 1
   },
@@ -1058,7 +1058,7 @@
  "icon": "fa fa-truck",
  "idx": 261,
  "is_submittable": 1,
- "modified": "2020-10-20 11:52:57.021738",
+ "modified": "2022-09-19 15:25:25.514947",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Purchase Receipt",

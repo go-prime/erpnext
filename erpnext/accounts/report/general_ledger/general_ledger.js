@@ -180,6 +180,46 @@ frappe.query_reports["General Ledger"] = {
 			"label": __("Include Default Book Entries"),
 			"fieldtype": "Check",
 			"default": 1
+		},
+		// Goprime 2021
+		{
+			"fieldname": "pl_accounts_on_transaction_date",
+			"label": __("Report P & L Accounts as at Transaction Date "),
+			"fieldtype": "Check",
+			"default": 1
+		},
+		{
+			"fieldname": "account_range_start",
+			"label": __("Account Range Start"),
+			"fieldtype": "Link",
+			"options": "Account",
+			"get_query": function() {
+				var company = frappe.query_report.get_filter_value('company');
+				return {
+					"doctype": "Account",
+					"filters": {
+						"company": company,
+						"account_number": ['not in', [null, ""]]
+					}
+				}
+			}
+		},
+		{
+			"fieldname": "account_range_end",
+			"label": __("Account Range End"),
+			"fieldtype": "Link",
+			"options": "Account",
+			"get_query": function() {
+				var company = frappe.query_report.get_filter_value('company');
+				return {
+					"doctype": "Account",
+					"filters": {
+						"company": company,
+						"account_number": ['not in', [null, ""]]
+					}
+				}
+			}
+
 		}
 	]
 }
