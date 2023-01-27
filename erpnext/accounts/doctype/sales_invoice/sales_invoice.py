@@ -806,8 +806,45 @@ class SalesInvoice(SellingController):
 
 		self.make_write_off_gl_entry(gl_entries)
 		self.make_gle_for_rounding_adjustment(gl_entries)
+		# self.make_handling_fee_gl_entry(gl_entries)
 
 		return gl_entries
+
+	def make_handling_fee_gl_entry(self, gl_entries):
+		if not self.is_return:
+			return
+		
+		delivery_note = self.items[0].delivery_note
+		if not delivery_note:
+			return
+
+		dnote = frappe.get_doc('Delivery Note', delivery_note)
+		if not dnote.charge_handling_fee:
+			return
+
+		amount = dnote.handling_fee_total
+		debtors = gl_entries[0]
+		debtors.debit += amount
+		debtors.debit_in_account_currency += (amount / self.conversion_rate)
+		# new_entries = [debtors] + gl_entries[1:]
+		handling_fee_account = frappe.db.get_value(
+			'Transaction controls',
+			None,
+			'handling_fees_income_account'
+		)
+
+		gl_entries.append(
+				self.get_gl_dict({
+					"account": handling_fee_account,
+					"against": self.debit_to,
+					"credit": amount,
+					"credit_in_account_currency": amount / self.conversion_rate,
+					"against_voucher": self.return_against if cint(self.is_return) and self.return_against else self.name,
+					"against_voucher_type": self.doctype,
+					"cost_center": frappe.db.get_value('Company', self.company, 'cost_center')
+				}, get_account_currency(handling_fee_account))
+			)
+  
 
 	def make_customer_gl_entry(self, gl_entries):
 		# Checked both rounding_adjustment and rounded_total
