@@ -45,7 +45,7 @@ class JournalEntry(AccountsController):
 
 	def on_submit(self):
 		self.validate_cheque_info()
-		self.check_credit_limit()
+		# self.check_credit_limit() # ignored for user experience
 		self.make_gl_entries()
 		self.update_advance_paid()
 		self.update_expense_claim()
@@ -170,7 +170,6 @@ class JournalEntry(AccountsController):
 					frappe.throw(_("Row {0}: Party Type and Party is required for Receivable / Payable account {1}").format(d.idx, d.account))
 
 	def check_credit_limit(self):
-		return # ignoring the notifications below for user experience
 		customers = list(set([d.party for d in self.get("accounts")
 			if d.party_type=="Customer" and d.party and flt(d.debit) > 0]))
 		if customers:
