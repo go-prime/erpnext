@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe, erpnext, json
 from frappe import _, scrub, ValidationError
+from pymysql.err import InternalError
 from frappe.utils import flt, comma_or, nowdate, getdate
 from erpnext.accounts.utils import get_outstanding_invoices, get_account_currency, get_balance_on, get_allow_cost_center_in_entry_of_bs_account
 from erpnext.accounts.party import get_party_account
@@ -832,9 +833,14 @@ def get_outstanding_on_journal_entry(name):
 
 @frappe.whitelist()
 def get_reference_details(reference_doctype, reference_name, party_account_currency):
-	total_amount = outstanding_amount = exchange_rate = bill_no = None
+	total_amount = outstanding_amount = exchange_rate = bill_no, posting_date = None
 	ref_doc = frappe.get_doc(reference_doctype, reference_name)
 	company_currency = ref_doc.get("company_currency") or erpnext.get_company_currency(ref_doc.company)
+	try:
+		posting_date = frappe.db.get_value(ref_doc.reference_doctype, ref_doc.reference_name, "posting_date")
+	except InternalError:
+		# NOTE To handle cases where the ref doctype has no posting date field i.e VERY UNLIKELY.
+		pass
 
 	if reference_doctype == "Fees":
 		total_amount = ref_doc.get("grand_total")
@@ -884,7 +890,8 @@ def get_reference_details(reference_doctype, reference_name, party_account_curre
 		"total_amount": total_amount,
 		"outstanding_amount": outstanding_amount,
 		"exchange_rate": exchange_rate,
-		"bill_no": bill_no
+		"bill_no": bill_no,
+		"posting_date": posting_date
 	})
 
 
