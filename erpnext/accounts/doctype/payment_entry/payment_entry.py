@@ -836,11 +836,9 @@ def get_reference_details(reference_doctype, reference_name, party_account_curre
 	total_amount = outstanding_amount = exchange_rate = bill_no, posting_date = None
 	ref_doc = frappe.get_doc(reference_doctype, reference_name)
 	company_currency = ref_doc.get("company_currency") or erpnext.get_company_currency(ref_doc.company)
-	try:
+
+	if "posting_date" in str(frappe.db.sql(f"DESCRIBE `tab{reference_doctype}`;")):
 		posting_date = frappe.db.get_value(ref_doc.reference_doctype, ref_doc.reference_name, "posting_date")
-	except InternalError:
-		# NOTE To handle cases where the ref doctype has no posting date field i.e VERY UNLIKELY.
-		pass
 
 	if reference_doctype == "Fees":
 		total_amount = ref_doc.get("grand_total")
