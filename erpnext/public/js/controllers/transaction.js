@@ -1740,6 +1740,13 @@ erpnext.TransactionController = erpnext.taxes_and_totals.extend({
 			if (doc.tax_category)
 				filters['tax_category'] = doc.tax_category;
 
+			if(doc.fields_dict.items 
+				&& doc.fields_dict.items.grid.get_field('item_tax_template') 
+				&& doc.fields_dict.items.grid.get_field('item_tax_template').get_query
+				) {
+				return 
+			}
+			
 			return {
 				query: "erpnext.controllers.queries.get_tax_template",
 				filters: filters

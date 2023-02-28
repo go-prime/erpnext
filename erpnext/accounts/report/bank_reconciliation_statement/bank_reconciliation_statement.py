@@ -13,7 +13,6 @@ from erpnext.accounts.utils import (
 
 
 def execute(filters=None):
-    from goprime.config.utils import get_features
 
     if not filters: filters = {}
 
@@ -26,7 +25,7 @@ def execute(filters=None):
     data = get_entries(filters)
 
     from erpnext.accounts.utils import get_balance_on
-
+    balance_as_per_system = 0
     balance_as_per_system = get_balance_on(filters["account"], filters["report_date"])
 
     total_debit, total_credit = 0, 0
@@ -135,7 +134,6 @@ def get_columns():
 
 
 def get_entries(filters):
-    from goprime.config.utils import get_features
 
     
 
@@ -149,7 +147,11 @@ def get_entries(filters):
         where jvd.parent = jv.name and jv.docstatus=1
             and jvd.account = %(account)s and jv.posting_date <= %(report_date)s
             and ifnull(jv.clearance_date, '4000-01-01') > %(report_date)s
+<<<<<<< HEAD
             and ifnull(jv.is_opening, 'No') = 'No' """, filters, as_dict=1)
+=======
+            and ifnull(jv.is_opening, 'No') = 'No'""", filters, as_dict=1)
+>>>>>>> kurima-prod
 
     payment_entries = frappe.db.sql("""
         select
@@ -164,7 +166,10 @@ def get_entries(filters):
             (paid_from=%(account)s or paid_to=%(account)s) and docstatus=1
             and posting_date <= %(report_date)s
             and ifnull(clearance_date, '4000-01-01') > %(report_date)s
+<<<<<<< HEAD
             
+=======
+>>>>>>> kurima-prod
     """, filters, as_dict=1)
 
     pos_entries = []
@@ -191,9 +196,11 @@ def get_entries(filters):
 
 
 def get_amounts_not_reflected_in_system(filters):
-    from goprime.config.utils import get_features
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> kurima-prod
 
     je_amount = frappe.db.sql("""
         select sum(jvd.debit_in_account_currency - jvd.credit_in_account_currency)
