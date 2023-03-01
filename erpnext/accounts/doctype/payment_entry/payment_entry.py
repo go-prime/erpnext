@@ -643,6 +643,13 @@ def get_outstanding_reference_documents(args):
 	if not data:
 		frappe.msgprint(_("No outstanding invoices found for the {0} {1} which qualify the filters you have specified.")
 			.format(args.get("party_type").lower(), frappe.bold(args.get("party"))))
+	
+	# SET posting date on data items
+	for i in data:
+		reference_doctype = i.get("voucher_type")
+		reference_name = i.get("voucher_no")
+		if reference_doctype and reference_name:
+			d["posting_date"] = get_reference_doc_posting_date(None, reference_doctype, reference_name)
 
 	return data
 
@@ -830,11 +837,27 @@ def get_outstanding_on_journal_entry(name):
 	return outstanding_amount
 
 
+def get_reference_doc_posting_date(ref_doc=None, reference_doctype=None, reference_name=None):
+    posting_date = None
+    ref_doc = ref_doc or frappe.get_doc(reference_doctype, reference_name)
+    reference_doctype = ref_doc.doctype
+    ref_doc__posting_date__map = {
+		"Sales Invoice": "posting_date",
+		"Journal Entry": "posting_date",
+		"Purchase Invoice": "posting_date",
+		"Sales Order": "transaction_date",
+	}
+    ref_doc__posting_date__field = ref_doc__posting_date__map.get(reference_doctype)
+    if ref_doc__posting_date__field:
+        posting_date = getattr(ref_doc, ref_doc__posting_date__field)
+    return posting_date
+    
 @frappe.whitelist()
 def get_reference_details(reference_doctype, reference_name, party_account_currency):
-	total_amount = outstanding_amount = exchange_rate = bill_no = None
+	total_amount = outstanding_amount = exchange_rate = bill_no, posting_date = None
 	ref_doc = frappe.get_doc(reference_doctype, reference_name)
 	company_currency = ref_doc.get("company_currency") or erpnext.get_company_currency(ref_doc.company)
+	posting_date = get_reference_doc_posting_date(ref_doc=ref_doc)
 
 	if reference_doctype == "Fees":
 		total_amount = ref_doc.get("grand_total")
@@ -884,7 +907,8 @@ def get_reference_details(reference_doctype, reference_name, party_account_curre
 		"total_amount": total_amount,
 		"outstanding_amount": outstanding_amount,
 		"exchange_rate": exchange_rate,
-		"bill_no": bill_no
+		"bill_no": bill_no,
+		"posting_date": posting_date
 	})
 
 
