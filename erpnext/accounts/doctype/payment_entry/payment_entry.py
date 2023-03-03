@@ -649,7 +649,7 @@ def get_outstanding_reference_documents(args):
 		reference_doctype = i.get("voucher_type")
 		reference_name = i.get("voucher_no")
 		if reference_doctype and reference_name:
-			d["posting_date"] = get_reference_doc_posting_date(None, reference_doctype, reference_name)
+			i["posting_date"] = get_reference_doc_posting_date(None, reference_doctype, reference_name)
 
 	return data
 
