@@ -555,6 +555,7 @@ frappe.ui.form.on('Payment Entry', {
 			frm.doc.payment_type == "Internal Transfer"
 			&& frm.doc.paid_from_account_currency
 			&& frm.doc.paid_to_account_currency
+			&& frm.doc.paid_amount
 		) {
 			frappe.call({
 				method: "erpnext.setup.utils.get_exchange_rate",
