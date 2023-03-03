@@ -550,7 +550,7 @@ frappe.ui.form.on('Payment Entry', {
 		else
 			frm.events.set_unallocated_amount(frm);
 
-		// Internal Transfers
+		// For Internal Transfers
 		if (
 			frm.doc.payment_type == "Internal Transfer"
 			&& frm.doc.paid_from_account_currency
