@@ -549,6 +549,26 @@ frappe.ui.form.on('Payment Entry', {
 			frm.events.allocate_party_amount_against_ref_docs(frm, frm.doc.paid_amount);
 		else
 			frm.events.set_unallocated_amount(frm);
+
+		// Internal Transfers
+		if (
+			frm.doc.payment_type == "Internal Transfer"
+			&& frm.doc.paid_from_account_currency
+			&& frm.doc.paid_to_account_currency
+		) {
+			frappe.call({
+				method: "erpnext.setup.utils.get_exchange_rate",
+				args: {
+					from_currency: frm.doc.paid_from_account_currency,
+					to_currency: frm.doc.paid_to_account_currency,
+					transaction_date: frm.doc.posting_date
+				}
+			}).then(r => {
+				const exchange_rate = frm.doc.on_demand_rate || r.message
+				const received_amount = frm.doc.paid_amount * exchange_rate
+				frm.set_value("received_amount", received_amount)
+			})
+		}
 	},
 
 	get_outstanding_invoice: function(frm) {
