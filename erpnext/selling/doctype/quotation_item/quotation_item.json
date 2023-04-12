@@ -11,6 +11,7 @@
   "item_name",
   "section_break_5",
   "description",
+  "special_instructions",
   "item_group",
   "brand",
   "image_section",
@@ -588,11 +589,16 @@
    "fieldname": "match_free_stock",
    "fieldtype": "Check",
    "label": "Validate Against Free Stock"
+  },
+  {
+   "fieldname": "special_instructions",
+   "fieldtype": "Small Text",
+   "label": "Special Instructions"
   }
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2020-12-02 07:57:41.820108",
+ "modified": "2021-06-04 15:27:01.825271",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quotation Item",

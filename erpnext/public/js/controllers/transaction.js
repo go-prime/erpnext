@@ -1168,39 +1168,50 @@ erpnext.TransactionController = erpnext.taxes_and_totals.extend({
 	},
 
 	ignore_pricing_rule: function() {
-		if(this.frm.doc.ignore_pricing_rule) {
-			var me = this;
-			var item_list = [];
-
-			$.each(this.frm.doc["items"] || [], function(i, d) {
-				if (d.item_code && !d.is_free_item) {
-					item_list.push({
-						"doctype": d.doctype,
-						"name": d.name,
-						"item_code": d.item_code,
-						"pricing_rules": d.pricing_rules,
-						"parenttype": d.parenttype,
-						"parent": d.parent
-					})
-				}
-			});
-			return this.frm.call({
-				method: "erpnext.accounts.doctype.pricing_rule.pricing_rule.remove_pricing_rules",
-				args: { item_list: item_list },
-				callback: function(r) {
-					if (!r.exc && r.message) {
-						r.message.forEach(row_item => {
-							me.remove_pricing_rule(row_item);
-						});
-						me._set_values_for_item_list(r.message);
-						me.calculate_taxes_and_totals();
-						if(me.frm.doc.apply_discount_on) me.frm.trigger("apply_discount_on");
+		const cls = this;
+		function reset_prices(me) {
+			if(me.frm.doc.ignore_pricing_rule) {
+				
+				var item_list = [];
+	
+				$.each(me.frm.doc["items"] || [], function(i, d) {
+					if (d.item_code && !d.is_free_item) {
+						item_list.push({
+							"doctype": d.doctype,
+							"name": d.name,
+							"item_code": d.item_code,
+							"pricing_rules": d.pricing_rules,
+							"parenttype": d.parenttype,
+							"parent": d.parent
+						})
 					}
-				}
-			});
-		} else {
-			this.apply_pricing_rule();
+				});
+				return me.frm.call({
+					method: "erpnext.accounts.doctype.pricing_rule.pricing_rule.remove_pricing_rules",
+					args: { item_list: item_list },
+					callback: function(r) {
+						if (!r.exc && r.message) {
+							r.message.forEach(row_item => {
+								me.remove_pricing_rule(row_item);
+							});
+							me._set_values_for_item_list(r.message);
+							me.calculate_taxes_and_totals();
+							if(me.frm.doc.apply_discount_on) me.frm.trigger("apply_discount_on");
+						}
+					}
+				});
+			} else {
+				me.apply_pricing_rule();
+			}
 		}
+
+		frappe.db.get_value('Transaction controls', null, 'update_prices_on_rule_change')
+			.then(res => {
+				console.log(res.message.update_prices_on_rule_change)
+				if(res.message.update_prices_on_rule_change == "1") {
+					reset_prices(cls)
+				}
+			})
 	},
 
 	apply_pricing_rule: function(item, calculate_taxes_and_totals) {

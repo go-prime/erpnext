@@ -3,6 +3,7 @@ frappe.listview_settings['Quotation'] = {
 		"company", "currency", 'valid_till'],
 
 	onload: function(listview) {
+		
 		listview.page.fields_dict.quotation_to.get_query = function() {
 			return {
 				"filters": {
