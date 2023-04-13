@@ -55,6 +55,13 @@ frappe.query_reports["Sales Analytics"] = {
 			reqd: 1
 		},
 		{
+			fieldname: "branch",
+			label: __("Branch"),
+			fieldtype: "Link",
+			options: "Branch",
+			default: frappe.defaults.get_user_default("Branch"),
+		},
+		{
 			fieldname: "range",
 			label: __("Range"),
 			fieldtype: "Select",
