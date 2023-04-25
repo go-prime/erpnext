@@ -122,8 +122,8 @@ def jmann_execute(filters=None):
 	total_valuation_expenses = frappe._dict({})
 	for period in period_list:
 		key = period.key
-		total_valuation_expenses[key] = sum([i[key] for i in list(filter(lambda x: x.get('indent', 1) == 1, valuation_expenses))])
-		profit_before_valuations[key] = total_valuation_expenses[key] + net_profit_loss[key]
+		total_valuation_expenses[key] = sum([i.get(key, 0) for i in list(filter(lambda x: x.get('indent', 1) == 1, valuation_expenses))])
+		profit_before_valuations[key] = total_valuation_expenses[key] + net_profit_loss.get(key, 0)
 	
 
 	data = []
