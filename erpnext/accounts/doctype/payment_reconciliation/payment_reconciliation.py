@@ -7,7 +7,10 @@ from frappe.utils import flt, today
 from frappe import msgprint, _
 from frappe.model.document import Document
 from erpnext.accounts.utils import (get_outstanding_invoices,
-	update_reference_in_payment_entry, reconcile_against_document)
+	update_reference_in_payment_entry, reconcile_against_document
+)
+from erpnext.setup.utils import get_exchange_rate
+
 from erpnext.controllers.accounts_controller import get_advance_payment_entries
 
 class PaymentReconciliation(Document):
@@ -109,6 +112,18 @@ class PaymentReconciliation(Document):
 	def add_payment_entries(self, entries):
 		self.set('payments', [])
 		for e in entries:
+			if e.reference_type == "Payment Entry":
+				doc = frappe.get_doc(e.reference_type, e.reference_name)
+				if doc.source_exchange_rate * e.amount < 0.01:
+					continue
+			else:
+				exchange_rates = frappe.db.sql('''
+					select exchange_rate from `tabJournal Entry Account`
+					where name = "{}"
+				'''.format(e.reference_row))
+				rate = exchange_rates[0][0] if exchange_rates else 1
+				if rate * e.amount < 0.01:
+					continue
 			row = self.append('payments', {})
 			row.update(e)
 
@@ -123,6 +138,7 @@ class PaymentReconciliation(Document):
 		if self.limit:
 			non_reconciled_invoices = non_reconciled_invoices[:self.limit]
 
+
 		self.add_invoice_entries(non_reconciled_invoices)
 
 	def add_invoice_entries(self, non_reconciled_invoices):
@@ -130,6 +146,21 @@ class PaymentReconciliation(Document):
 		self.set('invoices', [])
 
 		for e in non_reconciled_invoices:
+			if e.get('voucher_type') == "Sales Invoice":
+				exchange_rate = frappe.db.get_value("Sales Invoice",
+													e.get("voucher_no"),
+													"conversion_rate")
+				base_amount = e.get('outstanding_amount') * exchange_rate
+				if base_amount < 0.01:
+					continue
+			elif e.get('voucher_type') == "Journal Entry":
+				exchange_rates = frappe.db.sql('''
+					select exchange_rate from `tabJournal Entry Account`
+					where parent = "{}" and party = "{}" and party_type = "{}"
+				'''.format(e.voucher_no, self.party, self.party_type))
+				rate = exchange_rates[0][0] if exchange_rates else 1
+				if rate * e.outstanding_amount < 0.01:
+					continue
 			ent = self.append('invoices', {})
 			ent.invoice_type = e.get('voucher_type')
 			ent.invoice_number = e.get('voucher_no')
@@ -290,8 +321,8 @@ def reconcile_dr_cr_note(dr_cr_notes, company):
 				}
 			]
 		})
-  
-		if get_features().get('JMann_simple_ui'):
+
+		if get_features().get('JMann_simple_ui') and d.against_voucher_type != "Journal Entry":
 			branch = frappe.db.get_value(d.against_voucher_type, d.against_voucher, 'branch')
 			for acc in jv.accounts:
 				acc.branch = branch
