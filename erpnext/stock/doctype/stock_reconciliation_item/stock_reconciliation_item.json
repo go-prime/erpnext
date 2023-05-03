@@ -11,7 +11,6 @@
   "warehouse",
   "column_break_6",
   "qty",
-  "reason",
   "valuation_rate",
   "amount",
   "serial_no_and_batch_section",
@@ -167,19 +166,10 @@
    "fieldtype": "Link",
    "label": "Batch No",
    "options": "Batch"
-  },
-  {
-   "columns": 2,
-   "fieldname": "reason",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Reason",
-   "options": "Surplus/deficit on picking\nObsolete stock written off\nDamaged stock written off\nResult of interim spot-check\nProduct substitution\nResult of periodical stock take\nResult of perpetual stock take\nGoods lost/damaged in transit\nGoods returned to supplier\nFabrication\nProduction\nComposite Pipes\nStock Take Adjustments'",
-   "reqd": 1
   }
  ],
  "istable": 1,
- "modified": "2020-11-05 12:08:40.881186",
+ "modified": "2023-05-03 15:38:45.459919",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Reconciliation Item",
