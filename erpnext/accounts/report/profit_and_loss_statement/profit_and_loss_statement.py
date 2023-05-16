@@ -52,13 +52,26 @@ def jmann_execute(filters=None):
 	expense = get_data(filters.company, "Expense", "Debit", period_list, filters=filters,
 		accumulated_values=filters.accumulated_values,
 		ignore_closing_entries=True, ignore_accumulated_values_for_fy= True)
-	
+
 	direct_expenses_parent = frappe.db.sql('''
-		select name from `tabAccount` where name like "%direct expenses%"
-		and name not like "%indirect%" and company = "{}"'''.format(filters.get('company')))[0][0]
+		select 
+  			name 
+     	from `tabAccount` 
+      	where 
+       		name like "%direct expenses%"
+			and name not like "%indirect%" 
+   			and company = "{}"
+		order by account_name desc
+    	'''.format(filters.get('company')))[0][0]
 	indirect_expenses_parent = frappe.db.sql('''
-		select name from `tabAccount` where name like "%indirect expenses%"
-		and company = "{}"'''.format(filters.get('company')))[0][0]
+		select 
+  			name 
+     	from `tabAccount` 
+      	where 
+       		name like "%indirect expenses%"
+			and company = "{}"
+		order by account_name desc
+		'''.format(filters.get('company')))[0][0]
 	valuations_expenses_parent = frappe.db.sql('''
 		select name from `tabAccount` where account_number = 5125
 		and company = "{}"'''.format(filters.get('company')))
@@ -124,9 +137,10 @@ def jmann_execute(filters=None):
 		key = period.key
 		total_valuation_expenses[key] = sum([i[key] for i in list(filter(lambda x: x.get('indent', 1) == 1, valuation_expenses))])
 		profit_before_valuations[key] = total_valuation_expenses[key] + net_profit_loss[key]
-	
 
 	data = []
+	sorted(direct_expenses, key=lambda x: x.get('account_name'))
+	sorted(indirect_expenses, key=lambda x: x.get('account_name'))
 	data.extend(direct_income or [])
 	data.extend(direct_expenses or [])
 	data.append(gross_profit)
