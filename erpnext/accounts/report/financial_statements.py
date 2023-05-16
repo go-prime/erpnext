@@ -127,7 +127,7 @@ def get_label(periodicity, from_date, to_date):
 def get_data(
 		company, root_type, balance_must_be, period_list, filters=None,
 		accumulated_values=1, only_current_fiscal_year=True, ignore_closing_entries=False,
-		ignore_accumulated_values_for_fy=False , total = True):
+		ignore_accumulated_values_for_fy=False , total = True, include_zero_balances=False):
 
 	accounts = get_accounts(company, root_type)
 	if not accounts:
@@ -153,7 +153,8 @@ def get_data(
 		accounts_by_name, gl_entries_by_account, period_list, accumulated_values, ignore_accumulated_values_for_fy)
 	accumulate_values_into_parents(accounts, accounts_by_name, period_list, accumulated_values)
 	out = prepare_data(accounts, balance_must_be, period_list, company_currency)
-	out = filter_out_zero_value_rows(out, parent_children_map)
+	if not include_zero_balances:
+		out = filter_out_zero_value_rows(out, parent_children_map)
 
 	if out and total:
 		add_total_row(out, root_type, balance_must_be, period_list, company_currency)

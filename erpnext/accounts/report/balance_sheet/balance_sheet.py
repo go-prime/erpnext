@@ -15,15 +15,18 @@ def execute(filters=None):
 
 	asset = get_data(filters.company, "Asset", "Debit", period_list,
 		only_current_fiscal_year=False, filters=filters,
-		accumulated_values=filters.accumulated_values)
+		accumulated_values=filters.accumulated_values,
+  		include_zero_balances=True)
 
 	liability = get_data(filters.company, "Liability", "Credit", period_list,
 		only_current_fiscal_year=False, filters=filters,
-		accumulated_values=filters.accumulated_values)
+		accumulated_values=filters.accumulated_values,
+  		include_zero_balances=True)
 
 	equity = get_data(filters.company, "Equity", "Credit", period_list,
 		only_current_fiscal_year=False, filters=filters,
-		accumulated_values=filters.accumulated_values)
+		accumulated_values=filters.accumulated_values,
+  		include_zero_balances=True)
 
 	provisional_profit_loss, total_credit = get_provisional_profit_loss(asset, liability, equity,
 		period_list, filters.company, currency)
