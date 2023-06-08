@@ -146,7 +146,8 @@ def get_result(filters, account_details):
 def get_gl_entries(filters):
 	currency_map = get_currency(filters)
 	select_fields = """, debit, credit, debit_in_account_currency,
-		credit_in_account_currency """
+		credit_in_account_currency, debit_in_company_currency_2,
+		credit_in_company_currency_2  """
 
 	order_by_statement = "order by posting_date, account, creation"
 
