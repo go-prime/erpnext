@@ -220,6 +220,14 @@ def based_wise_columns_query(based_on, trans):
 		based_on_details["based_on_select"] = "t2.item_code, t2.item_name,"
 		based_on_details["based_on_group_by"] = 't2.item_code'
 		based_on_details["addl_tables"] = ''
+		if trans == "Purchase Receipt":
+			based_on_details["addl_tables"] = ',`tabItem` t3'
+			based_on_details["based_on_cols"].extend([
+       			{"label": "Default Supplier", "fieldtype": "Data", 'fieldname': 'default_supplier'},
+       			{"label": "Supplier ID", "fieldtype": "Data", 'fieldname': 'supplier_id', "hidden": 1}
+          	])
+			based_on_details["based_on_select"] += """ (SELECT supplier_name FROM tabSupplier WHERE name=t3.default_supplier),
+   													(SELECT name FROM tabSupplier WHERE name=t3.default_supplier) as suppler_id,"""
 
 	elif based_on == "Item Group":
 		based_on_details["based_on_cols"] = ["Item Group:Link/Item Group:120"]
