@@ -228,6 +228,7 @@ def based_wise_columns_query(based_on, trans):
           	])
 			based_on_details["based_on_select"] += """ (SELECT supplier_name FROM tabSupplier WHERE name=t3.default_supplier),
    													(SELECT name FROM tabSupplier WHERE name=t3.default_supplier) as suppler_id,"""
+			based_on_details["addl_tables_relational_cond"] = " and t3.name = t2.item_code"
 
 	elif based_on == "Item Group":
 		based_on_details["based_on_cols"] = ["Item Group:Link/Item Group:120"]
