@@ -24,7 +24,7 @@ class ExchangeRateRevaluation(Document):
 		self.total_gain_loss = flt(total_gain_loss, self.precision("total_gain_loss"))
 
 	def validate_mandatory(self):
-		if not (self.company and self.posting_date):
+		if not (self.company and self.posting_date and self.branch):
 			frappe.throw(_("Please select Company and Posting Date to getting entries"))
 
 	def get_accounts_data(self, account=None):
@@ -81,10 +81,12 @@ class ExchangeRateRevaluation(Document):
 					sum(debit) - sum(credit) as balance
 				from `tabGL Entry`
 				where account in (%s)
+    			and branch = "{}"
+				and posting_date <= "{}"
 				group by account, party_type, party
 				having sum(debit) != sum(credit)
 				order by account
-			""" % ', '.join(['%s']*len(accounts)), tuple(accounts), as_dict=1)
+			""".format(self.branch, self.posting_date) % ', '.join(['%s']*len(accounts)), tuple(accounts), as_dict=1)
 
 		return account_details
 
@@ -110,6 +112,7 @@ class ExchangeRateRevaluation(Document):
 		journal_entry.company = self.company
 		journal_entry.posting_date = self.posting_date
 		journal_entry.multi_currency = 1
+		cost_center = frappe.db.get_value("Company", self.company, "cost_center")
 
 		journal_entry_accounts = []
 		for d in self.accounts:
@@ -129,6 +132,8 @@ class ExchangeRateRevaluation(Document):
 				"exchange_rate":d.get("new_exchange_rate"),
 				"reference_type": "Exchange Rate Revaluation",
 				"reference_name": self.name,
+				"cost_center": cost_center,
+				"branch": self.branch
 				})
 			journal_entry_accounts.append({
 				"account": d.get("account"),
@@ -139,7 +144,9 @@ class ExchangeRateRevaluation(Document):
 				reverse_dr_or_cr: abs(d.get("balance_in_account_currency")),
 				"exchange_rate": d.get("current_exchange_rate"),
 				"reference_type": "Exchange Rate Revaluation",
-				"reference_name": self.name
+				"reference_name": self.name,
+				"cost_center": cost_center,
+				"branch": self.branch
 				})
 
 		journal_entry_accounts.append({
@@ -150,6 +157,8 @@ class ExchangeRateRevaluation(Document):
 			"exchange_rate": 1,
 			"reference_type": "Exchange Rate Revaluation",
 			"reference_name": self.name,
+			"cost_center": cost_center,
+			"branch": self.branch
 			})
 
 		journal_entry.set("accounts", journal_entry_accounts)
