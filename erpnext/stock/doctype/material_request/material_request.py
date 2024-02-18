@@ -445,6 +445,10 @@ def make_stock_entry(source_name, target_doc=None):
 		if source.material_request_type == "Customer Provided":
 			target.purpose = "Material Receipt"
 
+		if source.material_request_type == "Material Transfer":
+			target.material_request_ref = source.name
+
+
 		target.run_method("calculate_rate_and_amount")
 		target.set_stock_entry_type()
 		target.set_job_card_data()
