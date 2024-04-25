@@ -924,12 +924,11 @@
    "read_only": 1
   }
  ],
- "hide_toolbar": 1,
  "icon": "fa fa-shopping-cart",
  "idx": 82,
  "is_submittable": 1,
  "max_attachments": 1,
- "modified": "2020-10-13 09:32:51.084959",
+ "modified": "2024-02-02 11:30:09.153160",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quotation",
