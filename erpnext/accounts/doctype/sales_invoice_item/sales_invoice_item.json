@@ -105,7 +105,7 @@
   },
   {
    "bold": 1,
-   "columns": 4,
+   "columns": 3,
    "fieldname": "item_code",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -166,7 +166,7 @@
   },
   {
    "bold": 1,
-   "columns": 2,
+   "columns": 1,
    "fieldname": "qty",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -213,7 +213,7 @@
   },
   {
    "bold": 1,
-   "columns": 2,
+   "columns": 1,
    "fieldname": "price_list_rate",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -222,8 +222,7 @@
    "oldfieldtype": "Currency",
    "options": "currency",
    "print_hide": 1,
-   "print_width": "100px",
-   "width": "100px"
+   "reqd": 1
   },
   {
    "fieldname": "base_price_list_rate",
@@ -307,11 +306,10 @@
    "oldfieldname": "export_rate",
    "oldfieldtype": "Currency",
    "options": "currency",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
-   "columns": 2,
+   "columns": 1,
    "fieldname": "amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -789,7 +787,7 @@
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2024-04-25 12:18:20.788231",
+ "modified": "2024-04-25 13:14:13.660294",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice Item",
