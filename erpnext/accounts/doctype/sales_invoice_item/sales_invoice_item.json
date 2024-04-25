@@ -1,5 +1,4 @@
 {
- "actions": [],
  "autoname": "hash",
  "creation": "2013-06-04 11:02:19",
  "doctype": "DocType",
@@ -213,14 +212,18 @@
    "fieldtype": "Section Break"
   },
   {
+   "bold": 1,
+   "columns": 2,
    "fieldname": "price_list_rate",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Price List Rate",
    "oldfieldname": "ref_rate",
    "oldfieldtype": "Currency",
    "options": "currency",
    "print_hide": 1,
-   "read_only": 1
+   "print_width": "100px",
+   "width": "100px"
   },
   {
    "fieldname": "base_price_list_rate",
@@ -298,14 +301,13 @@
   },
   {
    "bold": 1,
-   "columns": 2,
    "fieldname": "rate",
    "fieldtype": "Currency",
-   "in_list_view": 1,
    "label": "Rate",
    "oldfieldname": "export_rate",
    "oldfieldtype": "Currency",
    "options": "currency",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -787,8 +789,7 @@
  ],
  "idx": 1,
  "istable": 1,
- "links": [],
- "modified": "2019-12-04 12:22:38.517710",
+ "modified": "2024-04-25 12:18:20.788231",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice Item",
