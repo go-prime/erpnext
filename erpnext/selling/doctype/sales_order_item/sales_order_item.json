@@ -91,7 +91,7 @@
  "fields": [
   {
    "bold": 1,
-   "columns": 1,
+   "columns": 2,
    "fieldname": "item_code",
    "fieldtype": "Link",
    "in_global_search": 1,
@@ -229,15 +229,17 @@
    "fieldtype": "Section Break"
   },
   {
+   "bold": 1,
+   "columns": 1,
    "fieldname": "price_list_rate",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Price List Rate",
    "oldfieldname": "ref_rate",
    "oldfieldtype": "Currency",
    "options": "currency",
    "print_hide": 1,
    "print_width": "70px",
-   "read_only": 1,
    "width": "70px"
   },
   {
@@ -318,17 +320,19 @@
    "precision": "2"
   },
   {
-   "columns": 1,
+   "depends_on": "eval: doc.type != \"\"",
    "fieldname": "rate",
    "fieldtype": "Currency",
-   "in_list_view": 1,
    "label": "Rate",
    "oldfieldname": "export_rate",
    "oldfieldtype": "Currency",
-   "options": "currency"
+   "options": "currency",
+   "print_width": "100px",
+   "read_only": 1,
+   "width": "100px"
   },
   {
-   "columns": 2,
+   "columns": 1,
    "fieldname": "amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -759,7 +763,7 @@
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2024-02-13 08:30:29.060881",
+ "modified": "2024-05-03 08:45:28.849996",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order Item",
