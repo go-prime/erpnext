@@ -292,7 +292,8 @@
    "label": "Rate",
    "oldfieldname": "import_rate",
    "oldfieldtype": "Currency",
-   "options": "currency"
+   "options": "currency",
+   "print_width": "160px"
   },
   {
    "columns": 2,
@@ -303,6 +304,7 @@
    "oldfieldname": "import_amount",
    "oldfieldtype": "Currency",
    "options": "currency",
+   "print_width": "160px",
    "read_only": 1
   },
   {
@@ -397,6 +399,7 @@
    "fieldname": "weight_per_unit",
    "fieldtype": "Float",
    "label": "Weight Per Unit",
+   "print_width": "15px",
    "read_only": 1
   },
   {
@@ -415,6 +418,7 @@
    "fieldtype": "Link",
    "label": "Weight UOM",
    "options": "UOM",
+   "print_width": "15px",
    "read_only": 1
   },
   {
@@ -712,7 +716,7 @@
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2019-11-07 17:19:12.090355",
+ "modified": "2024-05-06 12:27:17.174579",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order Item",
