@@ -100,9 +100,7 @@
    "oldfieldname": "item_code",
    "oldfieldtype": "Link",
    "options": "Item",
-   "print_width": "150px",
-   "reqd": 1,
-   "width": "150px"
+   "reqd": 1
   },
   {
    "fieldname": "customer_item_code",
@@ -132,7 +130,8 @@
    "print_hide": 1,
    "print_width": "150",
    "reqd": 1,
-   "width": "150"
+   "in_list_view": 1,
+   "columns": 3
   },
   {
    "collapsible": 1,
@@ -151,11 +150,9 @@
    "width": "300px"
   },
   {
-   "columns": 2,
    "depends_on": "eval: !parent.skip_delivery_note",
    "fieldname": "delivery_date",
    "fieldtype": "Date",
-   "in_list_view": 1,
    "label": "Delivery Date",
    "no_copy": 1,
    "print_hide": 1
@@ -186,9 +183,7 @@
    "label": "Quantity",
    "oldfieldname": "qty",
    "oldfieldtype": "Currency",
-   "print_width": "100px",
-   "reqd": 1,
-   "width": "100px"
+   "reqd": 1
   },
   {
    "fieldname": "stock_uom",
@@ -300,9 +295,8 @@
    "label": "Discount (%) on Price List Rate with Margin",
    "oldfieldname": "adj_rate",
    "oldfieldtype": "Float",
-   "print_hide": 1,
-   "print_width": "70px",
-   "width": "70px"
+   "in_list_view": 1,
+   "columns": 1
   },
   {
    "depends_on": "price_list_rate",
@@ -763,7 +757,8 @@
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "Free Stock",
-   "read_only": 1
+   "read_only": 1,
+   "columns": 1
   }
  ],
  "idx": 1,

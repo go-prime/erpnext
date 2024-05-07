@@ -384,6 +384,7 @@ class PaymentEntry(AccountsController):
 			self.title = self.paid_from + " - " + self.paid_to
 
 	def validate_transaction_reference(self):
+		return # kurima client not interested in this validation
 		bank_account = self.paid_to if self.payment_type == "Receive" else self.paid_from
 		bank_account_type = frappe.db.get_value("Account", bank_account, "account_type")
 
