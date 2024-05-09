@@ -9,5 +9,6 @@ def execute(filters=None):
 	args = {
 		"party_type": "Supplier",
 		"naming_by": ["Buying Settings", "supp_master_name"],
+		"report_name": "Accounts Payable"
 	}
 	return ReceivablePayableReport(filters).run(args)
