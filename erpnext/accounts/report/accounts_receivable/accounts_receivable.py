@@ -28,6 +28,7 @@ def execute(filters=None):
 	args = {
 		"party_type": "Customer",
 		"naming_by": ["Selling Settings", "cust_master_name"],
+		"report_name": "Accounts Receivable"
 	}
 	return ReceivablePayableReport(filters).run(args)
 
@@ -63,6 +64,7 @@ class ReceivablePayableReport(object):
 				except:
 					continue
 			self.columns = new_columns
+		self.column_ordering(args.get('report_name'))
 		return self.columns, self.data, None, self.chart, None, self.skip_total_row
 
 	def set_defaults(self):
@@ -839,3 +841,66 @@ class ReceivablePayableReport(object):
 			},
 			"type": 'percentage'
 		}
+
+	def get_column_ordering(self, report_name):
+		ordering_map = {
+			"Accounts Receivable": [
+				'Customer',
+				'Customer Name',
+				'Currency',
+				'Total',
+				'0-30',
+				'31-60',
+				'61-90',
+				'91-120',
+				'121-Above',
+				'Age (Days)',
+			],
+			"Accounts Payable": [
+				'Supplier', 
+				'Supplier Name', 
+				'Currency',
+				'Total',
+				'0-30', 
+				'31-60',
+				'61-90',
+				'91-120', 
+				'121-Above',
+			]
+		}
+		return ordering_map.get(report_name)
+ 	
+	def column_ordering(self, report_name=None):
+		ordering = self.get_column_ordering(report_name)
+		if not ordering:
+			return
+
+		columns = self.columns
+
+		# Create a mapping of column labels to their corresponding index positions
+		column_index_map = {column['label']: index for index, column in enumerate(self.columns)}
+
+		for index, field_name in enumerate(ordering):
+			if field_name in column_index_map:
+				column_index = column_index_map[field_name]
+				if column_index != index:
+					self.reposition_column(field_name, index, columns)
+
+	def reposition_column(self, target_column, position, columns):
+		# Find the current index of the target column
+		current_index = None
+		sorted_columns = columns
+		for index, column in enumerate(sorted_columns):
+			if column['label'] == target_column:
+				current_index = index
+				break
+
+		if current_index is None:
+			return
+
+		# Remove the target column from its current position and store it
+		removed_column = sorted_columns.pop(current_index)
+
+		# Insert the removed column into the desired position
+		sorted_columns.insert(position, removed_column)
+		self.columns = sorted_columns
