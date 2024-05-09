@@ -83,7 +83,7 @@ def is_p_or_l_account(account_name):
 	return account_name in P_OR_L_ACCOUNTS
 
 
-def convert_to_presentation_currency(gl_entries, currency_info, force_transaction_date=False):
+def convert_to_presentation_currency(gl_entries, currency_info):
 	"""
 	Take a list of GL Entries and change the 'debit' and 'credit' values to currencies
 	in `currency_info`.

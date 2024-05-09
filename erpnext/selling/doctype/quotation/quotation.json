@@ -349,7 +349,7 @@
    "label": "Exchange Rate",
    "oldfieldname": "conversion_rate",
    "oldfieldtype": "Currency",
-   "precision": "12",
+   "precision": "9",
    "print_hide": 1,
    "reqd": 1,
    "width": "100px"
@@ -929,7 +929,7 @@
  "idx": 82,
  "is_submittable": 1,
  "max_attachments": 1,
- "modified": "2022-09-19 15:10:34.220705",
+ "modified": "2020-10-13 09:32:51.084959",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quotation",

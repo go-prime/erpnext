@@ -159,10 +159,7 @@ def get_gl_entries(filters):
 		filters, as_dict=1)
 
 	if filters.get('presentation_currency'):
-		pl_account_cond = filters.get("pl_accounts_on_transaction_date")
-		return convert_to_presentation_currency(gl_entries,
-                                          		currency_map,
-                                            	force_transaction_date=pl_account_cond)
+		return convert_to_presentation_currency(gl_entries, currency_map)
 	else:
 		return gl_entries
 

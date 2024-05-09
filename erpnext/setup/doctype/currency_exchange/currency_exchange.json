@@ -46,7 +46,7 @@
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "Exchange Rate",
-   "precision": "12",
+   "precision": "9",
    "reqd": 1,
    "width": "3"
   },
@@ -69,7 +69,7 @@
  ],
  "icon": "fa fa-exchange",
  "idx": 1,
- "modified": "2022-09-19 15:02:35.368080",
+ "modified": "2021-06-10 16:14:02.015015",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Currency Exchange",

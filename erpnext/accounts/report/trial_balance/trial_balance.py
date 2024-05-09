@@ -131,8 +131,6 @@ def get_data(filters):
 		data = prepare_flattened_data(accounts, company_currency,filters, total_row)
 
 		data = filter_zero_values_on_flattened_data(data, filters)
-  
-		data = sort_expense_accounts(data, filters)
 	return data
 
 def get_opening_balances(filters):
@@ -374,48 +372,3 @@ def prepare_opening_closing(row):
 			row[valid_col] = 0.0
 		else:
 			row[reverse_col] = 0.0
-   
-def sort_expense_accounts(data, filters):
-    output_data = []
-    expense_accounts = []
-    total = data[-1]
-
-    root_expense_account = frappe.db.sql("""
-		select
-			name,
-			lft,
-			rgt
-		from `tabAccount`
-		where 
-  			parent_account is null
-			and root_type = 'Expense'
-			and company = %s
-    """, (filters.company, ), as_dict=True)[0]
-    
-    expense_account_names = frappe.db.sql_list("""
-		select 
-  			account_name
-     	from `tabAccount`
-		where 
-  			lft > %s
-			and rgt < %s
-		order by account_name
-    """, (root_expense_account.lft, root_expense_account.rgt))
-    
-    
-    for row in data:
-        account_name_parts = row.get('account_name').split(" - ")
-        account_name = account_name_parts[0] if len(account_name_parts) < 3 else account_name_parts[1]
-        if account_name in expense_account_names:
-            expense_accounts.append(row)
-        elif row.get('account') == "'Total'":
-            continue
-        else:
-            output_data.append(row)
-            
-    expense_accounts = sorted(expense_accounts, key=lambda x: x.get('account_name'))
-    
-    output_data.extend(expense_accounts)
-    output_data.append(total)
-
-    return output_data

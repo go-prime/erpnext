@@ -854,7 +854,7 @@ def get_reference_doc_posting_date(ref_doc=None, reference_doctype=None, referen
     
 @frappe.whitelist()
 def get_reference_details(reference_doctype, reference_name, party_account_currency):
-	total_amount = outstanding_amount = exchange_rate = bill_no, posting_date = None
+	total_amount = outstanding_amount = exchange_rate = bill_no = posting_date = None
 	ref_doc = frappe.get_doc(reference_doctype, reference_name)
 	company_currency = ref_doc.get("company_currency") or erpnext.get_company_currency(ref_doc.company)
 	posting_date = get_reference_doc_posting_date(ref_doc=ref_doc)
