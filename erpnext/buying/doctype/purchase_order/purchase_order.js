@@ -42,7 +42,6 @@ frappe.ui.form.on("Purchase Order", {
 				filters: {'company': frm.doc.company}
 			}
 		});
-
 	},
 
 	refresh: function(frm) {
