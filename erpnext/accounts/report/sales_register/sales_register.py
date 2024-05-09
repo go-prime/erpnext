@@ -132,6 +132,12 @@ def get_columns(invoice_list, additional_table_columns):
 			'fieldtype': 'Data',
 			'width': 120
 		},
+		{
+			"fieldname": "currency",
+			"label": _("Currency"),
+			"fieldtype": "Data",
+			"width": 80
+		}
 	]
 
 	if additional_table_columns:
@@ -217,12 +223,6 @@ def get_columns(invoice_list, additional_table_columns):
 			'fieldtype': 'Link',
 			'options': 'Warehouse',
 			'width': 100
-		},
-		{
-			"fieldname": "currency",
-			"label": _("Currency"),
-			"fieldtype": "Data",
-			"width": 80
 		}
 	]
 
