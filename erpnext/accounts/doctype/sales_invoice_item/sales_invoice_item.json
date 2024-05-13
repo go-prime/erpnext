@@ -1,5 +1,4 @@
 {
- "actions": [],
  "autoname": "hash",
  "creation": "2013-06-04 11:02:19",
  "doctype": "DocType",
@@ -106,7 +105,7 @@
   },
   {
    "bold": 1,
-   "columns": 4,
+   "columns": 3,
    "fieldname": "item_code",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -167,7 +166,7 @@
   },
   {
    "bold": 1,
-   "columns": 2,
+   "columns": 1,
    "fieldname": "qty",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -213,14 +212,17 @@
    "fieldtype": "Section Break"
   },
   {
+   "bold": 1,
+   "columns": 1,
    "fieldname": "price_list_rate",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Price List Rate",
    "oldfieldname": "ref_rate",
    "oldfieldtype": "Currency",
    "options": "currency",
    "print_hide": 1,
-   "read_only": 1
+   "reqd": 1
   },
   {
    "fieldname": "base_price_list_rate",
@@ -298,18 +300,16 @@
   },
   {
    "bold": 1,
-   "columns": 2,
    "fieldname": "rate",
    "fieldtype": "Currency",
-   "in_list_view": 1,
    "label": "Rate",
    "oldfieldname": "export_rate",
    "oldfieldtype": "Currency",
    "options": "currency",
-   "reqd": 1
+   "read_only": 1
   },
   {
-   "columns": 2,
+   "columns": 1,
    "fieldname": "amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -787,8 +787,7 @@
  ],
  "idx": 1,
  "istable": 1,
- "links": [],
- "modified": "2019-12-04 12:22:38.517710",
+ "modified": "2024-04-25 13:14:13.660294",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice Item",

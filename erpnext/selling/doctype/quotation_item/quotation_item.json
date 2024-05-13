@@ -74,7 +74,7 @@
  "fields": [
   {
    "bold": 1,
-   "columns": 4,
+   "columns": 3,
    "fieldname": "item_code",
    "fieldtype": "Link",
    "in_global_search": 1,
@@ -148,7 +148,7 @@
   },
   {
    "bold": 1,
-   "columns": 2,
+   "columns": 1,
    "fieldname": "qty",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -203,16 +203,15 @@
    "fieldtype": "Section Break"
   },
   {
+   "bold": 1,
+   "columns": 1,
    "fieldname": "price_list_rate",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Price List Rate",
    "oldfieldname": "ref_rate",
    "oldfieldtype": "Currency",
-   "options": "currency",
-   "print_hide": 1,
-   "print_width": "100px",
-   "read_only": 1,
-   "width": "100px"
+   "options": "currency"
   },
   {
    "fieldname": "base_price_list_rate",
@@ -292,16 +291,14 @@
    "fieldtype": "Section Break"
   },
   {
-   "bold": 1,
-   "columns": 2,
    "fieldname": "rate",
    "fieldtype": "Currency",
-   "in_list_view": 1,
    "label": "Rate",
    "oldfieldname": "export_rate",
    "oldfieldtype": "Currency",
    "options": "currency",
    "print_width": "100px",
+   "read_only": 1,
    "width": "100px"
   },
   {
@@ -313,7 +310,7 @@
    "read_only": 1
   },
   {
-   "columns": 2,
+   "columns": 1,
    "fieldname": "amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -598,7 +595,7 @@
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2021-06-04 15:27:01.825271",
+ "modified": "2024-04-25 13:22:15.914848",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quotation Item",
