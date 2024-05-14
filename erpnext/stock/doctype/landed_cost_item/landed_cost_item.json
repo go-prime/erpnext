@@ -135,17 +135,17 @@
   {
    "fieldname": "unit_weight",
    "fieldtype": "Float",
-   "label": "Unit Weight (Kgs)"
+   "label": "Unit Weight"
   },
   {
    "fieldname": "weight",
    "fieldtype": "Float",
-   "label": "Weight (Kgs)"
+   "label": "Weight"
   }
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2024-05-14 10:30:42.073329",
+ "modified": "2024-05-14 15:11:50.550121",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Landed Cost Item",
