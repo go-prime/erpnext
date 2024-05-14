@@ -23,6 +23,7 @@ class LandedCostVoucher(Document):
 					""".format(doctype=pr.receipt_document_type), pr.receipt_document, as_dict=True)
 
 				for d in pr_items:
+					unit_weight = frappe.db.get_value('Item', d.item_code, 'weight_per_unit') or 0
 					item = self.append("items")
 					item.item_code = d.item_code
 					item.description = d.description
@@ -35,6 +36,8 @@ class LandedCostVoucher(Document):
 					item.receipt_document = pr.receipt_document
 					item.purchase_receipt_item = d.name
 					item.is_fixed_asset = d.is_fixed_asset
+					item.unit_weight = unit_weight
+					item.weight = d.qty * unit_weight
 
 	def validate(self):
 		self.check_mandatory()
@@ -86,9 +89,11 @@ class LandedCostVoucher(Document):
 
 		precision = get_field_precision(frappe.get_meta("Landed Cost Item").get_field("applicable_charges"),
 		currency=frappe.get_cached_value('Company',  self.company,  "default_currency"))
-
 		diff = flt(self.total_taxes_and_charges) - flt(total_applicable_charges)
 		diff = flt(diff, precision)
+
+		print(self.items[-1])
+		print(self.items[-1])
 
 		if abs(diff) < (2.0 / (10**precision)):
 			self.items[-1].applicable_charges += diff
