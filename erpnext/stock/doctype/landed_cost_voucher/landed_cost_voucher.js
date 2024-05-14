@@ -53,7 +53,7 @@ erpnext.stock.LandedCostVoucher = erpnext.stock.StockController.extend({
 					</h4>
 					<ul>
 						<li>
-							${__("Charges will be distributed proportionately based on item qty or amount, as per your selection")}
+							${__("Charges will be distributed proportionately based on item qty, weight or amount, as per your selection")}
 						</li>
 						<li>
 							${__("Remove item if charges is not applicable to that item")}

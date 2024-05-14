@@ -15,6 +15,7 @@
   "unit_weight",
   "weight",
   "amount",
+  "weight",
   "is_fixed_asset",
   "applicable_charges",
   "purchase_receipt_item",
@@ -68,6 +69,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "columns": 1,
    "fieldname": "qty",
    "fieldtype": "Float",
    "in_list_view": 1,

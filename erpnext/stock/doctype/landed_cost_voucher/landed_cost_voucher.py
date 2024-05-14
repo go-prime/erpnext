@@ -26,12 +26,16 @@ class LandedCostVoucher(Document):
 					unit_weight = frappe.db.get_value('Item', d.item_code, 'weight_per_unit') or 0
 					item = self.append("items")
 					item.item_code = d.item_code
+					
 					item.description = d.description
 					item.qty = d.qty
 					item.rate = d.base_rate
 					item.cost_center = d.cost_center or \
 						erpnext.get_default_cost_center(self.company)
 					item.amount = d.base_amount
+					item_fields = ["weight_per_unit", "measure_factor"]
+					unit_weight, mea_factor = frappe.db.get_value("Item", d.item_code, item_fields)
+					item.weight = d.qty * flt(unit_weight) * (flt(mea_factor) or 1)
 					item.receipt_document_type = pr.receipt_document_type
 					item.receipt_document = pr.receipt_document
 					item.purchase_receipt_item = d.name
