@@ -90,6 +90,7 @@ erpnext.stock.LandedCostVoucher = erpnext.stock.StockController.extend({
 	},
 
 	amount: function(frm) {
+		this.set_total_taxes_and_charges();
 		this.set_applicable_charges_for_item();
 	},
 
