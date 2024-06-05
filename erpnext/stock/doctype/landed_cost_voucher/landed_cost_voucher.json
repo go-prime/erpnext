@@ -99,7 +99,7 @@
    "fieldname": "distribute_charges_based_on",
    "fieldtype": "Select",
    "label": "Distribute Charges Based On",
-   "options": "Qty\nAmount\nWeight",
+   "options": "Qty\nAmount\nManually\nDuty",
    "reqd": 1
   },
   {
@@ -123,7 +123,7 @@
  ],
  "icon": "icon-usd",
  "is_submittable": 1,
- "modified": "2024-05-14 10:45:30.305782",
+ "modified": "2024-06-05 16:01:13.052743",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Landed Cost Voucher",

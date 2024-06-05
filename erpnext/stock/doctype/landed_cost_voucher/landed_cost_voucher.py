@@ -92,8 +92,6 @@ class LandedCostVoucher(Document):
 		diff = flt(self.total_taxes_and_charges) - flt(total_applicable_charges)
 		diff = flt(diff, precision)
 
-		print(self.items[-1])
-		print(self.items[-1])
 
 		if abs(diff) < (2.0 / (10**precision)):
 			self.items[-1].applicable_charges += diff
