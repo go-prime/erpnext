@@ -45,6 +45,12 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 				"fieldtype": "Date",
 				"default": frappe.defaults.get_user_default("year_end_date"),
 			},
+			{
+				"fieldname": "presentation_currency",
+				"label": __("Currency"),
+				"fieldtype": "Select",
+				"options": erpnext.get_presentation_currency_list()
+			},
 			// {
 			// 	"fieldname":"cost_center",
 			// 	"label": __("Cost Center"),
