@@ -86,7 +86,7 @@ class LandedCostVoucher(Document):
 
 		total = sum([flt(d.get(based_on)) for d in self.get("items")])
 
-		if not total:
+		if not total and based_on != "manually":
 			frappe.throw(_("Total {0} for all items is zero, may be you should change 'Distribute Charges Based On'").format(based_on))
 
 		total_applicable_charges = sum([flt(d.applicable_charges) for d in self.get("items")])
