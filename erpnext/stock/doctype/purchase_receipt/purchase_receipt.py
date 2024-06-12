@@ -648,6 +648,8 @@ def get_item_account_wise_additional_cost(purchase_document):
 	for lcv in landed_cost_vouchers:
 		landed_cost_voucher_doc = frappe.get_doc("Landed Cost Voucher", lcv.parent)
 		based_on_field = frappe.scrub(landed_cost_voucher_doc.distribute_charges_based_on)
+		if "manually" in  based_on_field:
+			based_on_field = "amount"
 		total_item_cost = 0
 
 		for item in landed_cost_voucher_doc.items:
