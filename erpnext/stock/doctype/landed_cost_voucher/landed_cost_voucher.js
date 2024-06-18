@@ -91,6 +91,7 @@ erpnext.stock.LandedCostVoucher = erpnext.stock.StockController.extend({
 
 	amount: function(frm) {
 		this.set_applicable_charges_for_item();
+		this.set_total_taxes_and_charges();
 	},
 
 	set_total_taxes_and_charges: function() {
@@ -104,6 +105,10 @@ erpnext.stock.LandedCostVoucher = erpnext.stock.StockController.extend({
 	set_applicable_charges_for_item: function() {
 		var me = this;
 
+		if(this.frm.doc.distribute_charges_based_on == "Manually") {
+			return 
+		}
+
 		if(this.frm.doc.taxes.length) {
 
 			var total_item_cost = 0.0;
@@ -114,12 +119,16 @@ erpnext.stock.LandedCostVoucher = erpnext.stock.StockController.extend({
 
 			var total_charges = 0.0;
 			$.each(this.frm.doc.items || [], function(i, item) {
-				item.applicable_charges = flt(item[based_on]) * flt(me.frm.doc.total_taxes_and_charges) / flt(total_item_cost)
-				item.applicable_charges = flt(item.applicable_charges, precision("applicable_charges", item))
+				if(based_on == "duty") {
+					frappe.model.set_value(item.doctype, item.name, "applicable_charges", (item.duty / 100.0) * item.amount)
+				} else {
+					item.applicable_charges = flt(item[based_on]) * flt(me.frm.doc.total_taxes_and_charges) / flt(total_item_cost)
+					item.applicable_charges = flt(item.applicable_charges, precision("applicable_charges", item))
+				}
 				total_charges += item.applicable_charges
 			});
 
-			if (total_charges != this.frm.doc.total_taxes_and_charges){
+			if (total_charges != this.frm.doc.total_taxes_and_charges && based_on != "duty"){
 				var diff = this.frm.doc.total_taxes_and_charges - flt(total_charges)
 				this.frm.doc.items.slice(-1)[0].applicable_charges += diff
 			}
