@@ -36,6 +36,7 @@
   "book_tax_discount_loss",
   "print_settings",
   "show_inclusive_tax_in_print",
+  "show_taxes_as_table_in_print",
   "column_break_12",
   "show_payment_schedule_in_print",
   "currency_exchange_section",
@@ -59,9 +60,20 @@
   "closing_settings_tab",
   "period_closing_settings_section",
   "acc_frozen_upto",
+  "ignore_account_closing_balance",
   "column_break_25",
   "frozen_accounts_modifier",
-  "report_settings_sb"
+  "report_settings_sb",
+  "banking_tab",
+  "enable_party_matching",
+  "enable_fuzzy_matching",
+  "tab_break_dpet",
+  "show_balance_in_coa",
+  "reports_tab",
+  "remarks_section",
+  "general_ledger_remarks_length",
+  "column_break_lvjk",
+  "receivable_payable_remarks_length"
  ],
  "fields": [
   {
@@ -378,6 +390,78 @@
    "fieldname": "auto_reconcile_payments",
    "fieldtype": "Check",
    "label": "Auto Reconcile Payments"
+  },
+  {
+   "default": "0",
+   "fieldname": "show_taxes_as_table_in_print",
+   "fieldtype": "Check",
+   "label": "Show Taxes as Table in Print"
+  },
+  {
+   "fieldname": "banking_tab",
+   "fieldtype": "Tab Break",
+   "label": "Banking"
+  },
+  {
+   "default": "0",
+   "description": "Auto match and set the Party in Bank Transactions",
+   "fieldname": "enable_party_matching",
+   "fieldtype": "Check",
+   "label": "Enable Automatic Party Matching"
+  },
+  {
+   "default": "0",
+   "depends_on": "enable_party_matching",
+   "description": "Approximately match the description/party name against parties",
+   "fieldname": "enable_fuzzy_matching",
+   "fieldtype": "Check",
+   "label": "Enable Fuzzy Matching"
+  },
+  {
+   "default": "0",
+   "description": "Financial reports will be generated using GL Entry doctypes (should be enabled if Period Closing Voucher is not posted for all years sequentially or missing) ",
+   "fieldname": "ignore_account_closing_balance",
+   "fieldtype": "Check",
+   "label": "Ignore Account Closing Balance"
+  },
+  {
+   "fieldname": "tab_break_dpet",
+   "fieldtype": "Tab Break",
+   "label": "Chart Of Accounts"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_balance_in_coa",
+   "fieldtype": "Check",
+   "label": "Show Balances in Chart Of Accounts"
+  },
+  {
+   "fieldname": "reports_tab",
+   "fieldtype": "Tab Break",
+   "label": "Reports"
+  },
+  {
+   "default": "0",
+   "description": "Truncates 'Remarks' column to set character length",
+   "fieldname": "general_ledger_remarks_length",
+   "fieldtype": "Int",
+   "label": "General Ledger"
+  },
+  {
+   "default": "0",
+   "description": "Truncates 'Remarks' column to set character length",
+   "fieldname": "receivable_payable_remarks_length",
+   "fieldtype": "Int",
+   "label": "Accounts Receivable/Payable"
+  },
+  {
+   "fieldname": "column_break_lvjk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks_section",
+   "fieldtype": "Section Break",
+   "label": "Remarks Column Length"
   }
  ],
  "icon": "icon-cog",
@@ -385,7 +469,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-04-21 13:11:37.130743",
+ "modified": "2023-11-20 09:37:47.650347",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Accounts Settings",

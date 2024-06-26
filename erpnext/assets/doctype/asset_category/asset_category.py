@@ -38,7 +38,9 @@ class AssetCategory(Document):
 					account_currency = frappe.get_value("Account", d.get(type_of_account), "account_currency")
 					if account_currency != company_currency:
 						invalid_accounts.append(
-							frappe._dict({"type": type_of_account, "idx": d.idx, "account": d.get(type_of_account)})
+							frappe._dict(
+								{"type": type_of_account, "idx": d.idx, "account": d.get(type_of_account)}
+							)
 						)
 
 		for d in invalid_accounts:
@@ -53,7 +55,7 @@ class AssetCategory(Document):
 		account_type_map = {
 			"fixed_asset_account": {"account_type": ["Fixed Asset"]},
 			"accumulated_depreciation_account": {"account_type": ["Accumulated Depreciation"]},
-			"depreciation_expense_account": {"root_type": ["Expense", "Income"]},
+			"depreciation_expense_account": {"account_type": ["Depreciation"]},
 			"capital_work_in_progress_account": {"account_type": ["Capital Work in Progress"]},
 		}
 		for d in self.accounts:
@@ -67,12 +69,12 @@ class AssetCategory(Document):
 					if selected_key_type not in expected_key_types:
 						frappe.throw(
 							_(
-								"Row #{}: {} of {} should be {}. Please modify the account or select a different account."
+								"Row #{0}: {1} of {2} should be {3}. Please update the {1} or select a different account."
 							).format(
 								d.idx,
 								frappe.unscrub(key_to_match),
 								frappe.bold(selected_account),
-								frappe.bold(expected_key_types),
+								frappe.bold(" or ".join(expected_key_types)),
 							),
 							title=_("Invalid Account"),
 						)
@@ -96,7 +98,6 @@ class AssetCategory(Document):
 				frappe.throw(msg, title=_("Missing Account"))
 
 
-@frappe.whitelist()
 def get_asset_category_account(
 	fieldname, item=None, asset=None, account=None, asset_category=None, company=None
 ):

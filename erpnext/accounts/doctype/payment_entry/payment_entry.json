@@ -48,7 +48,8 @@
   "base_received_amount",
   "base_received_amount_after_tax",
   "section_break_14",
-  "get_outstanding_invoice",
+  "get_outstanding_invoices",
+  "get_outstanding_orders",
   "references",
   "section_break_34",
   "total_allocated_amount",
@@ -356,12 +357,6 @@
    "label": "Reference"
   },
   {
-   "depends_on": "eval:doc.docstatus==0",
-   "fieldname": "get_outstanding_invoice",
-   "fieldtype": "Button",
-   "label": "Get Outstanding Invoice"
-  },
-  {
    "fieldname": "references",
    "fieldtype": "Table",
    "label": "Payment References",
@@ -581,6 +576,7 @@
    "fieldtype": "Select",
    "hidden": 1,
    "label": "Payment Order Status",
+   "no_copy": 1,
    "options": "Initiated\nPayment Ordered",
    "read_only": 1
   },
@@ -728,12 +724,32 @@
    "fieldname": "section_break_60",
    "fieldtype": "Section Break",
    "hide_border": 1
+  },
+  {
+   "depends_on": "eval:doc.docstatus==0",
+   "fieldname": "get_outstanding_invoices",
+   "fieldtype": "Button",
+   "label": "Get Outstanding Invoices"
+  },
+  {
+   "depends_on": "eval:doc.docstatus==0",
+   "fieldname": "get_outstanding_orders",
+   "fieldtype": "Button",
+   "label": "Get Outstanding Orders"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2023-02-14 04:52:30.478523",
+ "links": [
+  {
+   "is_child_table": 1,
+   "link_doctype": "Bank Transaction Payments",
+   "link_fieldname": "payment_entry",
+   "parent_doctype": "Bank Transaction",
+   "table_fieldname": "payment_entries"
+  }
+ ],
+ "modified": "2023-11-23 12:07:20.887885",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Payment Entry",
