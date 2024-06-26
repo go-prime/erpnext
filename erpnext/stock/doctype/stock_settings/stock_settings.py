@@ -61,9 +61,9 @@ class StockSettings(Document):
 		for field in warehouse_fields:
 			if frappe.db.get_value("Warehouse", self.get(field), "is_group"):
 				frappe.throw(
-					_("Group Warehouses cannot be used in transactions. Please change the value of {0}").format(
-						frappe.bold(self.meta.get_field(field).label)
-					),
+					_(
+						"Group Warehouses cannot be used in transactions. Please change the value of {0}"
+					).format(frappe.bold(self.meta.get_field(field).label)),
 					title=_("Incorrect Warehouse"),
 				)
 
@@ -93,6 +93,7 @@ class StockSettings(Document):
 			frappe.enqueue(
 				"erpnext.stock.doctype.stock_settings.stock_settings.clean_all_descriptions",
 				now=frappe.flags.in_test,
+				enqueue_after_commit=True,
 			)
 
 	def validate_pending_reposts(self):

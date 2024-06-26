@@ -50,9 +50,7 @@ def get_data(filters):
 	timesheets = get_timesheets(filters)
 
 	filters.from_date = frappe.utils.get_datetime(filters.from_date)
-	filters.to_date = frappe.utils.add_to_date(
-		frappe.utils.get_datetime(filters.to_date), days=1, seconds=-1
-	)
+	filters.to_date = frappe.utils.add_to_date(frappe.utils.get_datetime(filters.to_date), days=1, seconds=-1)
 
 	timesheet_details = get_timesheet_details(filters, timesheets.keys())
 
@@ -98,9 +96,11 @@ def get_timesheets(filters):
 	record_filters = [
 		["start_date", "<=", filters.to_date],
 		["end_date", ">=", filters.from_date],
-		["docstatus", "=", 1],
 	]
-
+	if not filters.get("include_draft_timesheets"):
+		record_filters.append(["docstatus", "=", 1])
+	else:
+		record_filters.append(["docstatus", "!=", 2])
 	if "employee" in filters:
 		record_filters.append(["employee", "=", filters.employee])
 

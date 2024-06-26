@@ -157,7 +157,7 @@
   "party_account_currency",
   "inter_company_order_reference",
   "is_old_subcontracting_flow",
-  "dashboard"
+  "connections_tab"
  ],
  "fields": [
   {
@@ -475,6 +475,7 @@
    "depends_on": "eval:doc.is_subcontracted",
    "fieldname": "supplier_warehouse",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Supplier Warehouse",
    "options": "Warehouse"
   },
@@ -638,7 +639,7 @@
   },
   {
    "fieldname": "other_charges_calculation",
-   "fieldtype": "Long Text",
+   "fieldtype": "Text Editor",
    "label": "Taxes and Charges Calculation",
    "no_copy": 1,
    "oldfieldtype": "HTML",
@@ -1186,12 +1187,6 @@
    "label": "More Info"
   },
   {
-   "fieldname": "dashboard",
-   "fieldtype": "Tab Break",
-   "label": "Dashboard",
-   "show_dashboard": 1
-  },
-  {
    "fieldname": "column_break_7",
    "fieldtype": "Column Break"
   },
@@ -1266,13 +1261,19 @@
    "fieldname": "shipping_address_section",
    "fieldtype": "Section Break",
    "label": "Shipping Address"
+  },
+  {
+   "fieldname": "connections_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-07 20:18:09.196799",
+ "modified": "2024-03-20 16:03:31.611808",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order",

@@ -3,7 +3,6 @@
 
 
 import json
-from typing import Dict, Optional
 
 import frappe
 from frappe.utils import cint
@@ -49,7 +48,6 @@ def search_by_term(search_term, warehouse, price_list):
 			)
 
 	item_stock_qty, is_stock_item = get_stock_availability(item_code, warehouse)
-	item_stock_qty = item_stock_qty // item.get("conversion_factor")
 	item_stock_qty = item_stock_qty // item.get("conversion_factor", 1)
 	item.update({"actual_qty": item_stock_qty})
 
@@ -59,7 +57,7 @@ def search_by_term(search_term, warehouse, price_list):
 			"price_list": price_list,
 			"item_code": item_code,
 		},
-		fields=["uom", "stock_uom", "currency", "price_list_rate"],
+		fields=["uom", "currency", "price_list_rate"],
 	)
 
 	def __sort(p):
@@ -179,16 +177,14 @@ def get_items(start, page_length, price_list, item_group, pos_profile, search_te
 
 
 @frappe.whitelist()
-def search_for_serial_or_batch_or_barcode_number(search_value: str) -> Dict[str, Optional[str]]:
+def search_for_serial_or_batch_or_barcode_number(search_value: str) -> dict[str, str | None]:
 	return scan_barcode(search_value)
 
 
 def get_conditions(search_term):
 	condition = "("
 	condition += """item.name like {search_term}
-		or item.item_name like {search_term}""".format(
-		search_term=frappe.db.escape("%" + search_term + "%")
-	)
+		or item.item_name like {search_term}""".format(search_term=frappe.db.escape("%" + search_term + "%"))
 	condition += add_search_fields_condition(search_term)
 	condition += ")"
 
@@ -200,7 +196,7 @@ def add_search_fields_condition(search_term):
 	search_fields = frappe.get_all("POS Search Fields", fields=["fieldname"])
 	if search_fields:
 		for field in search_fields:
-			condition += " or item.`{0}` like {1}".format(
+			condition += " or item.`{}` like {}".format(
 				field["fieldname"], frappe.db.escape("%" + search_term + "%")
 			)
 	return condition
@@ -230,10 +226,8 @@ def item_group_query(doctype, txt, searchfield, start, page_len, filters):
 			cond = cond % tuple(item_groups)
 
 	return frappe.db.sql(
-		""" select distinct name from `tabItem Group`
-			where {condition} and (name like %(txt)s) limit {page_len} offset {start}""".format(
-			condition=cond, start=start, page_len=page_len
-		),
+		f""" select distinct name from `tabItem Group`
+			where {cond} and (name like %(txt)s) limit {page_len} offset {start}""",
 		{"txt": "%%%s%%" % txt},
 	)
 
@@ -278,12 +272,12 @@ def get_past_order_list(search_term, status, limit=20):
 	if search_term and status:
 		invoices_by_customer = frappe.db.get_all(
 			"POS Invoice",
-			filters={"customer": ["like", "%{}%".format(search_term)], "status": status},
+			filters={"customer": ["like", f"%{search_term}%"], "status": status},
 			fields=fields,
 		)
 		invoices_by_name = frappe.db.get_all(
 			"POS Invoice",
-			filters={"name": ["like", "%{}%".format(search_term)], "status": status},
+			filters={"name": ["like", f"%{search_term}%"], "status": status},
 			fields=fields,
 		)
 

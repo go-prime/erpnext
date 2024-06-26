@@ -24,11 +24,8 @@ class ItemGroup(NestedSet, WebsiteGenerator):
 		no_breadcrumbs=1,
 	)
 
-	def autoname(self):
-		self.name = self.item_group_name
-
 	def validate(self):
-		super(ItemGroup, self).validate()
+		super().validate()
 
 		if not self.parent_item_group and not frappe.flags.in_test:
 			if frappe.db.exists("Item Group", _("All Item Groups")):
@@ -48,7 +45,7 @@ class ItemGroup(NestedSet, WebsiteGenerator):
 					frappe.throw(
 						_("{0} entered twice {1} in Item Taxes").format(
 							frappe.bold(d.item_tax_template),
-							"for tax category {0}".format(frappe.bold(d.tax_category)) if d.tax_category else "",
+							f"for tax category {frappe.bold(d.tax_category)}" if d.tax_category else "",
 						)
 					)
 				else:
@@ -76,7 +73,7 @@ class ItemGroup(NestedSet, WebsiteGenerator):
 			return self.route
 
 	def on_trash(self):
-		NestedSet.on_trash(self)
+		NestedSet.on_trash(self, allow_root_deletion=True)
 		WebsiteGenerator.on_trash(self)
 		self.delete_child_item_groups_key()
 

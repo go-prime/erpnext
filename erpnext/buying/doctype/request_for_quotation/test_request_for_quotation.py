@@ -2,11 +2,14 @@
 # See license.txt
 
 
+from urllib.parse import urlparse
+
 import frappe
 from frappe.tests.utils import FrappeTestCase
 from frappe.utils import nowdate
 
 from erpnext.buying.doctype.request_for_quotation.request_for_quotation import (
+	RequestforQuotation,
 	create_supplier_quotation,
 	get_pdf,
 	make_supplier_quotation_from_rfq,
@@ -61,9 +64,7 @@ class TestRequestforQuotation(FrappeTestCase):
 
 		rfq = make_request_for_quotation(supplier_data=supplier_wt_appos)
 
-		sq = make_supplier_quotation_from_rfq(
-			rfq.name, for_supplier=supplier_wt_appos[0].get("supplier")
-		)
+		sq = make_supplier_quotation_from_rfq(rfq.name, for_supplier=supplier_wt_appos[0].get("supplier"))
 		sq.submit()
 
 		frappe.form_dict.name = rfq.name
@@ -94,9 +95,7 @@ class TestRequestforQuotation(FrappeTestCase):
 			row = item.append("uoms", {"uom": "Kg", "conversion_factor": 2})
 			row.db_update()
 
-		rfq = make_request_for_quotation(
-			item_code="_Test Multi UOM RFQ Item", uom="Kg", conversion_factor=2
-		)
+		rfq = make_request_for_quotation(item_code="_Test Multi UOM RFQ Item", uom="Kg", conversion_factor=2)
 		rfq.get("items")[0].rate = 100
 		rfq.supplier = rfq.suppliers[0].supplier
 
@@ -125,13 +124,18 @@ class TestRequestforQuotation(FrappeTestCase):
 		rfq.status = "Draft"
 		rfq.submit()
 
+	def test_get_link(self):
+		rfq = make_request_for_quotation()
+		parsed_link = urlparse(rfq.get_link())
+		self.assertEqual(parsed_link.path, f"/rfq/{rfq.name}")
+
 	def test_get_pdf(self):
 		rfq = make_request_for_quotation()
 		get_pdf(rfq.name, rfq.get("suppliers")[0].supplier)
 		self.assertEqual(frappe.local.response.type, "pdf")
 
 
-def make_request_for_quotation(**args):
+def make_request_for_quotation(**args) -> "RequestforQuotation":
 	"""
 	:param supplier_data: List containing supplier data
 	"""
