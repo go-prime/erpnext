@@ -574,6 +574,18 @@ class PurchaseReceipt(BuyingController):
 				elif warehouse_account.get(d.warehouse):
 					stock_value_diff = get_stock_value_difference(self.name, d.name, d.warehouse)
 					stock_asset_account_name = warehouse_account[d.warehouse]["account"]
+					# Goprime 2024
+					group_account = frappe.db.sql('''
+						select 
+							t2.default_inventory_account
+						from `tabItem` t1
+						inner join `tabItem Default` t2 on t2.parent = t1.item_group and t2.company = %s
+						where 
+							t1.name = %s
+					''', (self.company, d.item_code, ))
+					if group_account:
+						stock_asset_account_name = group_account[0][0]
+
 					supplier_warehouse_account = warehouse_account.get(self.supplier_warehouse, {}).get(
 						"account"
 					)
