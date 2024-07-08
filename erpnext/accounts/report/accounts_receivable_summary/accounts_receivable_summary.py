@@ -88,6 +88,7 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 
 					self.party_total[d.party][k] += d.get(k, 0.0)
 
+			self.party_total[d.party]['medical_aid'] = d.medical_aid
 			# set territory, customer_group, sales person etc
 			self.set_party_details(d)
 
@@ -132,6 +133,14 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 			fieldtype="Link",
 			options=self.party_type,
 			width=180,
+		)
+
+		self.add_column(
+			label="Medical Aid",
+			fieldname="medical_aid",
+			fieldtype="Link",
+			options="Medical Aid",
+			width=150,
 		)
 
 		if self.party_naming_by == "Naming Series":

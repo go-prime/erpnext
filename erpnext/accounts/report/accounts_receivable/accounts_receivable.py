@@ -119,6 +119,7 @@ class ReceivablePayableReport(object):
 					voucher_type=ple.voucher_type,
 					voucher_no=ple.voucher_no,
 					party=ple.party,
+					medical_aid=ple.medical_aid,
 					party_account=ple.account,
 					posting_date=ple.posting_date,
 					account_currency=ple.account_currency,
@@ -686,10 +687,9 @@ class ReceivablePayableReport(object):
 			self.qb_selection_filter.append(self.ple.posting_date.lte(self.filters.report_date))
 
 		ple = qb.DocType("Payment Ledger Entry")
-		query = (
-			qb.from_(ple)
-			.select(
-				ple.account,
+		party_type = qb.DocType(self.party_type)
+		columns = [
+			ple.account,
 				ple.voucher_type,
 				ple.voucher_no,
 				ple.against_voucher_type,
@@ -702,8 +702,15 @@ class ReceivablePayableReport(object):
 				ple.account_currency,
 				ple.amount,
 				ple.amount_in_account_currency,
-				ple.remarks,
-			)
+				ple.remarks
+		]
+		if frappe.scrub(self.party_type) == "customer":
+			columns.append(party_type.medical_aid)
+		query = (
+			qb.from_(ple)
+			.join(party_type)
+			.on(ple.party == party_type.name)
+			.select(*columns)
 			.where(ple.delinked == 0)
 			.where(Criterion.all(self.qb_selection_filter))
 		)
@@ -796,6 +803,14 @@ class ReceivablePayableReport(object):
 		if self.filters.get("territory"):
 			self.get_hierarchical_filters("Territory", "territory")
 
+		if self.filters.get("medical_aid"):
+			self.qb_selection_filter.append(
+				self.ple.party.isin(
+					qb.from_(self.customer)
+					.select(self.customer.name)
+					.where(self.customer.medical_aid == self.filters.get("medical_aid"))
+				)
+			)
 		if self.filters.get("payment_terms_template"):
 			self.qb_selection_filter.append(
 				self.ple.party.isin(
