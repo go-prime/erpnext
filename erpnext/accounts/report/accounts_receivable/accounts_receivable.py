@@ -128,6 +128,7 @@ class ReceivablePayableReport:
 					voucher_no=ple.voucher_no,
 					party=ple.party,
 					party_account=ple.account,
+					medical_aid=ple.medical_aid,
 					posting_date=ple.posting_date,
 					account_currency=ple.account_currency,
 					remarks=ple.remarks,
@@ -766,27 +767,35 @@ class ReceivablePayableReport:
 			self.qb_selection_filter.append(self.ple.posting_date.lte(self.filters.report_date))
 
 		ple = qb.DocType("Payment Ledger Entry")
+		party_type = qb.DocType(self.party_type[0])
+		columns = [
+			ple.account,
+			ple.name,
+			ple.account,
+			ple.voucher_type,
+			ple.voucher_no,
+			ple.against_voucher_type,
+			ple.against_voucher_no,
+			ple.party_type,
+			ple.cost_center,
+			ple.party,
+			ple.posting_date,
+			ple.due_date,
+			ple.account_currency,
+			ple.amount,
+			ple.amount_in_account_currency
+		]
+		if frappe.scrub(self.party_type[0]) == "customer":
+			columns.append(party_type.medical_aid)
+
 		query = (
 			qb.from_(ple)
-			.select(
-				ple.name,
-				ple.account,
-				ple.voucher_type,
-				ple.voucher_no,
-				ple.against_voucher_type,
-				ple.against_voucher_no,
-				ple.party_type,
-				ple.cost_center,
-				ple.party,
-				ple.posting_date,
-				ple.due_date,
-				ple.account_currency,
-				ple.amount,
-				ple.amount_in_account_currency,
-			)
-			.where(ple.delinked == 0)
-			.where(Criterion.all(self.qb_selection_filter))
-			.where(Criterion.any(self.or_filters))
+			.join(party_type)
+			.on(ple.party == party_type.name)
+			.select(*columns)
+				.where(ple.delinked == 0)
+				.where(Criterion.all(self.qb_selection_filter))
+				.where(Criterion.any(self.or_filters))
 		)
 
 		if self.filters.get("show_remarks"):
@@ -889,6 +898,15 @@ class ReceivablePayableReport:
 				.where(self.customer["customer_group"].isin(groups))
 			)
 			self.qb_selection_filter.append(self.ple.party.isin(customers))
+
+		if self.filters.get("medical_aid"):
+			self.qb_selection_filter.append(
+				self.ple.party.isin(
+					qb.from_(self.customer)
+					.select(self.customer.name)
+					.where(self.customer.medical_aid == self.filters.get("medical_aid"))
+				)
+			)
 
 		if self.filters.get("territory"):
 			self.get_hierarchical_filters("Territory", "territory")
