@@ -104,6 +104,12 @@ frappe.query_reports["Accounts Receivable Summary"] = {
 			options: "Customer Group",
 		},
 		{
+			"fieldname":"medical_aid",
+			"label": __("Medical Aid"),
+			"fieldtype": "Link",
+			"options": "Medical Aid"
+		},
+		{
 			fieldname: "payment_terms_template",
 			label: __("Payment Terms Template"),
 			fieldtype: "Link",
