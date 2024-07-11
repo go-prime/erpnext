@@ -146,6 +146,20 @@ class StockController(AccountsController):
 				for sle in sle_list:
 					if warehouse_account.get(sle.warehouse):
 						# from warehouse account
+						
+						item_code = sle.get("item_code")
+						company = frappe.db.get_value("Warehouse", sle.warehouse, "company")
+						gle_acc = warehouse_account[sle.warehouse]['account']
+						group_account = frappe.db.sql('''
+							select 
+								t2.default_inventory_account
+							from `tabItem` t1
+							inner join `tabItem Default` t2 on t2.parent = t1.item_group and t2.company = %s
+							where 
+								t1.name = %s
+						''', (company, item_code, ))
+						if group_account:
+							gle_acc = group_account[0][0]
 
 						sle_rounding_diff += flt(sle.stock_value_difference)
 
@@ -161,7 +175,7 @@ class StockController(AccountsController):
 						gl_list.append(
 							self.get_gl_dict(
 								{
-									"account": warehouse_account[sle.warehouse]["account"],
+									"account": gle_acc,
 									"against": expense_account,
 									"cost_center": item_row.cost_center,
 									"project": item_row.project or self.get("project"),
