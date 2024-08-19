@@ -17,8 +17,7 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 				"label": __("Branch"),
 				"fieldtype": "Link",
 				"options": "Branch",
-				"default": frappe.defaults.get_user_default("Branch"),
-				"reqd": 1
+				"default": frappe.defaults.get_user_default("Branch")
 			},
 			{
 				"fieldname": "fiscal_year",
