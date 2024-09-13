@@ -161,9 +161,10 @@ def get_data(
 	ignore_closing_entries=False,
 	ignore_accumulated_values_for_fy=False,
 	total=True,
+	branch=None
 ):
 
-	accounts = get_accounts(company, root_type)
+	accounts = get_accounts(company, root_type, branch)
 	if not accounts:
 		return None
 
@@ -348,13 +349,15 @@ def add_total_row(out, root_type, balance_must_be, period_list, company_currency
 		out.append({})
 
 
-def get_accounts(company, root_type):
+def get_accounts(company, root_type, branch=None):
+	branch_str = ""
+	if branch:
+		branch_str = f"and branch='{branch}'"
 	return frappe.db.sql(
 		"""
 		select name, account_number, parent_account, lft, rgt, root_type, report_type, account_name, include_in_gross, account_type, is_group, lft, rgt
 		from `tabAccount`
-		where company=%s and root_type=%s order by lft""",
-		(company, root_type),
+		where company='{}' and root_type='{}' {} order by lft""".format(company, root_type, branch_str),
 		as_dict=True,
 	)
 
