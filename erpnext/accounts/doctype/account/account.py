@@ -229,7 +229,7 @@ class Account(NestedSet):
 		gl_currency = frappe.db.get_value("GL Entry", {"account": self.name}, "account_currency")
 
 		if gl_currency and self.account_currency != gl_currency:
-			if frappe.db.get_value("GL Entry", {"account": self.name}):
+			if frappe.db.get_value("GL Entry", {"account": self.name, 'is_cancelled': 0}):
 				frappe.throw(_("Currency can not be changed after making entries using some other currency"))
 
 	def create_account_for_child_company(self, parent_acc_name_map, descendants, parent_acc_name):
