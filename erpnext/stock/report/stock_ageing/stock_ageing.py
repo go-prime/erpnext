@@ -91,6 +91,8 @@ def get_average_age(fifo_queue: list, to_date: str) -> float:
 def get_range_age(filters: Filters, fifo_queue: list, to_date: str, item_dict: dict) -> tuple:
 	precision = cint(frappe.db.get_single_value("System Settings", "float_precision", cache=True))
 
+	filters = frappe._dict(filters)
+
 	range1 = range2 = range3 = above_range3 = 0.0
 
 	for item in fifo_queue:
