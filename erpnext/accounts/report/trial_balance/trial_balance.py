@@ -81,7 +81,8 @@ def get_data(filters):
 	accounts = frappe.db.sql(
 		"""select name, account_number, parent_account, account_name, root_type, report_type, lft, rgt
 
-		from `tabAccount` where company='{}' order by lft""".format(filters.company),
+		from `tabAccount` where company=%s order by lft""",
+		filters.company,
 		as_dict=True,
 	)
 	company_currency = filters.presentation_currency or erpnext.get_company_currency(filters.company)
@@ -125,6 +126,7 @@ def get_data(filters):
 	)
 
 	return data
+
 
 def get_opening_balances(filters):
 	balance_sheet_opening = get_rootwise_opening_balances(filters, "Balance Sheet")
