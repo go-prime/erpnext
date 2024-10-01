@@ -160,11 +160,10 @@ def get_data(
 	only_current_fiscal_year=True,
 	ignore_closing_entries=False,
 	ignore_accumulated_values_for_fy=False,
-	total=True,
-	branch=None
+	total=True
 ):
 
-	accounts = get_accounts(company, root_type, branch)
+	accounts = get_accounts(company, root_type)
 	if not accounts:
 		return None
 
@@ -349,15 +348,12 @@ def add_total_row(out, root_type, balance_must_be, period_list, company_currency
 		out.append({})
 
 
-def get_accounts(company, root_type, branch=None):
-	branch_str = ""
-	if branch:
-		branch_str = f"and branch='{branch}'"
+def get_accounts(company, root_type):
 	return frappe.db.sql(
 		"""
 		select name, account_number, parent_account, lft, rgt, root_type, report_type, account_name, include_in_gross, account_type, is_group, lft, rgt
 		from `tabAccount`
-		where company='{}' and root_type='{}' {} order by lft""".format(company, root_type, branch_str),
+		where company='{}' and root_type='{}' order by lft""".format(company, root_type),
 		as_dict=True,
 	)
 
@@ -418,7 +414,7 @@ def set_gl_entries_by_account(
 	root_rgt,
 	filters,
 	gl_entries_by_account,
-	ignore_closing_entries=False,
+	ignore_closing_entries=False
 ):
 	"""Returns a dict like { "account": [gl entries], ... }"""
 
@@ -441,6 +437,9 @@ def set_gl_entries_by_account(
 			"to_date": to_date,
 			"finance_book": cstr(filters.get("finance_book")),
 		}
+
+		if filters.get("branch"):
+			gl_filters["branch"] = filters.get("branch")
 
 		if filters.get("include_default_book_entries"):
 			gl_filters["company_fb"] = frappe.db.get_value("Company", company, "default_finance_book")

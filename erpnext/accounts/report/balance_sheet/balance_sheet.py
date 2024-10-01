@@ -36,8 +36,7 @@ def execute(filters=None):
 		period_list,
 		only_current_fiscal_year=False,
 		filters=filters,
-		accumulated_values=filters.accumulated_values,
-		branch=filters.get('branch')
+		accumulated_values=filters.accumulated_values
 	)
 
 	liability = get_data(
