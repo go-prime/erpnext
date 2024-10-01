@@ -10,6 +10,8 @@ import frappe
 from frappe import _
 from frappe.utils import add_days, add_months, cint, cstr, flt, formatdate, get_first_day, getdate
 
+
+
 from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
 	get_accounting_dimensions,
 	get_dimension_with_children,
@@ -418,6 +420,10 @@ def set_gl_entries_by_account(
 ):
 	"""Returns a dict like { "account": [gl entries], ... }"""
 
+	branch = filters.get("branch")
+	if branch:
+		del filters['branch']
+
 	additional_conditions = get_additional_conditions(from_date, ignore_closing_entries, filters)
 
 	accounts = frappe.db.sql_list(
@@ -438,8 +444,8 @@ def set_gl_entries_by_account(
 			"finance_book": cstr(filters.get("finance_book")),
 		}
 
-		if filters.get("branch"):
-			gl_filters["branch"] = filters.get("branch")
+		if branch:
+			additional_conditions += f" and branch = '{branch}'"
 
 		if filters.get("include_default_book_entries"):
 			gl_filters["company_fb"] = frappe.db.get_value("Company", company, "default_finance_book")
