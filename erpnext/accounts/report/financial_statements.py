@@ -420,11 +420,9 @@ def set_gl_entries_by_account(
 ):
 	"""Returns a dict like { "account": [gl entries], ... }"""
 
-	branch = filters.get("branch")
-	if branch:
-		del filters['branch']
 
 	additional_conditions = get_additional_conditions(from_date, ignore_closing_entries, filters)
+	additional_conditions = additional_conditions.replace('branch in', 'branch =')
 
 	accounts = frappe.db.sql_list(
 		"""select name from `tabAccount`
@@ -444,8 +442,6 @@ def set_gl_entries_by_account(
 			"finance_book": cstr(filters.get("finance_book")),
 		}
 
-		if branch:
-			additional_conditions += f" and branch = '{branch}'"
 
 		if filters.get("include_default_book_entries"):
 			gl_filters["company_fb"] = frappe.db.get_value("Company", company, "default_finance_book")
