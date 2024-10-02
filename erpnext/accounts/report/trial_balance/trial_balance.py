@@ -203,6 +203,7 @@ def get_rootwise_opening_balances(filters, report_type):
 
 				query_filters.update({dimension.fieldname: filters.get(dimension.fieldname)})
 
+	additional_conditions = additional_conditions.replace('branch in', 'branch =')
 	gle = frappe.db.sql(
 		"""
 		select
