@@ -22,6 +22,13 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 			"label": __("Include Default Book Entries"),
 			"fieldtype": "Check",
 			"default": 1
-		}
+		},
+		{
+			"fieldname": "branch",
+			"label": __("Branch"),
+			"fieldtype": "Link",
+			"options": "Branch",
+			"default": frappe.defaults.get_user_default("Branch")
+		},
 	);
 });

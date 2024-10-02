@@ -10,6 +10,8 @@ import frappe
 from frappe import _
 from frappe.utils import add_days, add_months, cint, cstr, flt, formatdate, get_first_day, getdate
 
+
+
 from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
 	get_accounting_dimensions,
 	get_dimension_with_children,
@@ -160,7 +162,7 @@ def get_data(
 	only_current_fiscal_year=True,
 	ignore_closing_entries=False,
 	ignore_accumulated_values_for_fy=False,
-	total=True,
+	total=True
 ):
 
 	accounts = get_accounts(company, root_type)
@@ -353,8 +355,7 @@ def get_accounts(company, root_type):
 		"""
 		select name, account_number, parent_account, lft, rgt, root_type, report_type, account_name, include_in_gross, account_type, is_group, lft, rgt
 		from `tabAccount`
-		where company=%s and root_type=%s order by lft""",
-		(company, root_type),
+		where company='{}' and root_type='{}' order by lft""".format(company, root_type),
 		as_dict=True,
 	)
 
@@ -415,11 +416,13 @@ def set_gl_entries_by_account(
 	root_rgt,
 	filters,
 	gl_entries_by_account,
-	ignore_closing_entries=False,
+	ignore_closing_entries=False
 ):
 	"""Returns a dict like { "account": [gl entries], ... }"""
 
+
 	additional_conditions = get_additional_conditions(from_date, ignore_closing_entries, filters)
+	additional_conditions = additional_conditions.replace('branch in', 'branch =')
 
 	accounts = frappe.db.sql_list(
 		"""select name from `tabAccount`
@@ -438,6 +441,7 @@ def set_gl_entries_by_account(
 			"to_date": to_date,
 			"finance_book": cstr(filters.get("finance_book")),
 		}
+
 
 		if filters.get("include_default_book_entries"):
 			gl_filters["company_fb"] = frappe.db.get_value("Company", company, "default_finance_book")

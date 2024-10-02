@@ -36,7 +36,7 @@ def execute(filters=None):
 		period_list,
 		only_current_fiscal_year=False,
 		filters=filters,
-		accumulated_values=filters.accumulated_values,
+		accumulated_values=filters.accumulated_values
 	)
 
 	liability = get_data(
@@ -46,7 +46,7 @@ def execute(filters=None):
 		period_list,
 		only_current_fiscal_year=False,
 		filters=filters,
-		accumulated_values=filters.accumulated_values,
+		accumulated_values=filters.accumulated_values
 	)
 
 	equity = get_data(
@@ -56,7 +56,7 @@ def execute(filters=None):
 		period_list,
 		only_current_fiscal_year=False,
 		filters=filters,
-		accumulated_values=filters.accumulated_values,
+		accumulated_values=filters.accumulated_values
 	)
 
 	provisional_profit_loss, total_credit = get_provisional_profit_loss(

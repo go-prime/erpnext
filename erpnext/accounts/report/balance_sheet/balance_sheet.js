@@ -19,4 +19,12 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 		"fieldtype": "Check",
 		"default": 1
 	});
+	
+	frappe.query_reports["Balance Sheet"]["filters"].push({
+		"fieldname": "branch",
+		"label": __("Branch"),
+		"fieldtype": "Link",
+		"options": "Branch",
+		"default": frappe.defaults.get_user_default("Branch")
+	});
 });
