@@ -35,7 +35,8 @@
   "col_break3",
   "is_advance",
   "user_remark",
-  "against_account"
+  "against_account",
+  "payee_name"
  ],
  "fields": [
   {
@@ -197,12 +198,15 @@
    "label": "Reference"
   },
   {
+   "columns": 2,
    "fieldname": "reference_type",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Reference Type",
    "options": "\nSales Invoice\nPurchase Invoice\nJournal Entry\nSales Order\nPurchase Order\nExpense Claim\nAsset\nLoan\nPayroll Entry\nEmployee Advance\nExchange Rate Revaluation\nInvoice Discounting"
   },
   {
+   "columns": 2,
    "fieldname": "reference_name",
    "fieldtype": "Dynamic Link",
    "in_list_view": 1,
@@ -267,11 +271,17 @@
    "fieldtype": "Link",
    "label": "Bank Account",
    "options": "Bank Account"
+  },
+  {
+   "fieldname": "payee_name",
+   "fieldtype": "Link",
+   "label": "Payee Name",
+   "options": "Customer"
   }
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2020-01-13 12:41:33.968025",
+ "modified": "2024-09-25 08:57:33.412917",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Journal Entry Account",

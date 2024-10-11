@@ -72,17 +72,10 @@ def get_columns():
             "width": 90
         },
         {
-            "fieldname": "payment_document",
-            "label": _("Payment Document Type"),
+            "fieldname": "reference_no",
+            "label": _("Reference"),
             "fieldtype": "Data",
-            "width": 220
-        },
-        {
-            "fieldname": "payment_entry",
-            "label": _("Payment Document"),
-            "fieldtype": "Dynamic Link",
-            "options": "payment_document",
-            "width": 220
+            "width": 100
         },
         {
             "fieldname": "debit",
@@ -99,17 +92,24 @@ def get_columns():
             "width": 120
         },
         {
+            "fieldname": "payment_document",
+            "label": _("Payment Document Type"),
+            "fieldtype": "Data",
+            "width": 220
+        },
+        {
+            "fieldname": "payment_entry",
+            "label": _("Payment Document"),
+            "fieldtype": "Dynamic Link",
+            "options": "payment_document",
+            "width": 220
+        },
+        {
             "fieldname": "against_account",
             "label": _("Against Account"),
             "fieldtype": "Link",
             "options": "Account",
             "width": 200
-        },
-        {
-            "fieldname": "reference_no",
-            "label": _("Reference"),
-            "fieldtype": "Data",
-            "width": 100
         },
         {
             "fieldname": "ref_date",
