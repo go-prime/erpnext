@@ -23,6 +23,7 @@ class LandedCostVoucher(Document):
 				pr_items = get_pr_items(pr)
 
 				for d in pr_items:
+					unit_weight = frappe.db.get_value('Item', d.item_code, 'weight_per_unit') or 0
 					item = self.append("items")
 					item.item_code = d.item_code
 					item.description = d.description
@@ -34,6 +35,8 @@ class LandedCostVoucher(Document):
 					item.receipt_document = pr.receipt_document
 					item.purchase_receipt_item = d.name
 					item.is_fixed_asset = d.is_fixed_asset
+					item.unit_weight = unit_weight
+					item.weight = d.qty * unit_weight
 
 	def validate(self):
 		self.check_mandatory()
