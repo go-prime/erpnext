@@ -90,10 +90,6 @@
 
 {% for page in layout %}
 <div class="page-break">
-	{% set company_logo = get_company_logo(doc.company) %}
-	<div style="width: 35%; margin-bottom: 5%">
-		<img style="width:100%;height:60%; float: left;" src="{{company_logo}}" alt="company logo"/>
-	</div>
 	<div {% if print_settings.repeat_header_footer %} id="header-html" class="hidden-pdf" {% endif %}>
 		{{ add_header(loop.index, layout|len, doc, letter_head, no_letterhead, footer, print_settings) }}
 	</div>
