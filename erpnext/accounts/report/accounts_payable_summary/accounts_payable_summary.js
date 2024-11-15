@@ -75,6 +75,7 @@ frappe.query_reports["Accounts Payable Summary"] = {
 			fieldname: "party_type",
 			label: __("Party Type"),
 			fieldtype: "Autocomplete",
+			default: "Supplier",
 			options: get_party_type_options(),
 			on_change: function () {
 				frappe.query_report.set_filter_value("party", "");
