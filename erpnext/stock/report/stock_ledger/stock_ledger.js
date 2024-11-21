@@ -36,7 +36,7 @@ frappe.query_reports["Stock Ledger"] = {
 					filters: { 'company': company }
 				}
 			},
-			"default": frappe.defaults.get_user_default("warehouse")
+			"default": frappe.user_defaults.Warehouse
 		},
 		{
 			"fieldname":"item_code",
