@@ -63,7 +63,7 @@ frappe.query_reports["Stock Balance"] = {
 					}
 				}
 			},
-			"default": frappe.defaults.get_user_default("warehouse")
+			"default": frappe.user_defaults.Warehouse
 		},
 		{
 			"fieldname": "warehouse_type",
