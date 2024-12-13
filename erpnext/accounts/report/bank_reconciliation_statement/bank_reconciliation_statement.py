@@ -72,6 +72,12 @@ def get_columns():
             "width": 90
         },
         {
+            "fieldname": "payee_supplier_name",
+            "label": _("Payee/Supplier Name"),
+            "fieldtype": "Data",
+            "width": 200
+        },
+        {
             "fieldname": "reference_no",
             "label": _("Reference"),
             "fieldtype": "Data",
@@ -129,7 +135,7 @@ def get_columns():
             "fieldtype": "Link",
             "options": "Currency",
             "width": 100
-        }
+        },
     ]
 
 
@@ -141,7 +147,8 @@ def get_entries(filters):
         select "Journal Entry" as payment_document, jv.posting_date,
             jv.name as payment_entry, jvd.debit_in_account_currency as debit,
             jvd.credit_in_account_currency as credit, jvd.against_account,
-            jv.cheque_no as reference_no, jv.cheque_date as ref_date, jv.clearance_date, jvd.account_currency
+            jv.cheque_no as reference_no, jv.cheque_date as ref_date, jv.clearance_date,
+            jvd.account_currency, jvd.payee_supplier_name
         from
             `tabJournal Entry Account` jvd, `tabJournal Entry` jv
         where jvd.parent = jv.name and jv.docstatus=1
