@@ -186,7 +186,7 @@ class PickList(Document):
 
 		from_warehouses = None
 		if self.parent_warehouse:
-			from_warehouses = get_descendants_of("Warehouse", self.parent_warehouse)
+			from_warehouses = [self.parent_warehouse]
 
 		# Create replica before resetting, to handle empty table on update after submit.
 		locations_replica = self.get("locations")
