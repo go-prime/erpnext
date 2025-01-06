@@ -54,9 +54,9 @@ def execute(filters=None):
 				actual_qty = sle.qty_after_transaction
 				stock_value = sle.stock_value
 
-			sle.update({"qty_after_transaction": actual_qty, "stock_value": stock_value})
+			sle.update({"qty_after_transaction": round(actual_qty, 4), "stock_value": stock_value})
 
-		sle.update({"in_qty": max(sle.actual_qty, 0), "out_qty": min(sle.actual_qty, 0)})
+		sle.update({"in_qty": round(max(sle.actual_qty, 0), 4), "out_qty": round(min(sle.actual_qty, 0), 4)})
 
 		if sle.serial_no:
 			update_available_serial_nos(available_serial_nos, sle)
