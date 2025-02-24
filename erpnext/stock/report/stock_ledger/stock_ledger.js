@@ -85,12 +85,23 @@ frappe.query_reports["Stock Ledger"] = {
 		}
 	],
 	"formatter": function (value, row, column, data, default_formatter) {
-		value = default_formatter(value, row, column, data);
-		if (column.fieldname == "out_qty" && data && data.out_qty < 0) {
-			value = "<span style='color:red'>" + value + "</span>";
+		// value = default_formatter(value, row, column, data);
+		if (column.fieldname == "out_qty" && data) {
+			if(data.out_qty < 0) {
+				value = "<span style='color:red'>" + parseFloat(value).toFixed(4) + "</span>";
+			} else {
+				value = parseFloat(value).toFixed(4)
+			}
+			
 		}
-		else if (column.fieldname == "in_qty" && data && data.in_qty > 0) {
-			value = "<span style='color:green'>" + value + "</span>";
+		else if (column.fieldname == "in_qty" && data) {
+			if(data.in_qty > 0) {
+				value = "<span style='color:green'>" + parseFloat(value).toFixed(4) + "</span>";
+			} else {
+				value  = parseFloat(value).toFixed(4)
+			}
+		} else if (column.fieldname == "qty_after_transaction") {
+			value  = parseFloat(value).toFixed(4)
 		}
 
 		return value;
