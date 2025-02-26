@@ -333,8 +333,19 @@ class PurchaseReceipt(BuyingController):
 						},
 						"stock_value_difference",
 					)
-
+					# Goprime 2023
 					warehouse_account_name = warehouse_account[d.warehouse]["account"]
+					group_account = frappe.db.sql('''
+						select 
+							t2.default_inventory_account
+						from `tabItem` t1
+						inner join `tabItem Default` t2 on t2.parent = t1.item_group and t2.company = %s
+						where 
+							t1.name = %s
+					''', (self.company, d.item_code, ))
+					if group_account:
+						warehouse_account_name = group_account[0][0]
+
 					warehouse_account_currency = warehouse_account[d.warehouse]["account_currency"]
 					supplier_warehouse_account = warehouse_account.get(self.supplier_warehouse, {}).get("account")
 					supplier_warehouse_account_currency = warehouse_account.get(self.supplier_warehouse, {}).get(
