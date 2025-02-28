@@ -181,11 +181,12 @@ class PeriodClosingVoucher(AccountsController):
 				and t2.docstatus < 2
 				and t2.company = %s
 				and t1.posting_date between %s and %s
+				and t1.branch = %s
 			group by {dimension_fields}
 		""".format(
 				dimension_fields=", ".join(dimension_fields)
 			),
-			(self.company, self.get("year_start_date"), self.posting_date),
+			(self.company, self.get("year_start_date"), self.posting_date, self.branch),
 			as_dict=1,
 		)
 
