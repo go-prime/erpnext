@@ -447,6 +447,16 @@ def get_columns(filters):
 			"width": 180
 		},
 		{
+            "label": _("Payee/Supplier Name"),
+            "fieldname": "payee_supplier_name",
+            "width": 150
+        },
+        {
+            "label": _("Reference"),
+            "fieldname": "reference",
+            "width": 120
+        },
+		{
 			"label": _("Against Account"),
 			"fieldname": "against",
 			"width": 120
