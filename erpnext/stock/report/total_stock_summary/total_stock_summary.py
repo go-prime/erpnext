@@ -18,18 +18,18 @@ def execute(filters=None):
 
 
 def get_columns(filters):
-	columns = [
-		_("Item") + ":Link/Item:150",
-		_("Description") + "::300",
-		_("Current Qty") + ":Float:100",
-	]
+    columns = [
+        {"label": _("Item"), "fieldname": "item_code", "fieldtype": "Link", "options": "Item", "width": 150},
+        {"label": _("Description"), "fieldname": "description", "width": 300},
+        {"label": _("Current Qty"), "fieldname": "actual_qty", "fieldtype": "Float", "width": 100, "precision": 4},
+    ]
 
-	if filters.get("group_by") == "Warehouse":
-		columns.insert(0, _("Warehouse") + ":Link/Warehouse:150")
-	else:
-		columns.insert(0, _("Company") + ":Link/Company:250")
+    if filters.get("group_by") == "Warehouse":
+        columns.insert(0, {"label": _("Warehouse"), "fieldname": "warehouse", "fieldtype": "Link", "options": "Warehouse", "width": 150})
+    else:
+        columns.insert(0, {"label": _("Company"), "fieldname": "company", "fieldtype": "Link", "options": "Company", "width": 250})
 
-	return columns
+    return columns
 
 
 def get_total_stock(filters):
