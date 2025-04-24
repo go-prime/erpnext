@@ -163,7 +163,7 @@ def get_gl_entries(filters):
 			posting_date, account, party_type, party,
 			voucher_type, voucher_no, cost_center, project,
 			against_voucher_type, against_voucher, account_currency,
-			payee_supplier_name, reference, remarks, against, is_opening {select_fields}
+			payee_supplier_name, reference, description, remarks, against, is_opening {select_fields}
 		from `tabGL Entry`
 		where company=%(company)s {conditions}
 		{order_by_statement}
@@ -453,6 +453,11 @@ def get_columns(filters):
         {
             "label": _("Reference"),
             "fieldname": "reference",
+            "width": 120
+        },
+        {
+            "label": _("Description"),
+            "fieldname": "description",
             "width": 120
         },
 		{
