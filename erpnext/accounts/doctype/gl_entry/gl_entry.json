@@ -12,6 +12,7 @@
   "party",
   "payee_supplier_name",
   "reference",
+  "description",
   "cost_center",
   "debit",
   "credit",
@@ -244,26 +245,32 @@
    "search_index": 1
   },
   {
-    "fieldname": "payee_supplier_name",
-    "fieldtype": "Data",
-    "label": "Payee/Supplier Name",
-    "in_list_view": 1
+   "fieldname": "payee_supplier_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Payee/Supplier Name"
   },
   {
-    "fieldname": "reference",
-    "fieldtype": "Data",
-    "label": "Reference"
+   "fieldname": "reference",
+   "fieldtype": "Data",
+   "label": "Reference"
   },
   {
    "fieldname": "due_date",
    "fieldtype": "Date",
    "label": "Due Date"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "label": "Description",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-list",
  "idx": 1,
  "in_create": 1,
- "modified": "2020-03-13 14:54:57.777905",
+ "modified": "2025-04-24 23:29:11.008499",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "GL Entry",

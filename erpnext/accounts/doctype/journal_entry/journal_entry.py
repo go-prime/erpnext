@@ -516,7 +516,8 @@ class JournalEntry(AccountsController):
 						"project": d.project,
 						"finance_book": self.finance_book,
 						"payee_supplier_name": d.payee_supplier_name,
-                    	"reference": d.reference
+                    	"reference": d.reference,
+						"description": d.description
 					}, item=d)
 				)
 

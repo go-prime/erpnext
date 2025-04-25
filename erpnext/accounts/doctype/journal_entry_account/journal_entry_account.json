@@ -9,6 +9,7 @@
   "payee_supplier_name",
   "reference",
   "entry_date",
+  "description",
   "account",
   "account_type",
   "balance",
@@ -289,11 +290,16 @@
    "fieldname": "payee_supplier_name",
    "fieldtype": "Data",
    "label": "Payee/Name of Supplier"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "label": "Description"
   }
  ],
  "idx": 1,
  "istable": 1,
- "modified": "2025-01-02 19:14:18.866175",
+ "modified": "2025-04-24 23:26:35.000164",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Journal Entry Account",
