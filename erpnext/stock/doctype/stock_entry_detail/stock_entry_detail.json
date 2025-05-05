@@ -176,6 +176,7 @@
    "label": "Qty",
    "oldfieldname": "qty",
    "oldfieldtype": "Currency",
+   "precision": "4",
    "reqd": 1
   },
   {
@@ -573,7 +574,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-02-20 11:26:44.619614",
+ "modified": "2025-01-14 08:12:30.859956",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Entry Detail",

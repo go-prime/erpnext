@@ -169,6 +169,7 @@ def get_columns(filters: StockBalanceFilter):
 				"fieldtype": "Float",
 				"width": 100,
 				"convertible": "qty",
+				"precision": 4,
 			},
 			{
 				"label": _("Balance Value"),
@@ -183,6 +184,7 @@ def get_columns(filters: StockBalanceFilter):
 				"fieldtype": "Float",
 				"width": 100,
 				"convertible": "qty",
+				"precision": 4,
 			},
 			{
 				"label": _("Opening Value"),
@@ -197,6 +199,7 @@ def get_columns(filters: StockBalanceFilter):
 				"fieldtype": "Float",
 				"width": 80,
 				"convertible": "qty",
+				"precision": 4,
 			},
 			{"label": _("In Value"), "fieldname": "in_val", "fieldtype": "Float", "width": 80},
 			{
@@ -205,6 +208,7 @@ def get_columns(filters: StockBalanceFilter):
 				"fieldtype": "Float",
 				"width": 80,
 				"convertible": "qty",
+				"precision": 4,
 			},
 			{"label": _("Out Value"), "fieldname": "out_val", "fieldtype": "Float", "width": 80},
 			{
