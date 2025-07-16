@@ -514,7 +514,10 @@ class JournalEntry(AccountsController):
 						"remarks": remarks,
 						"cost_center": d.cost_center,
 						"project": d.project,
-						"finance_book": self.finance_book
+						"finance_book": self.finance_book,
+						"payee_supplier_name": d.payee_supplier_name,
+                    	"reference": d.reference,
+						"description": d.description
 					}, item=d)
 				)
 
