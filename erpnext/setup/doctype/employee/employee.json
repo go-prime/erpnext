@@ -810,7 +810,7 @@
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2025-05-02 10:27:14.579197",
+ "modified": "2025-05-02 10:27:14.579198",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
@@ -853,7 +853,7 @@
    "write": 1
   }
  ],
- "search_fields": "employee_name",
+ "search_fields": "employee_name"
  "show_name_in_global_search": 1,
  "show_title_field_in_link": 1,
  "sort_field": "modified",

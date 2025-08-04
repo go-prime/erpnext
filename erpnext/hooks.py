@@ -9,7 +9,7 @@ app_color = "#e74c3c"
 app_email = "info@erpnext.com"
 app_license = "GNU General Public License (v3)"
 source_link = "https://github.com/frappe/erpnext"
-app_logo_url = "/assets/erpnext/images/erpnext-logo.svg"
+app_logo_url = "/assets/farming/images/goprime-logo.png"
 
 
 develop_version = "14.x.x-develop"
@@ -30,7 +30,7 @@ doctype_js = {
 
 override_doctype_class = {"Address": "erpnext.accounts.custom.address.ERPNextAddress"}
 
-welcome_email = "erpnext.setup.utils.welcome_email"
+welcome_email = "farming.setup.utils.welcome_email"
 
 # setup wizard
 setup_wizard_requires = "assets/erpnext/js/setup_wizard.js"
@@ -83,8 +83,8 @@ calendars = [
 website_generators = ["Item Group", "Website Item", "BOM", "Sales Partner"]
 
 website_context = {
-	"favicon": "/assets/erpnext/images/erpnext-favicon.svg",
-	"splash_image": "/assets/erpnext/images/erpnext-logo.svg",
+	"favicon": app_logo_url,
+	"splash_image": app_logo_url,
 }
 
 # nosemgrep
@@ -437,12 +437,8 @@ scheduler_events = {
 email_brand_image = "assets/erpnext/images/erpnext-logo.jpg"
 
 default_mail_footer = """
-	<span>
-		Sent via
-		<a class="text-muted" href="https://erpnext.com?source=via_email_footer" target="_blank">
-			ERPNext
-		</a>
-	</span>
+	<div style="padding: 7px; text-align: right; color: #888"><small>Sent via
+	<a style="color: #888" href="https://goprime.systems/">GoPrime</a></div>
 """
 
 get_translated_dict = {
