@@ -853,7 +853,7 @@
    "write": 1
   }
  ],
- "search_fields": "employee_name"
+ "search_fields": "employee_name",
  "show_name_in_global_search": 1,
  "show_title_field_in_link": 1,
  "sort_field": "modified",
