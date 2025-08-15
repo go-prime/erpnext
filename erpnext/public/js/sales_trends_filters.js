@@ -1,8 +1,8 @@
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
-erpnext.get_sales_trends_filters = function() {
-	return[
+erpnext.get_sales_trends_filters = function(include_dimensions = false, index) {
+	let filters = [
 		{
 			"fieldname":"period",
 			"label": __("Period"),
@@ -58,4 +58,28 @@ erpnext.get_sales_trends_filters = function() {
 			"default": frappe.defaults.get_user_default("Company")
 		},
 	];
+
+	if (include_dimensions && index) {
+		frappe.call({
+			method: "erpnext.accounts.doctype.accounting_dimension.accounting_dimension.get_dimensions",
+			callback: function(r) {
+				let accounting_dimensions = r.message[0];
+				accounting_dimensions.forEach((dimension) => {
+					let found = filters.some(el => el.fieldname === dimension['fieldname']);
+
+					if (!found) {
+						filters.splice(index, 0, {
+							"fieldname": dimension["fieldname"],
+							"label": __(dimension["label"]),
+							"fieldtype": "MultiSelectList",
+							get_data: function(txt) {
+								return frappe.db.get_link_options(dimension["document_type"], txt);
+							},
+						});
+					}
+				});
+			}
+		});
+	}
+	return filters
 }

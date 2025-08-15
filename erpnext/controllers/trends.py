@@ -6,6 +6,49 @@ import frappe
 from frappe import _
 from frappe.utils import getdate
 
+from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
+	get_accounting_dimensions,
+	get_dimension_with_children,
+)
+
+
+def get_accounting_dimensions_conditions(filters):
+	conditions = ""
+	accounting_dimensions = get_accounting_dimensions(as_list=False)
+	
+	if accounting_dimensions:
+		for dimension in accounting_dimensions:
+			if filters.get(dimension.fieldname):
+				if frappe.get_cached_value("DocType", dimension.document_type, "is_tree"):
+					# Expand to include child dimensions
+					filters[dimension.fieldname] = get_dimension_with_children(
+						dimension.document_type, filters.get(dimension.fieldname)
+					)
+				
+				# Add condition for the dimension
+				conditions += f" and (t1.{dimension.fieldname} in %s or t2.{dimension.fieldname} in %s)"
+
+	return conditions
+
+
+def get_query_parameters(filters, year_start_date, year_end_date, additional_params=None):
+	params = [filters.get("company"), year_start_date, year_end_date]
+	
+	# Add additional params first (for specific queries)
+	if additional_params:
+		params.extend(additional_params)
+	
+	# add accounting dimension parameters
+	accounting_dimensions = get_accounting_dimensions(as_list=False)
+	if accounting_dimensions:
+		for dimension in accounting_dimensions:
+			if filters.get(dimension.fieldname):
+				# Adding for both t1 and t2
+				params.append(filters.get(dimension.fieldname))
+				params.append(filters.get(dimension.fieldname))
+				
+	return tuple(params)
+
 
 def get_columns(filters, trans):
 	validate_filters(filters)
@@ -80,6 +123,10 @@ def get_data(filters, conditions):
 	if conditions.get("trans") == "Quotation" and filters.get("group_by") == "Customer":
 		cond += " and t1.quotation_to = 'Customer'"
 
+	# Provisions for accounting dimensions
+	accounting_dimensions_cond = get_accounting_dimensions_conditions(filters)
+	cond += accounting_dimensions_cond
+
 	year_start_date, year_end_date = frappe.get_cached_value(
 		"Fiscal Year", filters.get("fiscal_year"), ["year_start_date", "year_end_date"]
 	)
@@ -118,7 +165,7 @@ def get_data(filters, conditions):
 				cond,
 				conditions["group_by"],
 			),
-			(filters.get("company"), year_start_date, year_end_date),
+			get_query_parameters(filters, year_start_date, year_end_date),
 			as_list=1,
 		)
 
@@ -148,7 +195,7 @@ def get_data(filters, conditions):
 					conditions.get("addl_tables_relational_cond"),
 					cond,
 				),
-				(filters.get("company"), year_start_date, year_end_date, data1[d][0]),
+				get_query_parameters(filters, year_start_date, year_end_date, additional_params=[data1[d][0]]),
 				as_list=1,
 			)
 
@@ -178,7 +225,7 @@ def get_data(filters, conditions):
 						conditions.get("addl_tables_relational_cond"),
 						cond,
 					),
-					(filters.get("company"), year_start_date, year_end_date, row[i][0], data1[d][0]),
+					get_query_parameters(filters, year_start_date, year_end_date, additional_params=[row[i][0], data1[d][0]]),
 					as_list=1,
 				)
 
@@ -208,7 +255,7 @@ def get_data(filters, conditions):
 				conditions.get("addl_tables_relational_cond", ""),
 				conditions["group_by"],
 			),
-			(filters.get("company"), year_start_date, year_end_date),
+			get_query_parameters(filters, year_start_date, year_end_date),
 			as_list=1,
 		)
 
