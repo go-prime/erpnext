@@ -94,6 +94,5 @@ class PeriodClosingVoucher(AccountsController):
 			where t1.account = t2.name and t2.report_type = 'Profit and Loss'
 			and t2.docstatus < 2 and t2.company = %s
 			and t1.posting_date between %s and %s
-			and t1.branch = %s
 			group by t1.account, t1.cost_center
-		""", (self.company, self.get("year_start_date"), self.posting_date, self.branch), as_dict=1)
+		""", (self.company, self.get("year_start_date"), self.posting_date), as_dict=1)

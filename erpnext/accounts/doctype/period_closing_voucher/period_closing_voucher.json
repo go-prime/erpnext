@@ -87,15 +87,15 @@
   {
    "fieldname": "branch",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Branch",
-   "options": "Branch",
-   "reqd": 1
+   "options": "Branch"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "is_submittable": 1,
- "modified": "2021-11-11 07:14:48.852445",
+ "modified": "2025-09-22 14:47:34.111199",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Period Closing Voucher",
