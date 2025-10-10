@@ -254,6 +254,12 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends e
 						}, __('Create'))
 					}
 
+					if(doc.docstatus==1) {
+						cur_frm.add_custom_button(__('Collection Note'), function() {
+							frappe.set_route("Form", "Collection Note")
+						}, __('Create'))
+					}
+
 					if (doc.docstatus === 1 && !doc.inter_company_order_reference) {
 						let me = this;
 						let internal = me.frm.doc.is_internal_supplier;
