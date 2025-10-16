@@ -42,7 +42,7 @@ erpnext.financial_statements = {
 	"tree": true,
 	"name_field": "account",
 	"parent_field": "parent_account",
-	"initial_depth": 1,
+	"initial_depth": 0,
 	onload: function(report) {
 		// dropdown for links to other financial statements
 		erpnext.financial_statements.filters = get_filters()
