@@ -47,7 +47,13 @@ frappe.ui.form.on("Purchase Receipt", {
                         }
                     };
                 });
-
+                frm.set_query("purchase_order", function() {
+                    return {
+                        filters: {
+                            branch: user_branch
+                        }
+                    };
+                });
             }
         });
 		
