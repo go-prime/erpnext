@@ -34,6 +34,28 @@ frappe.ui.form.on("Purchase Receipt", {
 				filters: {'company': frm.doc.company }
 			}
 		});
+		frappe.db.get_value("User Permission", {
+            user: frappe.session.user,
+            allow: "Branch"
+        }, "for_value").then(r => {
+            if (r.message && r.message.for_value) {
+                let user_branch = r.message.for_value;
+                frm.set_query("supplier", function() {
+                    return {
+                        filters: {
+                            branch: user_branch
+                        }
+                    };
+                });
+                frm.set_query("purchase_order", function() {
+                    return {
+                        filters: {
+                            branch: user_branch
+                        }
+                    };
+                });
+            }
+        });
 		
 	},
 	onload: function(frm) {
