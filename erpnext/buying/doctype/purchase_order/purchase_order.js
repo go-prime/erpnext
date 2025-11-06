@@ -42,25 +42,26 @@ frappe.ui.form.on("Purchase Order", {
 				filters: {'company': frm.doc.company}
 			}
 		});
-		frappe.db.get_value("User Permission", {
-            user: frappe.session.user,
-            allow: "Branch"
-        }, "for_value").then(r => {
-            if (r.message && r.message.for_value) {
-                let user_branch = r.message.for_value;
-                frm.set_query("supplier", function() {
-                    return {
-                        filters: {
-                            branch: user_branch
-                        }
-                    };
-                });
-            }
-        });
-
+		
 	},
-
+	
 	refresh: function(frm) {
+		frappe.db.get_value("User Permission", {
+			user: frappe.session.user,
+			allow: "Branch"
+		}, "for_value").then(r => {
+			if (r.message && r.message.for_value) {
+				let user_branch = r.message.for_value;
+				console.log(user_branch);
+				frm.set_query("supplier", function() {
+					return {
+						filters: {
+							branch: user_branch
+						}
+					};
+				});
+			}
+		});
 		if(frm.doc.docstatus === 1 && frm.doc.status !== 'Closed'
 			&& flt(frm.doc.per_received) < 100 && flt(frm.doc.per_billed) < 100) {
 			frm.add_custom_button(__('Update Items'), () => {
