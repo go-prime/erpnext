@@ -77,7 +77,6 @@ frappe.ui.form.on("Purchase Order", {
 		}, "for_value").then(r => {
 			if (r.message && r.message.for_value) {
 				let user_branch = r.message.for_value;
-				console.log('post render');
 				frm.set_query("supplier", function() {
 					return {
 						"filters": {

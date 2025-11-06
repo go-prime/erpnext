@@ -41,12 +41,8 @@ frappe.ui.form.on("Purchase Receipt", {
 			return erpnext.queries.warehouse(frm.doc);
 		});
 	},
-	
-	refresh: function(frm) {
-		if(frm.doc.company) {
-			frm.trigger("toggle_display_account_head");
-		}
-		
+
+	onload_post_render: function(frm) {
 		frappe.db.get_value("User Permission", {
 			user: frappe.session.user,
 			allow: "Branch"
@@ -69,7 +65,12 @@ frappe.ui.form.on("Purchase Receipt", {
 				});
 			}
 		});
-		
+	},
+	
+	refresh: function(frm) {
+		if(frm.doc.company) {
+			frm.trigger("toggle_display_account_head");
+		}
 		if (frm.doc.docstatus === 1 && frm.doc.is_return === 1 && frm.doc.per_billed !== 100) {
 			frm.add_custom_button(__('Debit Note'), function() {
 				frappe.model.open_mapped_doc({
