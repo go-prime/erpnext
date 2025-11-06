@@ -56,7 +56,7 @@ frappe.ui.form.on("Purchase Order", {
 				frm.set_query("supplier", function() {
 					return {
 						filters: {
-							branch: user_branch
+							'branch': user_branch
 						}
 					};
 				});
