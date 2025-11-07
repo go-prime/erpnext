@@ -34,28 +34,6 @@ frappe.ui.form.on("Purchase Receipt", {
 				filters: {'company': frm.doc.company }
 			}
 		});
-		frappe.db.get_value("User Permission", {
-            user: frappe.session.user,
-            allow: "Branch"
-        }, "for_value").then(r => {
-            if (r.message && r.message.for_value) {
-                let user_branch = r.message.for_value;
-                frm.set_query("supplier", function() {
-                    return {
-                        filters: {
-                            branch: user_branch
-                        }
-                    };
-                });
-                frm.set_query("purchase_order", function() {
-                    return {
-                        filters: {
-                            branch: user_branch
-                        }
-                    };
-                });
-            }
-        });
 		
 	},
 	onload: function(frm) {
@@ -64,11 +42,35 @@ frappe.ui.form.on("Purchase Receipt", {
 		});
 	},
 
+	onload_post_render: function(frm) {
+		frappe.db.get_value("User Permission", {
+			user: frappe.session.user,
+			allow: "Branch"
+		}, "for_value").then(r => {
+			if (r.message && r.message.for_value) {
+				let user_branch = r.message.for_value;
+				frm.set_query("supplier", function() {
+					return {
+						filters: {
+							branch: user_branch
+						}
+					};
+				});
+				frm.set_query("purchase_order", function() {
+					return {
+						filters: {
+							branch: user_branch
+						}
+					};
+				});
+			}
+		});
+	},
+	
 	refresh: function(frm) {
 		if(frm.doc.company) {
 			frm.trigger("toggle_display_account_head");
 		}
-
 		if (frm.doc.docstatus === 1 && frm.doc.is_return === 1 && frm.doc.per_billed !== 100) {
 			frm.add_custom_button(__('Debit Note'), function() {
 				frappe.model.open_mapped_doc({
