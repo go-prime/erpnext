@@ -42,27 +42,12 @@ frappe.ui.form.on("Purchase Order", {
 				filters: {'company': frm.doc.company}
 			}
 		});
-		frappe.db.get_value("User Permission", {
-            user: frappe.session.user,
-            allow: "Branch"
-        }, "for_value").then(r => {
-            if (r.message && r.message.for_value) {
-                let user_branch = r.message.for_value;
-                frm.set_query("supplier", function() {
-                    return {
-                        filters: {
-                            branch: user_branch
-                        }
-                    };
-                });
-            }
-        });
-
+		
 	},
-
+	
 	refresh: function(frm) {
 		if(frm.doc.docstatus === 1 && frm.doc.status !== 'Closed'
-			&& flt(frm.doc.per_received) < 100 && flt(frm.doc.per_billed) < 100) {
+		&& flt(frm.doc.per_received) < 100 && flt(frm.doc.per_billed) < 100) {
 			frm.add_custom_button(__('Update Items'), () => {
 				erpnext.utils.update_child_items({
 					frm: frm,
@@ -73,16 +58,34 @@ frappe.ui.form.on("Purchase Order", {
 			});
 		}
 	},
-
+	
 	onload: function(frm) {
 		set_schedule_date(frm);
 		if (!frm.doc.transaction_date){
 			frm.set_value('transaction_date', frappe.datetime.get_today())
 		}
-
+		
 		erpnext.queries.setup_queries(frm, "Warehouse", function() {
 			return erpnext.queries.warehouse(frm.doc);
 		});
+	},
+	
+	onload_post_render: function(frm) {
+		frappe.db.get_value("User Permission", {
+			user: frappe.session.user,
+			allow: "Branch"
+		}, "for_value").then(r => {
+			if (r.message && r.message.for_value) {
+				let user_branch = r.message.for_value;
+				frm.set_query("supplier", function() {
+					return {
+						"filters": {
+							"branch": user_branch
+						}
+					};
+				});
+			}
+		});		
 	}
 });
 
