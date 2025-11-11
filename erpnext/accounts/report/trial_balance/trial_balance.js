@@ -75,8 +75,7 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 			{
 				"fieldname": "show_zero_values",
 				"label": __("Show zero values"),
-				"fieldtype": "Check",
-				"default": 1
+				"fieldtype": "Check"
 			},
 			// {
 			// 	"fieldname": "show_unclosed_fy_pl_balances",
@@ -93,13 +92,13 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 				"fieldname": "exclude_groups",
 				"label": __("Exclude Grouped Accounts"),
 				"fieldtype": "Check",
-				"default": 1
+				"default": 0
 			},
 			{
 				"fieldname": "hide_opening_balances",
 				"label": __("Hide Opening Balances"),
 				"fieldtype": "Check",
-				"default": 1
+				"default": 0
 			}
 		],
 		"formatter": erpnext.financial_statements.formatter,
