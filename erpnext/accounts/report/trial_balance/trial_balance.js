@@ -76,11 +76,7 @@ frappe.require("assets/erpnext/js/financial_statements.js", function() {
 				"fieldname": "show_zero_values",
 				"label": __("Show zero values"),
 				"fieldtype": "Check",
-<<<<<<< HEAD
-				"default": 0
-=======
 				"default": 1
->>>>>>> 9285ad9e1f88f7f6bcca73fb57df64bfeb5cb82d
 			},
 			// {
 			// 	"fieldname": "show_unclosed_fy_pl_balances",
