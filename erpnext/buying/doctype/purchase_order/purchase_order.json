@@ -1,6 +1,6 @@
 {
  "allow_import": 1,
- "autoname": "naming_series:",
+ "autoname": "field:purchase_order_id",
  "creation": "2013-05-21 16:16:39",
  "doctype": "DocType",
  "document_type": "Document",
