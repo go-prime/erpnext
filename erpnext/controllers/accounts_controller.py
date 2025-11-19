@@ -1039,7 +1039,7 @@ def get_advance_payment_entries(party_type, party, party_account, order_doctype,
 	if include_unallocated:
 		unallocated_payment_entries = frappe.db.sql("""
 				select "Payment Entry" as reference_type, name as reference_name,
-				remarks, unallocated_amount as amount
+				remarks, unallocated_amount as amount, posting_date
 				from `tabPayment Entry`
 				where
 					{0} = %s and party_type = %s and party = %s and payment_type = %s
