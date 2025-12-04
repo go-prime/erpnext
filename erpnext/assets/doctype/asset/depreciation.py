@@ -128,8 +128,10 @@ def make_depreciation_entry(asset_name, date=None):
 			je.flags.ignore_permissions = True
 			je.flags.planned_depr_entry = True
 			je.save()
-			if not je.meta.get_workflow():
-				je.submit()
+			disable_auto_submission = frappe.db.get_single_value('Accounts Settings', 'disable_auto_submit_for_depreciation')
+			if not disable_auto_submission:
+				if not je.meta.get_workflow():
+					je.submit()
 
 			d.db_set("journal_entry", je.name)
 
