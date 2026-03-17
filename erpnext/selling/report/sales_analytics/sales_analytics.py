@@ -91,6 +91,17 @@ class Analytics(object):
 			{"label": _("Total"), "fieldname": "total", "fieldtype": "Float", "width": 120}
 		)
 
+
+	def get_branch_filter(self):
+		if not self.filters.branch:
+			return ""
+		
+		if self.filters.doc_type == "Sales Order":
+			return ""
+		
+		return " and s.branch = '{branch}'".format(branch=self.filters.branch)
+
+
 	def get_data(self):
 		if self.filters.tree_type in ["Customer", "Supplier"]:
 			self.get_sales_transactions_based_on_customers_or_suppliers()
@@ -128,9 +139,10 @@ class Analytics(object):
 		self.entries = frappe.db.sql(
 			""" select s.order_type as entity, s.{value_field} as value_field, s.{date_field}
 			from `tab{doctype}` s where s.docstatus = 1 and s.company = %s and s.{date_field} between %s and %s
+			{branch_filter}
 			and ifnull(s.order_type, '') != '' order by s.order_type
 		""".format(
-				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type
+				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type, branch_filter=self.get_branch_filter()
 			),
 			(self.filters.company, self.filters.from_date, self.filters.to_date),
 			as_dict=1,
@@ -151,14 +163,19 @@ class Analytics(object):
 			entity = "supplier as entity"
 			entity_name = "supplier_name as entity_name"
 
+		orm_filter = {
+			"docstatus": 1,
+			"company": self.filters.company,
+			self.date_field: ("between", [self.filters.from_date, self.filters.to_date]),
+		}
+
+		if self.filters.branch:
+			orm_filter['branch'] = self.filters.branch
+
 		self.entries = frappe.get_all(
 			self.filters.doc_type,
 			fields=[entity, entity_name, value_field, self.date_field],
-			filters={
-				"docstatus": 1,
-				"company": self.filters.company,
-				self.date_field: ("between", [self.filters.from_date, self.filters.to_date]),
-			},
+			filters=orm_filter,
 		)
 
 		self.entity_names = {}
@@ -178,8 +195,10 @@ class Analytics(object):
 			from `tab{doctype} Item` i , `tab{doctype}` s
 			where s.name = i.parent and i.docstatus = 1 and s.company = %s
 			and s.{date_field} between %s and %s
+			{branch_filter}
 		""".format(
-				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type
+				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type,
+				branch_filter=self.get_branch_filter()
 			),
 			(self.filters.company, self.filters.from_date, self.filters.to_date),
 			as_dict=1,
@@ -203,14 +222,19 @@ class Analytics(object):
 		else:
 			entity_field = "territory as entity"
 
+		orm_filter = {
+			"docstatus": 1,
+			"company": self.filters.company,
+			self.date_field: ("between", [self.filters.from_date, self.filters.to_date]),
+		}
+
+		if self.filters.branch:
+			orm_filter['branch'] = self.filters.branch
+
 		self.entries = frappe.get_all(
 			self.filters.doc_type,
 			fields=[entity_field, value_field, self.date_field],
-			filters={
-				"docstatus": 1,
-				"company": self.filters.company,
-				self.date_field: ("between", [self.filters.from_date, self.filters.to_date]),
-			},
+			filters=orm_filter,
 		)
 		self.get_groups()
 
@@ -226,8 +250,10 @@ class Analytics(object):
 			from `tab{doctype} Item` i , `tab{doctype}` s
 			where s.name = i.parent and i.docstatus = 1 and s.company = %s
 			and s.{date_field} between %s and %s
+			{branch_filter}
 		""".format(
-				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type
+				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type,
+				branch_filter=self.get_branch_filter()
 			),
 			(self.filters.company, self.filters.from_date, self.filters.to_date),
 			as_dict=1,
@@ -242,16 +268,20 @@ class Analytics(object):
 			value_field = "total_qty as value_field"
 
 		entity = "project as entity"
+		orm_filter = {
+			"docstatus": 1,
+			"company": self.filters.company,
+			"project": ["!=", ""],
+			self.date_field: ("between", [self.filters.from_date, self.filters.to_date]),
+		}
+
+		if self.filters.branch:
+			orm_filter['branch'] = self.filters.branch
 
 		self.entries = frappe.get_all(
 			self.filters.doc_type,
 			fields=[entity, value_field, self.date_field],
-			filters={
-				"docstatus": 1,
-				"company": self.filters.company,
-				"project": ["!=", ""],
-				self.date_field: ("between", [self.filters.from_date, self.filters.to_date]),
-			},
+			filters=orm_filter,
 		)
 
 	def get_rows(self):
