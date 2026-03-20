@@ -11,6 +11,7 @@ frappe.ui.form.on('Material Request', {
 			'Stock Entry': 'Issue Material',
 			'Pick List': 'Pick List',
 			'Purchase Order': 'Purchase Order',
+			'Purchase Invoice': 'Purchase Invoice',
 			'Request for Quotation': 'Request for Quotation',
 			'Supplier Quotation': 'Supplier Quotation',
 			'Work Order': 'Work Order',
@@ -130,6 +131,11 @@ frappe.ui.form.on('Material Request', {
 				if (frm.doc.material_request_type === "Purchase") {
 					frm.add_custom_button(__('Purchase Order'),
 						() => frm.events.make_purchase_order(frm), __('Create'));
+				}
+
+				if (frm.doc.material_request_type === "Purchase") {
+					frm.add_custom_button(__('Purchase Invoice'),
+						() => frm.events.make_purchase_invoice(frm), __('Create'));
 				}
 
 				if (frm.doc.material_request_type === "Purchase") {
@@ -304,6 +310,34 @@ frappe.ui.form.on('Material Request', {
 			(values) => {
 				frappe.model.open_mapped_doc({
 					method: "erpnext.stock.doctype.material_request.material_request.make_purchase_order",
+					frm: frm,
+					args: { default_supplier: values.default_supplier },
+					run_link_triggers: true
+				});
+			},
+			__('Enter Supplier'),
+			__('Create')
+		)
+	},
+
+	make_purchase_invoice: function(frm) {
+		frappe.prompt(
+			{
+				label: __('For Default Supplier (Optional)'),
+				fieldname:'default_supplier',
+				fieldtype: 'Link',
+				options: 'Supplier',
+				description: __('Select a Supplier from the Default Suppliers of the items below. On selection, a Purchase Invoice will be made against items belonging to the selected Supplier only.'),
+				get_query: () => {
+					return{
+						query: "erpnext.stock.doctype.material_request.material_request.get_default_supplier_query",
+						filters: {'doc': frm.doc.name}
+					}
+				}
+			},
+			(values) => {
+				frappe.model.open_mapped_doc({
+					method: "erpnext.stock.doctype.material_request.material_request.make_purchase_invoice",
 					frm: frm,
 					args: { default_supplier: values.default_supplier },
 					run_link_triggers: true
