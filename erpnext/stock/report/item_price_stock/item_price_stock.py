@@ -78,9 +78,9 @@ def get_data(filters, columns):
 	return item_price_qty_data
 
 def get_item_price_qty_data(filters):
-	conditions = ""
+	conditions = "where a.item_code not in (select item_code from `tabItem` where disabled = 1)"
 	if filters.get("item_code"):
-		conditions += "where a.item_code=%(item_code)s"
+		conditions += " and a.item_code=%(item_code)s"
 
 	item_results = frappe.db.sql("""select a.item_code, a.item_name, a.name as price_list_name,
 		a.brand as brand, b.warehouse as warehouse, b.actual_qty as actual_qty

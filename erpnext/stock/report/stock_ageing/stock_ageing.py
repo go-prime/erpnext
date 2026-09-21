@@ -219,7 +219,7 @@ def get_stock_ledger_entries(filters):
 			sle_conditions=get_sle_conditions(filters)), filters, as_dict=True)
 
 def get_item_conditions(filters):
-	conditions = []
+	conditions = ["disabled=0"]
 	if filters.get("item_code"):
 		conditions.append("item_code=%(item_code)s")
 	if filters.get("brand"):
