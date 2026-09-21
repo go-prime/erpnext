@@ -51,6 +51,13 @@ def validate_filters(filters):
 			.format(formatdate(filters.year_end_date)))
 		filters.to_date = filters.year_end_date
 
+	company_currency = erpnext.get_company_currency(filters.company)
+	alternate_base_currency = frappe.db.get_value("Company", filters.company, "default_currency_2")
+
+	if filters.presentation_currency not in (company_currency, alternate_base_currency):
+		frappe.throw("An invalid currency has been selected.")
+	
+
 def filter_zero_values_on_flattened_data(data, filters):
 	if not filters.get('show_zero_values'):
 		data = [i for i in data if i.get('has_value', False)]
@@ -181,17 +188,30 @@ def get_rootwise_opening_balances(filters, report_type):
 				query_filters.update({
 					dimension: filters.get(dimension)
 				})
-
+	
+	debit_field = "debit"
+	credit_field = "credit"
+	alternate_base_currency = frappe.db.get_value("Company", filters.company, "default_currency_2")
+	if filters.get('presentation_currency') and filters.presentation_currency == alternate_base_currency:
+		debit_field = "debit_in_company_currency_2"
+		credit_field = "credit_in_company_currency_2"
 	gle = frappe.db.sql("""
 		select
-			account, sum(debit) as opening_debit, sum(credit) as opening_credit
+			account, sum({debit}) as opening_debit, sum({credit}) as opening_credit
 		from `tabGL Entry`
 		where
 			company=%(company)s
 			{additional_conditions}
 			and (posting_date < %(from_date)s or ifnull(is_opening, 'No') = 'Yes')
 			and account in (select name from `tabAccount` where report_type=%(report_type)s)
-		group by account""".format(additional_conditions=additional_conditions), query_filters , as_dict=True)
+		group by account
+	""".format(
+     		additional_conditions=additional_conditions,
+			debit=debit_field, 
+			credit=credit_field
+       ), 
+ 		query_filters, 
+   		as_dict=True)
 
 	opening = frappe._dict()
 	for d in gle:
@@ -262,6 +282,7 @@ def prepare_data(accounts, filters, total_row, parent_children_map, company_curr
 			prepare_opening_closing(d)
 
 		has_value = False
+		account_currency = frappe.db.get_value("Account", d.name, "account_currency")
 		row = {
 			"account": d.name,
 			"account_number": d.account_number,
@@ -269,7 +290,7 @@ def prepare_data(accounts, filters, total_row, parent_children_map, company_curr
 			"indent": d.indent,
 			"from_date": filters.from_date,
 			"to_date": filters.to_date,
-			"currency": company_currency,
+			"currency": filters.presentation_currency or company_currency, # TODO confirm Goprime 2022 : company_currency
 			"account_name": ('{} - {}'.format(d.account_number, d.account_name)
 				if d.account_number else d.account_name)
 		}

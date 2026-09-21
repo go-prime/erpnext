@@ -79,10 +79,11 @@ def jmann_execute(filters=None):
 
 	
 	period_keys = [i.get('key') for i in period_list]
+	company_currency = frappe.db.get_value('Company', filters.get('company'), 'default_currency')
 	gross_profit = {
 		'account': 'Gross Profit',
 		'account_name': 'Gross Profit',
-		'currency': frappe.db.get_value('Company', filters.get('company'), 'default_currency'),
+		'currency': filters.presentation_currency or company_currency,
 	}
 	gross_profit_total = 0
 	if direct_income_account and direct_expenses_account:
