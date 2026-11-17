@@ -1,0 +1,67 @@
+{
+ "custom_fields": [
+  {
+   "doctype": "Custom Field",
+   "dt": "Purchase Order",
+   "fieldname": "purchase_order_id",
+   "fieldtype": "Data",
+   "insert_after": "set_reserve_warehouse",
+   "is_system_generated": 0,
+   "label": "PO Number",
+   "module": "Goprime Erp",
+   "name": "Purchase Order-purchase_order_id",
+   "unique": 1
+  }
+ ],
+ "custom_perms": [],
+ "doctype": "Purchase Order",
+ "links": [],
+ "property_setters": [
+  {
+   "doc_type": "Purchase Order",
+   "doctype": "Property Setter",
+   "doctype_or_field": "DocType",
+   "is_system_generated": 0,
+   "module": "Goprime Erp",
+   "name": "Purchase Order-main-autoname",
+   "property": "autoname",
+   "property_type": "Data",
+   "value": "field:purchase_order_id"
+  },
+  {
+   "doc_type": "Purchase Order",
+   "doctype": "Property Setter",
+   "doctype_or_field": "DocType",
+   "is_system_generated": 0,
+   "module": "Goprime Erp",
+   "name": "Purchase Order-main-hide_toolbar",
+   "property": "hide_toolbar",
+   "property_type": "Check",
+   "value": "1"
+  },
+  {
+   "doc_type": "Purchase Order",
+   "doctype": "Property Setter",
+   "doctype_or_field": "DocType",
+   "is_system_generated": 0,
+   "module": "Goprime Erp",
+   "name": "Purchase Order-main-naming_rule",
+   "property": "naming_rule",
+   "property_type": "Data",
+   "value": "By fieldname"
+  },
+  {
+   "doc_type": "Purchase Order",
+   "doctype": "Property Setter",
+   "doctype_or_field": "DocField",
+   "field_name": "naming_series",
+   "is_system_generated": 0,
+   "module": "Goprime Erp",
+   "name": "Purchase Order-naming_series-reqd",
+   "property": "reqd",
+   "property_type": "Check",
+   "value": "0"
+  }
+ ],
+ "sync_on_migrate": 1
+}

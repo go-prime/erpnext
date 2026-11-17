@@ -1,0 +1,32 @@
+{
+ "custom_fields": [
+  {
+   "doctype": "Custom Field",
+   "dt": "Sales Order",
+   "fieldname": "refine_btn",
+   "fieldtype": "Button",
+   "insert_after": "skip_delivery_note",
+   "is_system_generated": 0,
+   "label": "Refine Item Choices",
+   "module": "Goprime Erp",
+   "name": "Sales Order-refine_btn"
+  }
+ ],
+ "custom_perms": [],
+ "doctype": "Sales Order",
+ "links": [],
+ "property_setters": [
+  {
+   "doc_type": "Sales Order",
+   "doctype": "Property Setter",
+   "doctype_or_field": "DocType",
+   "is_system_generated": 0,
+   "module": "Goprime Erp",
+   "name": "Sales Order-main-hide_toolbar",
+   "property": "hide_toolbar",
+   "property_type": "Check",
+   "value": "1"
+  }
+ ],
+ "sync_on_migrate": 1
+}
